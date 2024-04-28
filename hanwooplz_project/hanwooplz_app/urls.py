@@ -6,15 +6,6 @@ app_name = 'hanwooplz_app'
 
 urlpatterns = [
     path('write/',views.write, name='write'),
-    path('login/', views.LoginView.as_view(), name="login"),
-    path("logout/", views.log_out, name="logout"),
-    path('register/', views.register, name='register'),
-    path('find_id/', views.find_id, name='find_id'),
-    path('find_pw/', views.find_pw, name='find_pw'),
-    path('found_pw/', views.found_pw, name='found_pw'),
-    path('edit_profile/', views.edit_profile, name='edit_profile'),
-    path('change_password/', views.change_password, name='change_password'),
-    path("myinfo/<int:user_id>", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
     path("post-list/", views.post_list, name="post_list"),
     path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),

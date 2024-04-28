@@ -5,9 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/account/myinfo.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
     <style>
         h2 {
             padding-bottom: 10px;
@@ -146,11 +145,11 @@
                         <a class="profile-pic"><img src="{% static 'img/basicuser.png' %}" alt="Default Profile Image" class="default-profile-image">
                     {% endif %}
                         {% if user_id == request.user.id %}
-                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'" style="margin-bottom: 50px;">
+                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "account:edit_profile" %}'" style="margin-bottom: 50px;">
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}
-                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'"style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                    <button onclick="window.location.href = '{% url "chat:chat" 0 user_id %}'"style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
                     </button>
                     {% elif not user.is_authenticated %}
@@ -246,7 +245,7 @@
                 {% for post in posts %}
                 <div class="grid-item">
                     <a
-                        href="{% if post.category == 'portfolio' %}{% url 'hanwooplz_app:portfolio' post.post_id %}{% elif post.category == 'project' %}{% url 'hanwooplz_app:project' post.post_id %}{% elif post.category == 'question' %}{% url 'hanwooplz_app:question' post.post_id %}{% endif %}">
+                        href="{% if post.category == 'portfolio' %}{% url 'portfolio:read' post.post_id %}{% elif post.category == 'project' %}{% url 'project:read' post.post_id %}{% elif post.category == 'question' %}{% url 'qna:read' post.post_id %}{% endif %}">
                         <h2>{{ post.title }}</h2>
                     </a>
                     <p>글쓴이:{{ username }}</p>
@@ -263,7 +262,6 @@
         </div>
 
     </main>
-    {% include 'footer.html' %}
     {% include 'chatbot.html' %}
 </body>
 <script>

@@ -8,7 +8,7 @@
     <style>
         body {
             background-color: white;
-            color: black;
+            color: white;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -18,39 +18,41 @@
         }
 
         .login-container {
-            background-color: white;
-            padding: 100px;
-            border-radius: 20px;
-            text-align: center;
-            position: relative;
+            background-color: rgba(255, 255, 255, 0.817);
+            padding: 200px;
+            border-radius: 50px;
+            text-align: left;
+            margin-top: 300px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         .login-container h1 {
+            color: black;
             text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
         }
 
-        .login-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-            margin-left: 20px;
+        .login-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .login-form label {
+            display: block;
+            color: black;
         }
 
         .login-form input[type="text"],
-        .login-form input[type="password"] {
+        .login-form input[type="password"],
+        .login-form input[type="email"] {
             background-color: rgba(0, 0, 0, 0.1);
             border: none;
             padding: 10px;
             border-radius: 5px;
             color: black;
             width: 100%;
-            margin: 5px 0;
-            text-align: center;
         }
 
         .login-form input[type="submit"] {
-            background-color: black;
+            background: black;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -58,6 +60,8 @@
             cursor: pointer;
             width: 100%;
             position: relative;
+            animation: scaleUp 0.5s ease-in-out;
+            margin-top: 50px;
         }
 
         .login-form input[type="submit"]:hover {
@@ -142,31 +146,67 @@
             }
         }
     </style>
-
-    <title>로그인</title>
+    <title>Register</title>
 </head>
 
 <body>
     <div class="main-container">
         <div class="login-container">
-            <img id="animated-gif" src="{% static 'img/hanwoo1.gif' %}" alt="Animated GIF"
-                style="max-width: 100px; max-height: 100px;">
-            <h1>Hanwooplz</h1>
+            <h1>Hanwooplz 회원가입</h1>
             <form method="post" class="login-form">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input style="margin-left: 10px;" type="submit" value="로그인">
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">유저 아이디:</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">이메일:</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">비밀번호:</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">비밀번호 확인:</label>
+                    {{ form.password2 }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.full_name.id_for_label }}">이름:</label>
+                    {{ form.full_name }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.job.id_for_label }}">직무:</label>
+                    {{ form.job }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.tech_stack.id_for_label }}">주력 기술 스택:</label>
+                    {{ form.tech_stack }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.career.id_for_label }}">경력:</label>
+                    {{ form.career }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.career_detail.id_for_label }}">경력세부사항:</label>
+                    {{ form.career_detail }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.introduction.id_for_label }}">한줄 소개:</label>
+                    {{ form.introduction }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.github_link.id_for_label }}">Github 링크:</label>
+                    {{ form.github_link }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.linkedin_link.id_for_label }}">LinkedIn 링크:</label>
+                    {{ form.linkedin_link }}
+                </div>
+                <input type="submit" value="가입하기">
             </form>
-            <div class="login-buttons">
-                <a href="{% url 'hanwooplz_app:register' %}">회원가입</a>
-                <span>/</span>
-                <a href="{% url 'hanwooplz_app:find_id' %}">아이디 찾기</a>
-                <span>/</span>
-                <a href="{% url 'hanwooplz_app:find_pw' %}">비밀번호 찾기</a>
-            </div>
         </div>
     </div>
 </body>
-<script src="{% static 'js/footer.js' %}"></script>
 
 </html>

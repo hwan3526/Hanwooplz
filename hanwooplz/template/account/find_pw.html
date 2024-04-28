@@ -67,8 +67,6 @@
 
 <body>
   <form method="post">
-    <img id="animated-gif" src="{% static 'img/hanwoo1.gif' %}" alt="Animated GIF"
-      style="max-width: 100px; max-height: 100px;">
     {% csrf_token %}
     <label for="email">이메일:</label>
     <input type="email" name="email" required><br>
@@ -77,6 +75,5 @@
     <button type="submit">비밀번호 찾기</button>
   </form>
 </body>
-<script src="{% static 'js/footer.js' %}"></script>
 
 </html>

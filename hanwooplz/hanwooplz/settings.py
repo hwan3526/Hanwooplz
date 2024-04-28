@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'index',
+    'account',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'
