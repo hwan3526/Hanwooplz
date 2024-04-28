@@ -17,11 +17,6 @@ from django.contrib.auth.forms import PasswordResetForm, PasswordChangeForm
 
 
 # Create your views here.
-def main(request):
-    return render(request, 'main.html')
-def index(request):
-    return render(request, 'index.html')
-
 
 # 게시글 작성 화면
 def write(request):

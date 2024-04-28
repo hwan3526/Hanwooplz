@@ -5,22 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="2;url=/index/">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
-    <style>
-        
-    </style>
+    <meta http-equiv="refresh" content="2;url=/index">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index/main.css' %}" />
     <title>저기압일땐 고기앞으로</title>
 </head>
 
 <body>
-    <div class="navbar">
-        <ul>
-            {% comment %} <li><a href="{% url 'hanwooplz_app:login' %}">로그인</a></li>
-            <li><a href="{% url 'hanwooplz_app:register' %}">회원가입</a></li> {% endcomment %}
-        </ul>
-    </div>
-    <div class="wavy" onclick="window.location.href = 'index';">
+    <div class="wavy">
         <span style="--i:1">저</span>
         <span style="--i:2">기</span>
         <span style="--i:3">압</span>

@@ -5,8 +5,6 @@ from .views import views, chat_views, comment_views, question_views, project_vie
 app_name = 'hanwooplz_app'
 
 urlpatterns = [
-    path('', views.main, name='main'),
-    path('index/',views.index, name='index'),
     path('write/',views.write, name='write'),
     path('login/', views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),

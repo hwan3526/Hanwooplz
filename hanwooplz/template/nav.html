@@ -247,13 +247,13 @@
             <span class="line line3"></span>
         </div>
         <ul class="menu-items">
-            <li><a href="{% url 'hanwooplz_app:portfolio_list' %}">포트폴리오</a></li>
-            <li><a href="{% url 'hanwooplz_app:project_list' %}">팀원모집</a></li>
-            <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
+            <li><a href="/portfolio">포트폴리오</a></li>
+            <li><a href="/project">팀원모집</a></li>
+            <li><a href="/qna">질의응답</a></li>
 
             {% if user.is_authenticated %}
-            <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
-            <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' user.id %}"><i class="fas fa-user"></i></a>
+            <li><a href="{% url 'chat:chat' 0 user.id %}">채팅</a></li>
+            <li class="icon-item"><a href="{% url 'account:myinfo' user.id %}"><i class="fas fa-user"></i></a>
             </li>
             <li class="icon-item">
                 <a id="notificationButton" href="#"><i class="fas fa-bell"></i></a>
@@ -265,10 +265,10 @@
                 </div>
             </li>
 
-            <li class="icon-item"><a href="{% url 'hanwooplz_app:logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+            <li class="icon-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
             </li>
             {% else %}
-            <li class="icon-item"><a href="{% url 'hanwooplz_app:login' %}"><i class="fas fa-sign-in-alt"></i></a></li>
+            <li class="icon-item"><a href="/login"><i class="fas fa-sign-in-alt"></i></a></li>
             {% endif %}
         </ul>
     </div>
@@ -278,7 +278,7 @@
         const logo = document.getElementById("logo");
 
         logo.addEventListener("click", function () {
-            window.location.href = "{% url 'hanwooplz_app:main' %}";
+            window.location.href = "/index";
         });
     });
 </script>
