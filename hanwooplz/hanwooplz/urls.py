@@ -1,8 +1,8 @@
 """
-URL configuration for hanwooplz_project project.
+URL configuration for hanwooplz project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -21,8 +21,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hanwooplz_app.urls')),
+    path('', include('index.urls')),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.USERIMG_URL, document_root=settings.USERIMG_ROOT)
+    urlpatterns += static(settings.PROFILE_URL, document_root=settings.PROFILE_ROOT)
