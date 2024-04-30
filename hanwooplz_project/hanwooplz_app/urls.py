@@ -13,12 +13,6 @@ urlpatterns = [
     path('get_notifications/', views.get_notifications, name='get_notifications'),
     path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
     path('mark_notifications_as_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
-    
-    # portfolio_views.py
-    path("portfolio-list/", portfolio_views.portfolio_list, name="portfolio_list"),
-    path("portfolio/<int:post_portfolio_id>", portfolio_views.portfolio, name="portfolio"),
-    path("write-portfolio/", portfolio_views.write_portfolio, name="write_portfolio"),
-    path("write-portfolio/<int:post_portfolio_id>", portfolio_views.write_portfolio, name="write_portfolio"),
 
     # project_views.py
     path("project-list/", project_views.project_list, name="project_list"),

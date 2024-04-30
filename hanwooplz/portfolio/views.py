@@ -3,9 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
-from ..forms import *
-from ..models import *
-from ..serializers import *
+
+from post.forms import PostForm
+from portfolio.forms import PostPortfolioForm
+from account.models import UserProfile
+from post.models import Post
+from portfolio.models import PostPortfolio
+
+# Create your views here.
 
 def portfolio_list(request, page_num=1):
     items_per_page = 9  # 페이지 당 항목 수
@@ -59,7 +64,7 @@ def portfolio_list(request, page_num=1):
         "search_type": search_type,
     }
 
-    return render(request, 'project_list.html', context)
+    return render(request, 'portfolio/portfolio_list.html', context)
 
 
 

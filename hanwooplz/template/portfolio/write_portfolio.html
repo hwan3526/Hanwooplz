@@ -4,17 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/write.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <title>게시글 작성</title>
 </head>
 
 <body>
-
     {% include 'nav.html' %}
-
     <section class="main">
-        <form id="post" method="POST" action="{% if post_portfolio_id %}{% url 'hanwooplz_app:write_portfolio' post_portfolio_id %}{% else %}{% url 'hanwooplz_app:write_portfolio' %}{% endif %}" enctype="multipart/form-data">
+        <form id="post" method="POST" action="{% if post_portfolio_id %}{% url 'portfolio:portfolio_edit' post_portfolio_id %}{% else %}{% url 'portfolio:portfolio_write' %}{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
                 <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
@@ -37,9 +35,6 @@
               </div>            
         </form>
     </section>
-    
-    {% include 'footer.html' %}
-    
 </body>
 <script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static 'js/tinymce.js' %}"></script>

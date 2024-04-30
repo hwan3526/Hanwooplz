@@ -22,9 +22,6 @@ class PostPnP(models.Model):
     class Meta:
         abstract = True
 
-class PostPortfolio(PostPnP):
-    members = models.IntegerField(default=1)
-
 class PostProject(PostPnP):
     status = models.IntegerField(default=1)
     '''
