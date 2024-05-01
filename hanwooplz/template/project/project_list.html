@@ -6,10 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/posts_list.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/posts_list.css' %}" />
-    
     <title>{{ board_name }}</title>
 </head>
 
@@ -35,7 +33,7 @@
             {% if not is_portfolio %}
             {% if query %}
             <div class="search-result">
-                <a class="refresh" href="{% url 'hanwooplz_app:project_list' %}">전체 목록 다시 불러오기</a>
+                <a class="refresh" href="/project">전체 목록 다시 불러오기</a>
                 <p class="search-type" style="display: none"></p>
             </div>
             {% endif %}
@@ -48,7 +46,7 @@
             {% endif %}
             <div class="posts-grid">
                 {% for post in post_lists %}
-                <a class="post-tile" href="{% if is_portfolio %}{% url "hanwooplz_app:portfolio" post.post_portfolio %}{% else %}{% url "hanwooplz_app:project" post.post_project %}{% endif %}">
+                <a class="post-tile" href="{% if is_portfolio %}{% url "portfolio:portfolio_read" post.post_portfolio %}{% else %}{% url "project:project_read" post.post_project %}{% endif %}">
                     <picture class="post-thumbnail">
                         {% if not post.isRecruiting and post.post_project %}
                         <p id="deprecated">{{ post.project_status }}</p>
@@ -99,9 +97,9 @@
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
             {% endif %}
-            <div class="button">
+            <div class="button">    
                 {% if user.is_authenticated %}
-                <button class="button-black" onclick="window.location.href = '{% if is_portfolio %}{% url "hanwooplz_app:write_portfolio" %}{% else %}{% url "hanwooplz_app:write_project" %}{% endif %}'" style="cursor: pointer; transition: background-color 0.3s;">
+                <button class="button-black" onclick="window.location.href = '{% if is_portfolio %}{% url "portfolio:portfolio_write" %}{% else %}{% url "project:project_write" %}{% endif %}'" style="cursor: pointer; transition: background-color 0.3s;">
                     글쓰기
                 </button>
                 {% else %}
@@ -112,7 +110,6 @@
             </div>
         </div>
     </main>
-    {% include 'footer.html' %}
     {% include 'chatbot.html' %}
 </body>
 <script>
@@ -133,9 +130,9 @@
         var searchType = new URLSearchParams(window.location.search).get('search_type');
         var titleElement = document.querySelector('.post-list h2');
         var board_name = '';
-        if (window.location.href.includes('project-list')) {
+        if (window.location.href.includes('project')) {
             board_name = '프로젝트 팀원 모집';
-        } else if (window.location.href.includes('portfolio-list')) {
+        } else if (window.location.href.includes('portfolio')) {
             board_name = '포트폴리오';
         }
         if (searchType === 'title_content') {

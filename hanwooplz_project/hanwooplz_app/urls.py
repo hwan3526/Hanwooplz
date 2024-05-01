@@ -14,13 +14,6 @@ urlpatterns = [
     path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
     path('mark_notifications_as_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
 
-    # project_views.py
-    path("project-list/", project_views.project_list, name="project_list"),
-    path("project/<int:post_project_id>", project_views.project, name="project"),
-    path("write-project/", project_views.write_project, name="write_project"),
-    path("write-project/<int:post_project_id>", project_views.write_project, name="write_project"),
-    path("update-status/", project_views.update_views, name="update_status"),
-
     # question_views.py
     path("question-list/", question_views.question_list, name="question_list"),
     path("question/<int:post_question_id>", question_views.question, name="question"),

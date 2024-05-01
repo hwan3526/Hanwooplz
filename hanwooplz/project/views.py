@@ -4,9 +4,14 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
 from django.http import JsonResponse
-from ..forms import *
-from ..models import *
-from ..serializers import *
+
+from post.forms import PostForm
+from project.forms import PostProjectForm
+from account.models import UserProfile
+from post.models import Post
+from project.models import PostProject, ProjectMembers
+
+# Create your views here.
 
 def project_list(request, page_num=1):
     items_per_page = 9  # 페이지 당 항목 수
@@ -69,9 +74,7 @@ def project_list(request, page_num=1):
         "search_type": search_type,
     }
 
-    return render(request, 'project_list.html', context)
-
-
+    return render(request, 'project/project_list.html', context)
 
 def project(request, post_project_id=None):
     if post_project_id:
@@ -95,10 +98,10 @@ def project(request, post_project_id=None):
             'post_id': post.id,
             'project_status': post_project.status,
         }
-        return render(request, 'project.html', context)
+        return render(request, 'project/project.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('hanwooplz_app:project_list')
+        return redirect('project:project_list')
 
 @login_required(login_url='login')
 def write_project(request, post_project_id=None):
@@ -113,7 +116,7 @@ def write_project(request, post_project_id=None):
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('hanwooplz_app:project_list')
+            return redirect('project:project_list')
         
         request.POST._mutable = True
         request.POST['tech_stack'] = request.POST.get('tech_stack').split()
@@ -136,7 +139,7 @@ def write_project(request, post_project_id=None):
                 post.save()
                 post_project.save()
 
-            return redirect('hanwooplz_app:project', post_project_id)
+            return redirect('project:project_read', post_project_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -148,7 +151,7 @@ def write_project(request, post_project_id=None):
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_project.html', context)
+            return render(request, 'project/write_project.html', context)
         
     # 게시물 수정 시
     else:
@@ -167,12 +170,12 @@ def write_project(request, post_project_id=None):
                     'content': post.content,
                     'post_author_id': post.author_id,
                 }
-                return render(request, 'write_project.html', context)
+                return render(request, 'project/write_project.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:project', post_project_id)
+                return redirect('project:project_read', post_project_id)
         else:
-            return render(request, 'write_project.html')
+            return render(request, 'project/write_project.html')
 
 def update_views(request):
     if request.method == "POST":

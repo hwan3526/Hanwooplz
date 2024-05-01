@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'index',
     'account',
+    'portfolio',
+    'project',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'
