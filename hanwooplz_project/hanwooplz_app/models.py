@@ -28,22 +28,6 @@ class PostQnA(models.Model):
     class Meta:
         abstract = True
 
-class PostQuestion(PostQnA):
-    keyword = ArrayField(models.CharField(max_length=20))
-    like = models.ManyToManyField(UserProfile, through="QuestionLike")
-
-class PostAnswer(PostQnA):
-    question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
-    like = models.ManyToManyField(UserProfile, through="AnswerLike")
-
-class QuestionLike(models.Model):
-    question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
-    like = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-
-class AnswerLike(models.Model):
-    answer = models.ForeignKey(PostAnswer, on_delete=models.CASCADE)
-    like = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comments_written")

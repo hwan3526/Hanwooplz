@@ -14,16 +14,6 @@ urlpatterns = [
     path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
     path('mark_notifications_as_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
 
-    # question_views.py
-    path("question-list/", question_views.question_list, name="question_list"),
-    path("question/<int:post_question_id>", question_views.question, name="question"),
-    path("write-question/", question_views.write_question, name="write_question"),
-    path("write-question/<int:post_question_id>", question_views.write_question, name="write_question"),
-    path("write-answer/<int:post_question_id>", question_views.write_answer, name="write_answer"),
-    path("write-answer/<int:post_question_id>/<int:post_answer_id>", question_views.write_answer, name="write_answer"),
-    path("question-like/<int:post_question_id>", question_views.like, name="question_like"),
-    path("question-like/<int:post_question_id>/<int:answer_id>", question_views.like, name="question_like"),
-    
     # comment_views.py
     path("api/post/<int:post_id>/comments/", comment_views.CommentList.as_view(), name="comment_list"),
     path("api/comments/<int:comment_id>/", comment_views.CommentDetail.as_view(), name="comment_detail"),

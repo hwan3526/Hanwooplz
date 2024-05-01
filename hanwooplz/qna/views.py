@@ -3,9 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
-from ..forms import *
-from ..models import *
-from ..serializers import *
+
+from post.forms import PostForm
+from qna.forms import PostQuestionForm
+from account.models import UserProfile
+from post.models import Post
+from qna.models import PostQuestion, PostAnswer, AnswerLike
+
+# Create your views here.
 
 def question_list(request, page_num=1):
     items_per_page = 10  # 페이지 당 항목 수
@@ -104,7 +109,7 @@ def question(request, post_question_id=None):
         return render(request, 'question.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('hanwooplz_app:question_list')
+        return redirect('qna:question_list')
 
 @login_required(login_url='login')
 def write_question(request, post_question_id=None):
@@ -118,7 +123,7 @@ def write_question(request, post_question_id=None):
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('hanwooplz_app:question_list')
+            return redirect('qna:question_list')
         
         request.POST._mutable = True
         request.POST['keyword'] = request.POST.get('keyword').split()
@@ -138,7 +143,7 @@ def write_question(request, post_question_id=None):
                 post.save()
                 post_question.save()
 
-            return redirect('hanwooplz_app:question', post_question_id)
+            return redirect('qna:question_read', post_question_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -160,7 +165,7 @@ def write_question(request, post_question_id=None):
                 return render(request, 'write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:question', post_question_id)
+                return redirect('qna:question_read', post_question_id)
         else:
             return render(request, 'write_question.html')
 
@@ -178,12 +183,12 @@ def write_answer(request, post_question_id, post_answer_id=None):
             post = Post()
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('hanwooplz_app:question_list')
+        return redirect('qna:question_list')
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('hanwooplz_app:question', post_question_id)
+            return redirect('qna:question_read', post_question_id)
         if 'temp-save-button' in request.POST:
             messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
             context={
@@ -214,7 +219,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 post.save()
                 post_answer.save()
 
-            return redirect('hanwooplz_app:question', post_question_id)
+            return redirect('qna:question_read', post_question_id)
         else:
             messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -246,7 +251,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 return render(request, 'write_answer.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:question', post_question_id)
+                return redirect('qna:question_read', post_question_id)
         else:
             context = {
                     'title_question': post_.title,
@@ -276,6 +281,5 @@ def like(request, post_question_id, answer_id=None):
             message = ''
 
         post.save()
-        return redirect('hanwooplz_app:question', post_question_id);
-        return render(request, 'question.html', {'message': message})
-    return redirect('hanwooplz_app:question', post_question_id);
+        return redirect('qna:question_read', post_question_id)
+    return redirect('qna:question_read', post_question_id)

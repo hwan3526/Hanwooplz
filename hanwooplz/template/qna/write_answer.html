@@ -4,21 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/question.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/write.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <title>게시글 작성</title>
 </head>
 
 <body>
-
     {% include 'nav.html' %}
-
     <section class="main">
-        <form id="post" method="POST" action="{% if post_question_id %}{% url 'hanwooplz_app:write_question' post_question_id %}{% else %}{% url 'hanwooplz_app:write_question' %}{% endif %}" enctype="multipart/form-data">
+        <div class="question-container">
+            <h3 class="title">{{ title_question }}</h3>
+            <div class="keyword-conatiner">
+                {% for keyword in keywords_question %}
+                <div class="keyword">#{{ keyword }} </div>
+                {% endfor %}
+            </div>
+            <div class="content">{{ content_question | safe }}</div>
+            <div class="subsidiary">
+                <div class="card">
+                    작성자: <a href="{% url 'account:myinfo' author_id_question %}"><strong>{{ author_question }}</strong> 님</a>
+                    <p>작성 일시: {{ created_at_question }}</p>
+                </div>
+            </div>
+        </div>
+        <form id="post" method="POST" action="{% if post_answer_id %}{% url 'qna:answer_edit' post_question_id post_answer_id %}{% else %}{% url 'qna:answer_write' post_question_id %}{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
-                <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
-                <input id="keyword" type="text" name="keyword" placeholder="#주제" value="{{ keyword }}">
                 <textarea id="content" name="content">{{ content }}</textarea>
             </div>
             <div class="save-button-wrapper">
@@ -31,9 +43,6 @@
             </div>
         </form>
     </section>
-    
-    {% include 'footer.html' %}
-    
 </body>
 <script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static 'js/tinymce.js' %}"></script>

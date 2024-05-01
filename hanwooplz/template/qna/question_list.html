@@ -6,10 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/posts_list.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/posts_list.css' %}" />
-
     <title>질의응답</title>
 </head>
 
@@ -48,12 +46,12 @@
                     <tr>
                         <td>{{ post.post_question }}</td>
                         <td>
-                            <a href="{% url 'hanwooplz_app:question' post.post_question %}">
+                            <a href="{% url 'qna:question_read' post.post_question %}">
                                 {{ post.title }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
+                            <a href="{% url 'account:myinfo' post.author_id %}">
                                 {{ post.author }}
                             </a>
                         </td>
@@ -103,7 +101,7 @@
             {% endif %}
             <div class="button">
                 {% if user.is_authenticated %}
-                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" %}'" style="cursor: pointer; transition: background-color 0.3s;">
+                <button class="button-black" onclick="window.location.href = '{% url "qna:question_write" %}'" style="cursor: pointer; transition: background-color 0.3s;">
                     글쓰기
                 </button>
                 {% else %}
@@ -114,7 +112,6 @@
             </div>
         </div>
     </article>
-    {% include 'footer.html' %}
     {% include 'chatbot.html' %}
 </body>
 <script>

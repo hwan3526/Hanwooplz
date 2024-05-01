@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <title>게시글 작성</title>
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <section class="main">
+        <form id="post" method="POST" action="{% if post_question_id %}{% url 'qna:question_edit' post_question_id %}{% else %}{% url 'qna:question_write' %}{% endif %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="write-box">
+                <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
+                <input id="keyword" type="text" name="keyword" placeholder="#주제" value="{{ keyword }}">
+                <textarea id="content" name="content">{{ content }}</textarea>
+            </div>
+            <div class="save-button-wrapper">
+                {% if post_author_id == request.user.id %}
+                  <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
+                  <input type="submit" class="save-button" value="수정"/>
+                {% else %}
+                  <input type="submit" class="save-button" value="글 작성"/>
+                {% endif %}
+            </div>
+        </form>
+    </section>
+</body>
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'js/tinymce.js' %}"></script>
+</html>

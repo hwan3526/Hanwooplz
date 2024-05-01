@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('account.urls')),
     path('', include('portfolio.urls')),
     path('', include('project.urls')),
+    path('', include('qna.urls')),
 ]
 
 if settings.DEBUG:

@@ -52,8 +52,3 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title','content']
-
-class PostQuestionForm(forms.ModelForm):
-    class Meta:
-        model = PostQuestion
-        fields = ['keyword']
