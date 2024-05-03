@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('portfolio.urls')),
     path('', include('project.urls')),
     path('', include('qna.urls')),
+    path('', include('comment.urls')),
 ]
 
 if settings.DEBUG:

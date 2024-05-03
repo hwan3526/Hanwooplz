@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'portfolio',
     'project',
     'qna',
+    'comment',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'
