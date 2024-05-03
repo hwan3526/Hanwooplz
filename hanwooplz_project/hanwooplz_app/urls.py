@@ -8,5 +8,4 @@ urlpatterns = [
     path('write/',views.write, name='write'),
     path("post/", views.post, name="post"),
     path("post-list/", views.post_list, name="post_list"),
-    path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),
 ]

@@ -29,6 +29,7 @@ urlpatterns = [
     path('', include('comment.urls')),
     path('', include('chat.urls')),
     path('', include('notification.urls')),
+    path('', include('chatbot.urls')),
 ]
 
 if settings.DEBUG:
