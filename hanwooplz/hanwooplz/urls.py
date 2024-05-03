@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('project.urls')),
     path('', include('qna.urls')),
     path('', include('comment.urls')),
+    path('', include('chat.urls')),
 ]
 
 if settings.DEBUG:

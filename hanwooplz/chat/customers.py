@@ -1,11 +1,13 @@
-import asyncio
 import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import ChatMessages, ChatRoom, UserProfile
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
+
+from chat.models import ChatMessages, ChatRoom, UserProfile
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -124,6 +126,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
 User = get_user_model()
+
+
 class ChatListConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         if not self.scope.get('user') or self.scope['user'].is_anonymous:
@@ -131,7 +135,6 @@ class ChatListConsumer(AsyncWebsocketConsumer):
         else:
             await self.accept()
             await self.get_chat_list()
-
 
     async def disconnect(self, close_code):
         pass

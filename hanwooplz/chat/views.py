@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from ..forms import *
-from ..models import *
-from ..serializers import *
 from django.utils import timezone
 from django.db.models import Q
+
+from account.models import UserProfile
+from chat.models import ChatRoom, ChatMessages
+
+# Create your views here.
 
 def format_datetime(dt):
     today = timezone.now().date()
@@ -15,7 +17,6 @@ def format_datetime(dt):
     if dt.date() == yesterday:
         return dt.strftime("어제 %p %I:%M")
     return dt.strftime("%Y-%m-%d %p %I:%M")
-
 
 def get_rooms(request):
     chat_rooms = ChatRoom.objects.filter(Q(sender=request.user.id) | Q(receiver=request.user.id))
@@ -123,7 +124,7 @@ def current_chat(request, room_number, receiver_id):
         'user_id' : userinfo.id,
     }
 
-    return render(request, 'chat.html', context)
+    return render(request, 'chat/chat.html', context)
 
 @login_required
 def chat_msg(request, room_number):
@@ -154,5 +155,4 @@ def chat_msg(request, room_number):
         "chat_msgs" : chat_msgs
     }
 
-    return render(request, 'chat.html', context)
-
+    return render(request, 'chat/chat.html', context)

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'project',
     'qna',
     'comment',
+    'chat',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'

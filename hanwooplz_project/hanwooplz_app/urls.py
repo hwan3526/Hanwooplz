@@ -13,8 +13,4 @@ urlpatterns = [
     path('get_notifications/', views.get_notifications, name='get_notifications'),
     path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
     path('mark_notifications_as_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
-
-    # chat_views.py
-    path('chat/<int:room_number>/<int:receiver_id>', chat_views.current_chat, name='chat'),
-    path('chat-msg/<int:room_number>', chat_views.chat_msg, name='chat_msg'),
 ]
