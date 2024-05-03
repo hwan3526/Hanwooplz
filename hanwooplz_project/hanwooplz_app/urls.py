@@ -9,8 +9,4 @@ urlpatterns = [
     path("post/", views.post, name="post"),
     path("post-list/", views.post_list, name="post_list"),
     path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),
-    path('send_application/', views.send_application, name='send_application'),
-    path('get_notifications/', views.get_notifications, name='get_notifications'),
-    path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
-    path('mark_notifications_as_read/', views.mark_notifications_as_read, name='mark_notifications_as_read'),
 ]

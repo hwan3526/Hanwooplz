@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('qna.urls')),
     path('', include('comment.urls')),
     path('', include('chat.urls')),
+    path('', include('notification.urls')),
 ]
 
 if settings.DEBUG:
