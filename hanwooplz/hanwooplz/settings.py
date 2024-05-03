@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'chat',
     'notification',
     'chatbot',
+    'post',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'
