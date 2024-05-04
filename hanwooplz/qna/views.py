@@ -61,7 +61,7 @@ def question_list(request, page_num=1):
         "search_type": search_type,
     }
 
-    return render(request, 'question_list.html', context)
+    return render(request, 'qna/question_list.html', context)
 
 
 def question(request, post_question_id=None):
@@ -106,7 +106,7 @@ def question(request, post_question_id=None):
             'answer_post_id_list': answer_post_id_list,
             'answered': answered,
         }
-        return render(request, 'question.html', context)
+        return render(request, 'qna/question.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
         return redirect('qna:question_list')
@@ -151,7 +151,7 @@ def write_question(request, post_question_id=None):
                 'content': request.POST.get('content'),
                 'keyword': request.POST.get('keyword'),
             }
-            return render(request, 'write_question.html', context)
+            return render(request, 'qna/write_question.html', context)
     else:
         if post_question_id:
             if request.user.id == post.author_id:
@@ -162,12 +162,12 @@ def write_question(request, post_question_id=None):
                     'keyword': ' '.join(post_question.keyword),
                     'post_author_id': post.author_id,
                 }
-                return render(request, 'write_question.html', context)
+                return render(request, 'qna/write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
                 return redirect('qna:question_read', post_question_id)
         else:
-            return render(request, 'write_question.html')
+            return render(request, 'qna/write_question.html')
 
 @login_required(login_url='login')
 def write_answer(request, post_question_id, post_answer_id=None):
@@ -201,7 +201,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 'post_question_id': post_question_id,
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_answer.html', context)
+            return render(request, 'qna/write_answer.html', context)
         
         request.POST._mutable = True
         request.POST['title'] = '제목없음'
@@ -232,7 +232,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 'post_question_id': post_question_id,
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_answer.html', context)
+            return render(request, 'qna/write_answer.html', context)
     else:
         if post_answer_id:
             if request.user.id == post.author_id:
@@ -248,7 +248,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                     'content': post.content,
                     'post_author_id': post.author_id,
                 }
-                return render(request, 'write_answer.html', context)
+                return render(request, 'qna/write_answer.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
                 return redirect('qna:question_read', post_question_id)
@@ -262,7 +262,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                     'created_at_question': post_.created_at,
                     'post_question_id': post_question_id,
             }
-            return render(request, 'write_answer.html', context)
+            return render(request, 'qna/write_answer.html', context)
 
 @login_required
 def like(request, post_question_id, answer_id=None):

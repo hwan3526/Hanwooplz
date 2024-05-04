@@ -47,4 +47,4 @@ def execute_chatbot(request):
         chatbot = ChatBot()
         response = chatbot.ask(question)
         return JsonResponse({"response": response})
-    return render(request, 'index.html')
+    return render(request, 'index/index.html')

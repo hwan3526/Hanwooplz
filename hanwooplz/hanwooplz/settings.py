@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import json
+
 from pathlib import Path
-import os, json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRETS_DIR = BASE_DIR / 'hanwooplz'
-secrets = json.load(open(os.path.join(SECRETS_DIR, 'secrets.json')))
+secrets = json.load(open(SECRETS_DIR / 'secrets.json'))
 SECRET_KEY = secrets['SECRET_KEY']
 OPENAI_KEY = secrets['OPENAI_API_KEY']
 
@@ -96,7 +97,9 @@ ROOT_URLCONF = 'hanwooplz.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'template',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,8 +167,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 PROFILE_URL = 'profile/'
-PROFILE_ROOT = os.path.join(BASE_DIR, 'profile')
+PROFILE_ROOT = BASE_DIR / 'profile'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

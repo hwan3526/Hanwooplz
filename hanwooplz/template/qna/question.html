@@ -201,7 +201,7 @@
                 {% endif %}
                 <button class="button-black" onclick="window.location.href = '{% url "qna:question_list" %}'">목록으로</button>
             </div>
-            <div id="comment-wrapper">{% include "comment.html" %}</div>
+            <div id="comment-wrapper">{% include "comment/comment.html" %}</div>
             <div class="answer-container-wrapper">
                 {% for answer in answers %}
                 <div class="answer-container"  data-answer-id="{{ answer.answer_id }}">
@@ -225,7 +225,7 @@
                         <a href="" id="unpack-comments">댓글</a>
                         <a href="{% url 'qna:answer_like' post_question_id answer.id %}">추천 {{ answer.likes }} 회</a>
                     </div>
-                    <div id="answer-comment-wrapper">{% include "comment.html" %}</div>
+                    <div id="answer-comment-wrapper">{% include "comment/comment.html" %}</div>
                 </div>
                 <div class="button_list_edit">
                     {% if answer.author_id == request.user.id %}
