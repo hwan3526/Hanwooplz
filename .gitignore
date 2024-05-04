@@ -1,5 +1,6 @@
 .venv/
-migrations/
+**/migrations/*
+!**/migrations/__init__.py
 hanwooplz/hanwooplz/secrets.json
 hanwooplz/static/js/tinymce
 
