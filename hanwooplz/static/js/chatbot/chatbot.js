@@ -6,6 +6,20 @@ const conversation = document.getElementById('conversation');
 const inputForm = document.getElementById('input-form');
 const inputField = document.getElementById('input-field');
 
+async function generateResponse(input) {
+    const response = await fetch('/execute_chatbot/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({ question: input }),
+    });
+
+    const data = await response.json();
+    return data;
+}
+
 chat_circle.addEventListener('click', function () {
     chat_container.style.display = 'block';
     chat_circle.style.display = 'none';
@@ -16,14 +30,13 @@ header_close.addEventListener('click', function () {
     chat_circle.style.display = 'block';
 })
 
-
 inputForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const input = inputField.value;
 
     inputField.value = '';
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     let message = document.createElement('div');
     message.classList.add('chatbot-message', 'user-message');
@@ -36,9 +49,13 @@ inputForm.addEventListener('submit', function (event) {
             message.classList.add('chatbot-message', 'chatbot');
             message.innerHTML = `<p class="chatbot-text" sentTime="${currentTime}">${response['response']}</p>`;
             conversation.appendChild(message);
-            message.scrollIntoView({ behavior: "smooth" });
+            message.scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {
             console.error(error);
         });
+});
+
+$(document).ready(function () {
+    $('#emojionearea').emojioneArea();
 });
