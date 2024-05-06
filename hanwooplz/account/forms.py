@@ -6,22 +6,22 @@ User = get_user_model()
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="아이디")
-    password = forms.CharField(widget=forms.PasswordInput, label="비밀번호")
+    username = forms.CharField(label='아이디')
+    password = forms.CharField(widget=forms.PasswordInput, label='비밀번호')
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get("username")
-        password = cleaned_data.get("password")
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
 
         try:
             user = User.objects.get(username=username)
             if user.check_password(password):
                 return cleaned_data
             else:
-                self.add_error("password", "비밀번호를 확인해주세요")
+                self.add_error('password', '비밀번호를 확인해주세요')
         except User.DoesNotExist:
-            self.add_error("username", "등록된 아이디가 아닙니다")
+            self.add_error('username', '등록된 아이디가 아닙니다')
 
         return cleaned_data
 
@@ -29,9 +29,9 @@ class LoginForm(forms.Form):
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput,
-        label="비밀번호(최소 8자리, [영어 , 숫자, 특수문자] 중 2개 이상 섞어서)",
+        label='비밀번호(최소 8자리, [영어 , 숫자, 특수문자] 중 2개 이상 섞어서)',
     )
-    password2 = forms.CharField(widget=forms.PasswordInput, label="비밀번호 확인")
+    password2 = forms.CharField(widget=forms.PasswordInput, label='비밀번호 확인')
     email = forms.EmailField()
 
     class Meta:
@@ -56,10 +56,10 @@ class CustomUserCreationForm(UserCreationForm):
         return email
 
     def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("비밀번호가 일치하지 않습니다.")
+            raise forms.ValidationError('비밀번호가 일치하지 않습니다.')
         return password2
     
     def __init__(self, *args, **kwargs):

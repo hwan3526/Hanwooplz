@@ -13,34 +13,32 @@ from portfolio.models import PostPortfolio
 from project.models import PostProject
 from qna.models import PostQuestion
 
-# Create your views here.
-
 
 class LoginView(View):
     def get(self, request):
         form = LoginForm()
-        context = {"form": form}
-        return render(request, "account/login.html", context)
+        context = {'form': form}
+        return render(request, 'account/login.html', context)
 
     def post(self, request):
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")  # Redirect to the main page
+                return redirect('/')  # Redirect to the main page
             else:
                 # 로그인 실패 메시지를 추가하고 다시 로그인 페이지를 렌더링
-                messages.error(request, "로그인에 실패했습니다. 올바른 아이디와 비밀번호를 입력하세요.")
+                messages.error(request, '로그인에 실패했습니다. 올바른 아이디와 비밀번호를 입력하세요.')
 
-        context = {"form": form}
-        return render(request, "account/login.html", context)
+        context = {'form': form}
+        return render(request, 'account/login.html', context)
 
 def log_out(request):
     logout(request)
-    return redirect(reverse("account:login"))
+    return redirect(reverse('account:login'))
 
 def register(request):
     if request.method == 'POST':
@@ -124,25 +122,25 @@ def myinfo(request, user_id):
                 'content': post.content,
                 'created_at': post.created_at,
                 'post_id': postcategory.id,
-                "category": category,
+                'category': category,
             })
 
     context = {
-        "user_id": userinfo.id,
-        "username": userinfo.username,
-        "full_name": userinfo.full_name,
-        "job": userinfo.job,
-        "tech_stack": userinfo.tech_stack,
-        "career": userinfo.career,
-        "career_detail": userinfo.career_detail,
-        "introduction": userinfo.introduction,
-        "posts": posts,
-        "github_link": userinfo.github_link,
-        "linkedin_link": userinfo.linkedin_link,
-        "selected_category": selected_category,
-        "user": userinfo,
+        'user_id': userinfo.id,
+        'username': userinfo.username,
+        'full_name': userinfo.full_name,
+        'job': userinfo.job,
+        'tech_stack': userinfo.tech_stack,
+        'career': userinfo.career,
+        'career_detail': userinfo.career_detail,
+        'introduction': userinfo.introduction,
+        'posts': posts,
+        'github_link': userinfo.github_link,
+        'linkedin_link': userinfo.linkedin_link,
+        'selected_category': selected_category,
+        'user': userinfo,
     }
-    return render(request, "account/myinfo.html", context)
+    return render(request, 'account/myinfo.html', context)
 
 @login_required
 def edit_profile(request):
@@ -178,7 +176,7 @@ def change_password(request):
         if password_change_form.is_valid():
             password_change_form.save()
             update_session_auth_hash(request, request.user) 
-            return redirect(reverse("account:login"))
+            return redirect(reverse('account:login'))
     else:
         password_change_form = PasswordChangeForm(request.user)
 

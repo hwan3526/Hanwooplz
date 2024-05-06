@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: white;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+p {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+p:hover {
+    background: #00f7ff;
+}

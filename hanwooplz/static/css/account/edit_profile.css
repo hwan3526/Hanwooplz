@@ -9,9 +9,9 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.login-container {
-    padding: 200px;
-    margin-top: 300px;
+.profile-container {
+    padding: 50px 100px;
+    margin-top: 500px;
     border-radius: 50px;
     background-color: rgba(255, 255, 255, 0.817);
     text-align: left;
@@ -19,7 +19,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.login-container h1 {
+.profile-container h1 {
     color: black;
     text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
 }
@@ -34,7 +34,6 @@ body {
 }
 
 .login-form input[type="text"],
-.login-form input[type="password"],
 .login-form input[type="email"] {
     width: 100%;
     padding: 10px;
@@ -58,6 +57,26 @@ body {
 }
 
 .login-form input[type="submit"]:hover {
+    border-radius: 5px;
+    background: #02f2ff;
+    color: #fff;
+    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+}
+
+.login-form input[type="button"] {
+    position: relative;
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    animation: scaleUp 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.login-form input[type="button"]:hover {
     border-radius: 5px;
     background: #02f2ff;
     color: #fff;

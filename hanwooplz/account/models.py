@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 
-# Create your models here.
-
 
 class UserProfile(AbstractUser):
     '''
@@ -24,4 +22,4 @@ class UserProfile(AbstractUser):
     introduction = models.TextField()
     github_link = models.URLField(blank=True,default='')
     linkedin_link = models.URLField(blank=True,default='')
-    user_img = models.ImageField(upload_to="user_img", default=None, null=True)
+    user_img = models.ImageField(upload_to='user_img', default=None, null=True)
