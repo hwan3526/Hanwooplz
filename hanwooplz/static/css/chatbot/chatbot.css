@@ -4,6 +4,7 @@
     bottom: 50px;
     width: 80px;
     height: 80px;
+    z-index: 600;
     padding: 28px;
     border-radius: 50%;
     background: #1e1e1e;
@@ -28,6 +29,7 @@
     right: 50px;
     bottom: 50px;
     width: 500px;
+    z-index: 999;
     margin: 0 auto;
     border: 2px solid #cccccc;
     border-radius: 10px;

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var commentText = document.getElementById("comment-input");
-    var submitButton = document.getElementById("comment-submit-button");
-    var csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
+    let commentText = document.getElementById("comment-input");
+    let submitButton = document.getElementById("comment-submit-button");
+    let csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
 
     // 댓글 불러오기
     function fetchComments() {
@@ -10,36 +10,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(function (comments) {
-                var commentList = document.querySelector(".comment-list");
+                let commentList = document.querySelector(".comment-list");
                 commentList.innerHTML = "";
                 comments.forEach(function (comment) {
-                    var commentBox = document.createElement("div");
+                    let commentBox = document.createElement("div");
                     commentBox.classList.add("comment-box");
 
                     // 댓글 작성자
-                    var commentAuthor = document.createElement("div");
+                    let commentAuthor = document.createElement("div");
                     commentAuthor.classList.add("comment-author");
                     commentAuthor.textContent = comment.author;
 
                     // 댓글 내용
-                    var commentContent = document.createElement("div");
+                    let commentContent = document.createElement("div");
                     commentContent.classList.add("comment-content");
                     commentContent.textContent = comment.content;
 
                     // 댓글 작성 시각
-                    var commentTimestamp = document.createElement("div");
+                    let commentTimestamp = document.createElement("div");
                     commentTimestamp.classList.add("comment-createdat");
 
-                    var date = new Date(comment.created_at);
-                    var formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+                    let date = new Date(comment.created_at);
+                    let formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
                     commentTimestamp.textContent = formattedDate;
 
                     // 댓글 좋아요 + 삭제
-                    var commentBottomWrapper = document.createElement("div");
+                    let commentBottomWrapper = document.createElement("div");
                     commentBottomWrapper.classList.add("comment-bottom-wrapper");
 
                     // 댓글 좋아요
-                    var commentLike = document.createElement("a");
+                    let commentLike = document.createElement("a");
                     commentLike.classList.add("comment-like");
                     commentLike.setAttribute("id", comment.id);
                     commentLike.textContent = "👍 " + comment.like.length;
@@ -56,11 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // 댓글 삭제
                     if (currentUser === comment.author) {
-                        var commentDelete = document.createElement("a");
+                        let commentDelete = document.createElement("a");
                         commentDelete.classList.add("comment-delete");
                         commentDelete.textContent = "삭제";
                         commentDelete.addEventListener("click", function () {
-                            var deleteConfirmed = confirm("댓글을 삭제하시겠습니까?");
+                            let deleteConfirmed = confirm("댓글을 삭제하시겠습니까?");
                             if (deleteConfirmed) {
                                 deleteComment(comment.id);
                             }
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 댓글 등록
     if (submitButton) {
         submitButton.addEventListener("click", function () {
-            var commentData = {
+            let commentData = {
                 content: commentText.value
             };
 
@@ -121,10 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 })
                 .then(function (data) {
-                    var message = data.message;
-                    var data = data.comment_data;
+                    let message = data.message;
+                    let data = data.comment_data;
 
-                    var commentLike = document.getElementById(`${commentId}`);
+                    let commentLike = document.getElementById(`${commentId}`);
                     commentLike.textContent = "👍 " + data.like.length;
 
                     if (message) {

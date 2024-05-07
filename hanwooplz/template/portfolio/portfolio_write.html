@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/portfolio_write.css' %}" />
+    <title>게시글 작성</title>
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <section class="main">
+        <form method="POST" id="post" 
+            action="{% if post_portfolio_id %}{% url 'portfolio:portfolio_edit' post_portfolio_id %}{% else %}{% url 'portfolio:portfolio_write' %}{% endif %}"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="write-box">
+                <input type="text" id="title" name="title" placeholder="제목" value="{{ title }}">
+                <p>프로젝트 기간: </p>
+                <input type="date" id="start_date" name="start_date" placeholder="시작일" value="{{ start_date }}">
+                <p>~</p>
+                <input type="date" id="end_date" name="end_date" placeholder="종료일" value="{{ end_date }}">
+                <input type="text" id="members" name="members" placeholder="참여인원수" value="{{ members }}">
+                <input type="text" id="tech_stack" name="tech_stack" placeholder="사용 기술 스택" value="{{ tech_stack }}">
+                <input type="text" id="ext_link" name="ext_link" placeholder="외부 링크" value="{{ ext_link }}">
+                <textarea id="content" name="content">{{ content }}</textarea>
+            </div>
+            <div class="save-button-wrapper">
+                {% if post_author_id == request.user.id %}
+                <input type="submit" class="delete-button" name="delete-button" value="삭제" />
+                <input type="submit" class="save-button" value="수정" />
+                {% else %}
+                <input type="submit" class="save-button" value="글 작성" />
+                {% endif %}
+            </div>
+        </form>
+    </section>
+</body>
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'js/tinymce.js' %}"></script>
+
+</html>

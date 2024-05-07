@@ -4,19 +4,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/posts_list.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    
-    <title>{{ board_name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/portfolio_list.css' %}" />
+    <title>포트폴리오</title>
 </head>
 
 <body>
-    {% include 'nav.html' %}
+    {% include "nav.html" %}
     <main>
         <div class="post-list">
-            <h2>{{ board_name }}</h2>
+            <h2>포트폴리오</h2>
             <div class="select-group">
                 <form method="GET" action="" id="search-form">
                     <span class="select-text">SELECT</span>
@@ -26,33 +23,16 @@
                             <option value="writer">작성자</option>
                         </select>
                     </span>
-                    <input type="text" name="search" class="select-textbox">
+                    <input type="text" class="select-textbox" name="search">
                     <input type="submit" class="button-black" value="검색" />
                 </form>
             </div>
             {% if post_lists %}
-            {% if not is_portfolio %}
-            {% if query %}
-            <div class="search-result">
-                <a class="refresh" href="/project">전체 목록 다시 불러오기</a>
-                <p class="search-type" style="display: none"></p>
-            </div>
-            {% endif %}
-            <div class="tab-container">
-                <ul class="tab-list">
-                    <li class="tab"><a href="?filter_option=all">전체</a></li>
-                    <li class="tab"><a href="?filter_option=recruiting">모집중</a></li>
-                </ul>
-            </div>
-            {% endif %}
             <div class="posts-grid">
                 {% for post in post_lists %}
-                <a class="post-tile" href="{% if is_portfolio %}{% url "portfolio:portfolio_read" post.post_portfolio %}{% else %}{% url "project:project_read" post.post_project %}{% endif %}">
+                <a class="post-tile" href="/portfolio/{{ post.post_portfolio }}">
                     <picture class="post-thumbnail">
-                        {% if not post.isRecruiting and post.post_project %}
-                        <p id="deprecated">{{ post.project_status }}</p>
-                        {% endif %}
-                        <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}" alt="썸네일">
+                        <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-author">{{ post.author }}</p>
@@ -61,113 +41,54 @@
                 {% endfor %}
             </div>
             <div class="page">
-            {% if page_obj.has_previous %}
-                {% if query %}
-                <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
-                {% else %}
-                <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
-                {% endif %}
-            {% else %}
-                <span><a href="javascript:void(0)" tabindex="-1">◀ 이전</a></span>
-            {% endif %}
-            {% for page_number in page_obj.paginator.page_range %}
-                {% if page_number == page_obj.number %}
+                {% if page_obj.has_previous %}
                     {% if query %}
-                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
+                    <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
                     {% else %}
-                    <span><a href="?page={{ page_number }}"><b>{{ page_number }}</b></a></span>
+                    <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
                     {% endif %}
                 {% else %}
-                    {% if query %}
-                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                    <span><a href="javascript:void(0)" tabindex="-1">◀ 이전</a></span>
+                {% endif %}
+                {% for page_number in page_obj.paginator.page_range %}
+                    {% if page_number == page_obj.number %}
+                        {% if query %}
+                        <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
+                        {% else %}
+                        <span><a href="?page={{ page_number }}"><b>{{ page_number }}</b></a></span>
+                        {% endif %}
                     {% else %}
-                    <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                        {% if query %}
+                        <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                        {% else %}
+                        <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-            {% endfor %}
-            {% if page_obj.has_next %}
-                {% if query %}
-                <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    {% if query %}
+                    <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
+                    {% else %}
+                    <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
+                    {% endif %}
                 {% else %}
-                <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
+                    <span><a href="javascript:void(0)" tabindex="-1" aria-disabled="true">다음 ▶</a></span>
                 {% endif %}
-            {% else %}
-                <span><a href="javascript:void(0)" tabindex="-1" aria-disabled="true">다음 ▶</a></span>
-            {% endif %}
             </div>
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
             {% endif %}
             <div class="button">
                 {% if user.is_authenticated %}
-                <button class="button-black" onclick="window.location.href = '{% if is_portfolio %}{% url "portfolio:portfolio_write" %}{% else %}{% url "project:project_write" %}{% endif %}'" style="cursor: pointer; transition: background-color 0.3s;">
-                    글쓰기
-                </button>
+                <button class="button-black" onclick="window.location.href = '/portfolio/write'">글쓰기</button>
                 {% else %}
-                <button class="button-black" onclick="alert('로그인이 필요합니다.')" style="cursor: pointer; transition: background-color 0.3s;">
-                    글쓰기
-                </button>
+                <button class="button-black" onclick="alert('로그인이 필요합니다.')">글쓰기</button>
                 {% endif %}
             </div>
         </div>
     </main>
-    {% include 'chatbot/chatbot.html' %}
+    {% include "chatbot/chatbot.html" %}
 </body>
-<script>
-    document.getElementById('search-select').addEventListener('change', function() {
-        var selectedOption = this.value;
-        var currentURL = window.location.href;
-        var newURL;
-        if (currentURL.includes('?')) {
-            var searchParams = new URLSearchParams(currentURL.split('?')[1]);
-            searchParams.set('search_type', selectedOption);
-            newURL = window.location.pathname + '?' + searchParams.toString();
-        } else {
-            newURL = window.location.pathname + '?search_type=' + selectedOption;
-        }
-        document.getElementById('search-form').action = newURL;
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        var searchType = new URLSearchParams(window.location.search).get('search_type');
-        var titleElement = document.querySelector('.post-list h2');
-        var board_name = '';
-        if (window.location.href.includes('project')) {
-            board_name = '프로젝트 팀원 모집';
-        } else if (window.location.href.includes('portfolio')) {
-            board_name = '포트폴리오';
-        }
-        if (searchType === 'title_content') {
-            titleElement.textContent = board_name + ': 제목+내용 검색결과';
-        } else if (searchType === 'writer') {
-            titleElement.textContent = board_name + ': 작성자 검색결과';
-        }
-    });
-</script>
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const filterOption = urlParams.get('filter_option');
-    const tabList = document.querySelectorAll('.tab');
+<script src="{% static 'js/portfolio/portfolioList.js' %}"></script>
 
-    tabList.forEach(tab => tab.classList.remove('active'));
-
-    if (filterOption === 'recruiting') {
-        document.querySelector('.tab a[href="?filter_option=recruiting"]').parentElement.classList.add('active');
-    } else {
-        document.querySelector('.tab a[href="?filter_option=all"]').parentElement.classList.add('active');
-    }
-
-    // 탭을 클릭할 때 현재 주소에 필터 옵션을 업데이트합니다.
-    const tabLinks = document.querySelectorAll('.tab a');
-
-    tabLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const tabFilterOption = link.getAttribute('href').split('=')[1];
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('filter_option', tabFilterOption);
-
-            window.location.href = currentUrl.toString();
-        });
-    });
-</script>
 </html>

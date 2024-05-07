@@ -10,8 +10,6 @@ from account.models import UserProfile
 from post.models import Post
 from portfolio.models import PostPortfolio
 
-# Create your views here.
-
 def portfolio_list(request, page_num=1):
     items_per_page = 9  # 페이지 당 항목 수
 
@@ -24,11 +22,11 @@ def portfolio_list(request, page_num=1):
     # 검색
     filtered_portfolios = post_portfolio
     if query:
-        if search_type == "title_content":
+        if search_type == 'title_content':
             filtered_portfolios = post_portfolio.filter(
                 Q(post__title__icontains=query) | Q(post__content__icontains=query)
             )
-        elif search_type == "writer":
+        elif search_type == 'writer':
             filtered_portfolios = post_portfolio.filter(
                 Q(post__author__username__icontains=query)
             )
@@ -37,10 +35,9 @@ def portfolio_list(request, page_num=1):
         search_type = ''
 
     # 페이지네이션
-    page = request.GET.get("page", page_num)
+    page = request.GET.get('page', page_num)
     paginator = Paginator(filtered_portfolios, items_per_page)
     page_obj = paginator.get_page(page)
-
 
     for portfolio in page_obj:
         post = Post.objects.get(id=portfolio.post_id)
@@ -56,19 +53,15 @@ def portfolio_list(request, page_num=1):
                 })
 
     context = {
-        "post_lists": portfolio_lists,
-        "board_name": "포트폴리오",
-        "is_portfolio": True,
-        "page_obj": page_obj,
-        "query": query,
-        "search_type": search_type,
+        'post_lists': portfolio_lists,
+        'page_obj': page_obj,
+        'query': query,
+        'search_type': search_type,
     }
 
     return render(request, 'portfolio/portfolio_list.html', context)
 
-
-
-def portfolio(request, post_portfolio_id=None):
+def portfolio_read(request, post_portfolio_id=None):
     if post_portfolio_id:
         post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
         post = get_object_or_404(Post, id=post_portfolio.post_id)
@@ -87,13 +80,13 @@ def portfolio(request, post_portfolio_id=None):
             'post_portfolio_id' : post_portfolio_id,
             'post_id': post.id,
         }
-        return render(request, 'portfolio.html', context)
+        return render(request, 'portfolio/portfolio_read.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
         return redirect('hanwooplz_app:portfolio_list')
 
 @login_required(login_url='login')
-def write_portfolio(request, post_portfolio_id=None):
+def portfolio_write(request, post_portfolio_id=None):
     if post_portfolio_id:
         post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
         post = get_object_or_404(Post, id=post_portfolio.post_id)
@@ -104,7 +97,7 @@ def write_portfolio(request, post_portfolio_id=None):
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('hanwooplz_app:portfolio_list')
+            return redirect('portfolio:portfolio_list')
         
         request.POST._mutable = True
         request.POST['tech_stack'] = request.POST.get('tech_stack').split()
@@ -124,7 +117,7 @@ def write_portfolio(request, post_portfolio_id=None):
                 post.save()
                 post_portfolio.save()
 
-            return redirect('hanwooplz_app:portfolio', post_portfolio_id)
+            return redirect('portfolio:portfolio_read', post_portfolio_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -136,7 +129,7 @@ def write_portfolio(request, post_portfolio_id=None):
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_portfolio.html', context)
+            return render(request, 'portfolio/portfolio_write.html', context)
     else:
         if post_portfolio_id:
             if request.user.id == post.author_id:
@@ -153,9 +146,9 @@ def write_portfolio(request, post_portfolio_id=None):
                     'content': post.content,
                     'post_author_id': post.author_id,
                 }
-                return render(request, 'write_portfolio.html', context)
+                return render(request, 'portfolio/portfolio_write.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:portfolio', post_portfolio_id)
+                return redirect('portfolio:portfolio_read', post_portfolio_id)
         else:
-            return render(request, 'write_portfolio.html')
+            return render(request, 'portfolio/portfolio_write.html')

@@ -1,24 +1,24 @@
-textarea{
-  resize: none;
-  height: 500px;
-  width: 100%;
-  border: none;
-}
-
 body{
   background-color: #f8f9fa;
 }
 
+textarea{
+  width: 100%;
+  height: 500px;
+  border: none;
+  resize: none;
+}
+
 .main {
+  display: flex;
+  justify-content: center;
   position: relative;
   top: 70px;
-  display: flex;
   padding-top: 30px;
-  justify-content: center;
   margin-bottom: 400px;
 }
 
-.main > form {
+.main form {
   display: block;
   flex-direction: row; 
   gap: 20px;
@@ -27,46 +27,45 @@ body{
 .write-box input {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  border: none;
-
   width: 740px;
   padding: 11px 16px;
-  outline: none;
   margin-bottom: 18px;
+  border: none;
+  gap: 10px;
+  outline: none;
 }
 
 .save-button-wrapper {
   display: flex;
+  justify-content: right;
   width: 100%;
   height: 25px;
-  justify-content: right;
   margin-top: 5px;
 }
 
-.temp-save-button {
-  appearance: none;
+.delete-button {
   display: flex;
+  justify-content: center;
   width: 100px;
   height: 25px;
+  margin-right: 5px;
   border: 1px solid #1e1e1e;
   border-radius: 3px;
-  margin-right: 5px;
   background-color: #f8f9fa;
-  justify-content: center;
   color: #1e1e1e;
   cursor: pointer;
+  appearance: none;
 }
 
 .save-button {
-  appearance: none;
   display: flex;
+  justify-content: center;
   width: 100px;
   height: 25px;
   border: 1px solid #1e1e1e;
   border-radius: 3px;
   background-color: #1e1e1e;
-  justify-content: center;
   color: #f9f8f4;
   cursor: pointer;
+  appearance: none;
 }
