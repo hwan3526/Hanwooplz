@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/project_read.css' %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="main-container">
+        <main>
+            <div class="post-container">
+                <picture>
+                    {% if project_status != 1 %}
+                    <p id="deprecated">{% if project_status == 2 %}모집 완료{% else %}모집 중단{% endif %}</p>
+                    {% endif %}
+                    <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}">
+                </picture>
+                <div class="title-box">
+                    <h3 class="title">{{ title }}</h3>
+                    {% if author_id == request.user.id %}
+                    <form id="status-form" method="POST">
+                        {% csrf_token %}
+                        <select id="status-select" name="status">
+                            <option value="1">모집중</option>
+                            <option value="2">모집완료</option>
+                            <option value="0">모집중단</option>
+                        </select>
+                    </form>
+                    {% else %}
+                    {% if project_status == 1 %}
+                    <p class="project-status">모집중</p>
+                    {% else %}
+                    <p class="project-status">{% if project_status == 0 %}모집 중단{% else %}모집 완료{% endif %}</p>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">프로젝트 기간</div>
+                    <div class="info-content">{{ start_date }}~{{ end_date }}</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-title">현재 참여인원</div>
+                    <div class="info-content">{{ members }} 명 / {{ target_members }} 명</div>
+                </div>
+                <div class="tech-stack-conatiner">
+                    {% for tech_stack in tech_stacks %}
+                        <div class="tech-stack">#{{ tech_stack }} </div>
+                    {% endfor %}
+                </div>
+                <div class="info-box">
+                    <div class="info-title">외부 링크</div>
+                    <div class="info-content"><a href="{{ ext_link }}">{{ ext_link }}</a></div>
+                </div>
+                <div class="content-box">
+                    <div class="content-title">내용</div>
+                    <div class="content">{{ content | safe }}</div>
+                </div>
+                <div class="subsidiary">
+                    <div class="card">
+                        작성자: <a href="/myinfo/{{ author_id }}"><b>{{ author }}</b> 님</a>
+                        <p>작성 일시: {{ created_at }}</p>
+                        {% if user.is_authenticated and author_id != request.user.id %}
+                        <button onclick="window.location.href = '/chat/0/{{ author_id }}'">채팅하기</button>
+                        {% elif not user.is_authenticated %}
+                        <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
+                        {% endif %}
+                        {% if author_id != request.user.id and project_status == 1 %}
+                        {% csrf_token %}
+                        <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="button_list_edit">
+                {% if author_id == request.user.id %}
+                <button class="button-black" onclick="window.location.href = '/project/write/{{ post_project_id }}'">수정하기</button>
+                {% endif %}
+                <button class="button-black" onclick="window.location.href = '/project'">목록으로</button>
+            </div>
+            {% include "comment/comment.html" %}
+        </main>
+    </div>
+    {% include "chatbot/chatbot.html" %}
+</body>
+<script>
+    let postId = "{{ post_id }}"
+    let currentUser = "{{ request.user }}"
+    let projectStatus = "{{ project_status }}"
+    let projectId = "{{ post_project_id }}"
+</script>
+<script src="{% static 'js/project/projectRead.js' %}"></script>
+<script src="{% static 'js/comment/comment.js' %}"></script>
+<script src="{% static 'js/project/updateStatus.js' %}"></script>
+</html>

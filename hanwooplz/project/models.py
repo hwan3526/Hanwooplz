@@ -3,8 +3,6 @@ from django.db import models
 from account.models import UserProfile
 from post.models import PostPnP
 
-# Create your models here.
-
 
 class PostProject(PostPnP):
     status = models.IntegerField(default=1)
