@@ -4,19 +4,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/posts_list.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_list.css' %}" />
     <title>질의응답</title>
 </head>
 
 <body>
-    {% include 'nav.html' %}
-    <article style="padding: 100px;">
-        <div class="posts-list">
+    {% include "nav.html" %}
+    <article>
+        <div class="post-list">
             <h2>질의응답</h2>
-            <div class="aside"></div>
             <div class="select-group">
                 <form method="GET" action="" id="search-form">
                     <span class="select-text">SELECT</span>
@@ -26,8 +23,8 @@
                             <option value="writer">작성자</option>
                         </select>
                     </span>
-                    <input type="text" name="search" class="select-textbox">
-                    <input type="submit" class="button-black" value="검색" />
+                    <input type="text" class="select-textbox" name="search">
+                    <input type="submit" class="button-black" value="검색">
                 </form>
             </div>
             {% if post_lists %}
@@ -40,18 +37,17 @@
                         <th>작성 일시</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     {% for post in post_lists %}
                     <tr>
                         <td>{{ post.post_question }}</td>
                         <td>
-                            <a href="{% url 'qna:question_read' post.post_question %}">
+                            <a href="/qna/{{ post.post_question }}">
                                 {{ post.title }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'account:myinfo' post.author_id %}">
+                            <a href="/myinfo/{{ post.author_id }}">
                                 {{ post.author }}
                             </a>
                         </td>
@@ -60,7 +56,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-
             <div class="page">
             {% if page_obj.has_previous %}
                 {% if query %}
@@ -101,41 +96,15 @@
             {% endif %}
             <div class="button">
                 {% if user.is_authenticated %}
-                <button class="button-black" onclick="window.location.href = '{% url "qna:question_write" %}'" style="cursor: pointer; transition: background-color 0.3s;">
-                    글쓰기
-                </button>
+                <button class="button-black" onclick="window.location.href = '/qna/write/question'">글쓰기</button>
                 {% else %}
-                <button class="button-black" onclick="alert('로그인이 필요합니다.')" style="cursor: pointer; transition: background-color 0.3s;">
-                    글쓰기
-                </button>
+                <button class="button-black" onclick="alert('로그인이 필요합니다.')">글쓰기</button>
                 {% endif %}
             </div>
         </div>
     </article>
-    {% include 'chatbot/chatbot.html' %}
+    {% include "chatbot/chatbot.html" %}
 </body>
-<script>
-    document.getElementById('search-select').addEventListener('change', function() {
-        var selectedOption = this.value;
-        var currentURL = window.location.href;
-        var newURL;
-        if (currentURL.includes('?')) {
-            var searchParams = new URLSearchParams(currentURL.split('?')[1]);
-            searchParams.set('search_type', selectedOption);
-            newURL = window.location.pathname + '?' + searchParams.toString();
-        } else {
-            newURL = window.location.pathname + '?search_type=' + selectedOption;
-        }
-        document.getElementById('search-form').action = newURL;
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        var searchType = new URLSearchParams(window.location.search).get('search_type');
-        var titleElement = document.querySelector('.posts-list h2');
-        if (searchType === 'title_content') {
-            titleElement.textContent = '질의응답: 제목+내용 검색결과';
-        } else if (searchType === 'writer') {
-            titleElement.textContent = '질의응답: 작성자 검색결과';
-        }
-    });
-</script>
+<script src="{% static 'js/qna/qnaList.js' %}"></script>
+
 </html>

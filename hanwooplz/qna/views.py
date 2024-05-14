@@ -10,9 +10,7 @@ from account.models import UserProfile
 from post.models import Post
 from qna.models import PostQuestion, PostAnswer, AnswerLike
 
-# Create your views here.
-
-def question_list(request, page_num=1):
+def qna_list(request, page_num=1):
     items_per_page = 10  # 페이지 당 항목 수
 
     post_question = PostQuestion.objects.order_by('-id')
@@ -24,11 +22,11 @@ def question_list(request, page_num=1):
     # 검색
     filtered_questions = post_question
     if query:
-        if search_type == "title_content":
+        if search_type == 'title_content':
             filtered_questions = post_question.filter(
                 Q(post__title__icontains=query) | Q(post__content__icontains=query)
             )
-        elif search_type == "writer":
+        elif search_type == 'writer':
             filtered_questions = post_question.filter(
                 Q(post__author__username__icontains=query)
             )
@@ -37,7 +35,7 @@ def question_list(request, page_num=1):
         search_type = ''
 
     # 페이지네이션
-    page = request.GET.get("page", page_num)
+    page = request.GET.get('page', page_num)
     paginator = Paginator(filtered_questions, items_per_page)
     page_obj = paginator.get_page(page)
 
@@ -55,16 +53,15 @@ def question_list(request, page_num=1):
                 })
 
     context = {
-        "post_lists": question_lists,
-        "page_obj": page_obj,
-        "query": query,
-        "search_type": search_type,
+        'post_lists': question_lists,
+        'page_obj': page_obj,
+        'query': query,
+        'search_type': search_type,
     }
 
-    return render(request, 'qna/question_list.html', context)
+    return render(request, 'qna/qna_list.html', context)
 
-
-def question(request, post_question_id=None):
+def qna_read(request, post_question_id=None):
     if post_question_id:
         post_question = get_object_or_404(PostQuestion, id=post_question_id)
         post = get_object_or_404(Post, id=post_question.post_id)
@@ -83,9 +80,9 @@ def question(request, post_question_id=None):
             answers = []
             answer_post_id_list = []
             for i in range(len(post_answer)):
-                likes = AnswerLike.objects.filter(answer=post_answer[i]["id"]).count()
-                answers.append({**post_answer[i],**post_[i],**author_[i],"likes": likes})
-                answer_post_id_list.append(post_answer[i]["post_id"])
+                likes = AnswerLike.objects.filter(answer=post_answer[i]['id']).count()
+                answers.append({**post_answer[i],**post_[i],**author_[i],'likes': likes})
+                answer_post_id_list.append(post_answer[i]['post_id'])
             answered = True if request.user.id in post_.values_list('author_id', flat=True) else False
         else:
             answers = []
@@ -106,13 +103,13 @@ def question(request, post_question_id=None):
             'answer_post_id_list': answer_post_id_list,
             'answered': answered,
         }
-        return render(request, 'qna/question.html', context)
+        return render(request, 'qna/qna_read.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('qna:question_list')
+        return redirect('qna:qna_list')
 
 @login_required(login_url='login')
-def write_question(request, post_question_id=None):
+def qna_write_question(request, post_question_id=None):
     if post_question_id:
         post_question = get_object_or_404(PostQuestion, id=post_question_id)
         post = get_object_or_404(Post, id=post_question.post_id)
@@ -123,7 +120,7 @@ def write_question(request, post_question_id=None):
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('qna:question_list')
+            return redirect('qna:qna_list')
         
         request.POST._mutable = True
         request.POST['keyword'] = request.POST.get('keyword').split()
@@ -143,7 +140,7 @@ def write_question(request, post_question_id=None):
                 post.save()
                 post_question.save()
 
-            return redirect('qna:question_read', post_question_id)
+            return redirect('qna:qna_read', post_question_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -165,12 +162,12 @@ def write_question(request, post_question_id=None):
                 return render(request, 'qna/write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('qna:question_read', post_question_id)
+                return redirect('qna:qna_read', post_question_id)
         else:
             return render(request, 'qna/write_question.html')
 
 @login_required(login_url='login')
-def write_answer(request, post_question_id, post_answer_id=None):
+def qna_write_answer(request, post_question_id, post_answer_id=None):
     if post_question_id:
         post_question = get_object_or_404(PostQuestion, id=post_question_id)
         post_ = get_object_or_404(Post, id=post_question.post_id)
@@ -183,12 +180,12 @@ def write_answer(request, post_question_id, post_answer_id=None):
             post = Post()
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('qna:question_list')
+        return redirect('qna:qna_list')
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('qna:question_read', post_question_id)
+            return redirect('qna:qna_read', post_question_id)
         if 'temp-save-button' in request.POST:
             messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
             context={
@@ -219,7 +216,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 post.save()
                 post_answer.save()
 
-            return redirect('qna:question_read', post_question_id)
+            return redirect('qna:qna_read', post_question_id)
         else:
             messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -251,7 +248,7 @@ def write_answer(request, post_question_id, post_answer_id=None):
                 return render(request, 'qna/write_answer.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('qna:question_read', post_question_id)
+                return redirect('qna:qna_read', post_question_id)
         else:
             context = {
                     'title_question': post_.title,
@@ -281,5 +278,5 @@ def like(request, post_question_id, answer_id=None):
             message = ''
 
         post.save()
-        return redirect('qna:question_read', post_question_id)
-    return redirect('qna:question_read', post_question_id)
+        return redirect('qna:qna_read', post_question_id)
+    return redirect('qna:qna_read', post_question_id)

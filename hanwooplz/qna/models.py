@@ -4,16 +4,14 @@ from django.contrib.postgres.fields import ArrayField
 from account.models import UserProfile
 from post.models import PostQnA
 
-# Create your models here.
-
 
 class PostQuestion(PostQnA):
     keyword = ArrayField(models.CharField(max_length=20))
-    like = models.ManyToManyField(UserProfile, through="QuestionLike")
+    like = models.ManyToManyField(UserProfile, through='QuestionLike')
 
 class PostAnswer(PostQnA):
     question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
-    like = models.ManyToManyField(UserProfile, through="AnswerLike")
+    like = models.ManyToManyField(UserProfile, through='AnswerLike')
 
 class QuestionLike(models.Model):
     question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
