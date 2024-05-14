@@ -14,13 +14,11 @@ searchSelect.addEventListener('change', function () {
     document.getElementById('search-form').action = newURL;
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    let searchType = new URLSearchParams(window.location.search).get('search_type');
-    let titleElement = document.querySelector('.post-list h2');
+let searchType = new URLSearchParams(window.location.search).get('search_type');
+let titleElement = document.querySelector('.post-list h2');
 
-    if (searchType === 'title_content') {
-        titleElement.textContent = '포트폴리오: 제목+내용 검색결과';
-    } else if (searchType === 'writer') {
-        titleElement.textContent = '포트폴리오: 작성자 검색결과';
-    }
-});
+if (searchType === 'title_content') {
+    titleElement.textContent = '포트폴리오: 제목+내용 검색결과';
+} else if (searchType === 'writer') {
+    titleElement.textContent = '포트폴리오: 작성자 검색결과';
+}

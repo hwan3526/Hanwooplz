@@ -14,8 +14,7 @@ function type() {
         typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
         charIndex++;
         setTimeout(type, typingDelay);
-    }
-    else {
+    } else {
         cursorSpan.classList.remove('typing');
         setTimeout(erase, newTextDelay);
     }
@@ -27,8 +26,7 @@ function erase() {
         typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
         charIndex--;
         setTimeout(erase, erasingDelay);
-    }
-    else {
+    } else {
         cursorSpan.classList.remove('typing');
         textArrayIndex++;
         if (textArrayIndex >= textArray.length) textArrayIndex = 0;
@@ -36,9 +34,9 @@ function erase() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (textArray.length) setTimeout(type, newTextDelay + 250);
-});
+if (textArray.length) {
+    setTimeout(type, newTextDelay + 250);
+}
 
 jQuery(document).ready(function () {
     jQuery.get('/portfolio', function (data) {

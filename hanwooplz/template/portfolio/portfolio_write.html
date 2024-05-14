@@ -12,7 +12,7 @@
 <body>
     {% include "nav.html" %}
     <section class="main">
-        <form method="POST" id="post" 
+        <form method="POST" id="post"
             action="{% if post_portfolio_id %}{% url 'portfolio:portfolio_edit' post_portfolio_id %}{% else %}{% url 'portfolio:portfolio_write' %}{% endif %}"
             enctype="multipart/form-data">
             {% csrf_token %}
@@ -29,10 +29,10 @@
             </div>
             <div class="save-button-wrapper">
                 {% if post_author_id == request.user.id %}
-                <input type="submit" class="delete-button" name="delete-button" value="삭제" />
-                <input type="submit" class="save-button" value="수정" />
+                <input type="submit" class="delete-button" name="delete-button" value="삭제">
+                <input type="submit" class="save-button" value="수정">
                 {% else %}
-                <input type="submit" class="save-button" value="글 작성" />
+                <input type="submit" class="save-button" value="글 작성">
                 {% endif %}
             </div>
         </form>

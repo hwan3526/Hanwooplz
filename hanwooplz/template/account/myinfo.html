@@ -25,17 +25,13 @@
                     <div class="profile-pic"><img src="{% static 'img/basicuser.png' %}">
                     {% endif %}
                     {% if user_id == request.user.id %}
-                    <input type="submit" value="프로필 수정" onclick="window.location.href='{% url "account:edit_profile" %}';">
+                    <input type="submit" value="프로필 수정" onclick="window.location.href='/edit-profile';">
                     {% endif %}
                     </div>
                     {% if user.is_authenticated and user_id != request.user.id %}
-                    <button onclick="window.location.href='{% url "chat:chat" 0 user_id %}';">
-                        채팅하기
-                    </button>
+                    <button onclick="window.location.href='/chat/0/{{ user_id }}';">채팅하기</button>
                     {% elif not user.is_authenticated %}
-                    <button onclick="alert('로그인이 필요합니다.');">
-                        채팅하기
-                    </button>
+                    <button onclick="alert('로그인이 필요합니다.');">채팅하기</button>
                     {% endif %}
                 </div>
                 <div class="external-link-wrapper">
