@@ -4,8 +4,6 @@ from tinymce.models import HTMLField
 
 from account.models import UserProfile
 
-# Create your models here.
-
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -21,14 +19,12 @@ class PostPnP(models.Model):
     tech_stack = ArrayField(models.CharField(max_length=20))
     ext_link = models.URLField()
 
-
     class Meta:
         abstract = True
 
 
 class PostQnA(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
 
     class Meta:
         abstract = True

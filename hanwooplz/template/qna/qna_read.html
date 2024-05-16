@@ -84,11 +84,10 @@
     {% include "chatbot/chatbot.html" %}
 </body>
 <script>
-    let postId = '{{ post_id }}'
-    let currentUser = '{{ request.user }}'
-    let answerPostIdList = '{{ answer_post_id_list }}'
+    let postId = '{{ post_id }}';
+    let currentUser = '{{ request.user }}';
+    let answerPostIdList = '{{ answer_post_id_list }}';
 </script>
 <script src="{% static 'js/qna/qnaRead.js' %}"></script>
-<script src="{% static 'js/comment/comment.js' %}"></script>
-<script src="{% static 'js/comment/comment2.js' %}"></script>
+
 </html>

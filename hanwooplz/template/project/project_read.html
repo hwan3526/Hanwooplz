@@ -87,12 +87,12 @@
     {% include "chatbot/chatbot.html" %}
 </body>
 <script>
-    let postId = "{{ post_id }}"
-    let currentUser = "{{ request.user }}"
-    let projectStatus = "{{ project_status }}"
-    let projectId = "{{ post_project_id }}"
+    let postId = '{{ post_id }}';
+    let currentUser = '{{ request.user }}';
+    let projectStatus = '{{ project_status }}';
+    let projectId = '{{ post_project_id }}';
 </script>
 <script src="{% static 'js/project/projectRead.js' %}"></script>
-<script src="{% static 'js/comment/comment.js' %}"></script>
 <script src="{% static 'js/project/updateStatus.js' %}"></script>
+
 </html>

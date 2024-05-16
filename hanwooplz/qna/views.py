@@ -39,7 +39,6 @@ def qna_list(request, page_num=1):
     paginator = Paginator(filtered_questions, items_per_page)
     page_obj = paginator.get_page(page)
 
-
     for question in page_obj:
         post = Post.objects.get(id=question.post_id)
         author = UserProfile.objects.get(id=post.author_id)
