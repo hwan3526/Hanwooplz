@@ -111,6 +111,14 @@
     right: 15px;
 }
 
+p[sentTime]:hover::after {
+    position: absolute;
+    top: -3px;
+    color: gray;
+    font-size: 14px;
+    content: attr(sentTime);
+}
+
 #input-form {
     display: flex;
     align-items: center;
@@ -154,14 +162,6 @@ message-container {
 
 .emojionearea{
     width: 80px;
-}
-
-p[sentTime]:hover::after {
-    position: absolute;
-    top: -3px;
-    color: gray;
-    font-size: 14px;
-    content: attr(sentTime);
 }
 
 ::-webkit-scrollbar {

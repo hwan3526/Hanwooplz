@@ -3,14 +3,12 @@ from django.db import models
 from post.models import Post
 from account.models import UserProfile
 
-# Create your models here.
-
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comments_written")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='comments_written')
     content = models.TextField()
-    like = models.ManyToManyField(UserProfile, through="CommentLike")
+    like = models.ManyToManyField(UserProfile, through='CommentLike')
     created_at = models.DateTimeField(auto_now_add=True)
 
 

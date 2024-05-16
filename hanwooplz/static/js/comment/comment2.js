@@ -1,34 +1,36 @@
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.answer-container').forEach(container => {
+let answerContainer = document.querySelectorAll('.answer-container')
+
+if (answerContainer) {
+    answerContainer.forEach(container => {
         let answerId = container.getAttribute('data-answer-id');
         let showComments = container.querySelector('#unpack-comments');
-        let answerContainer = container.querySelector('.comment-container');
-        let commentText = answerContainer.querySelector('#comment-input');
-        let submitButton = answerContainer.querySelector('#comment-submit-button');
-        let csrfToken = answerContainer.querySelector('input[name=csrfmiddlewaretoken]').value;
-        let hidden = true;
+        let commentContainer = container.querySelector('.comment-container');
+        let commentText = commentContainer.querySelector('#comment-input');
+        let submitButton = commentContainer.querySelector('#comment-submit-button');
+        let csrfToken = commentContainer.querySelector('input[name=csrfmiddlewaretoken]').value;
+        let isHidden = true;
+
         // 댓글 펼치기
-        showComments.addEventListener('click', function(event) {
+        showComments.addEventListener('click', function (event) {
             event.preventDefault();
 
-            if (hidden) {
-                answerContainer.style.display = 'block';
-                hidden = false;
+            if (isHidden) {
+                commentContainer.style.display = 'block';
+                isHidden = false;
             } else {
-                answerContainer.style.display = 'none';
-                hidden = true;
+                commentContainer.style.display = 'none';
+                isHidden = true;
             }
-            
         })
 
         // 댓글 불러오기
-        function fetchComments() {
+        function fetchComment() {
             fetch(`/api/post/${answerId}/comments/`)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (comments) {
-                    let commentList = answerContainer.querySelector(`.comment-list`);
+                    let commentList = commentContainer.querySelector(`.comment-list`);
                     commentList.innerHTML = '';
                     comments.forEach(function (comment) {
                         let commentBox = document.createElement('div');
@@ -62,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         commentLike.setAttribute('id', comment.id);
                         commentLike.textContent = '👍 ' + comment.like.length;
                         commentLike.addEventListener('click', function () {
-                            upvoteComment(comment.id);
-                        })
+                            likeComment(comment.id);
+                        });
 
                         commentBottomWrapper.appendChild(commentLike);
                         commentBox.appendChild(commentAuthor);
@@ -85,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             })
                             commentBottomWrapper.appendChild(commentDelete);
                         }
-
                     });
                 })
                 .catch(function (error) {
@@ -94,34 +95,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // 댓글 등록
-        if (submitButton) {
-            submitButton.addEventListener('click', function () {
-                let commentData = {
-                    content: commentText.value
-                };
+        submitButton.addEventListener('click', function () {
+            let commentData = {
+                content: commentText.value
+            };
 
-                fetch(`/api/post/${answerId}/comments/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken,
-                    },
-                    body: JSON.stringify(commentData),
-                })
-                    .then(function (response) {
-                        if (response.status === 201) {
-                            commentText.value = '';
-                            fetchComments();
-                        } else {
-                            alert('댓글 작성에 실패했습니다.');
-                        }
-                    });
-            });
-        }
-        
+            fetch(`/api/post/${answerId}/comments/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify(commentData),
+            })
+                .then(function (response) {
+                    if (response.status === 201) {
+                        commentText.value = '';
+                        fetchComment();
+                    } else {
+                        alert('댓글 작성에 실패했습니다.');
+                    }
+                });
+        });
 
         // 댓글 추천
-        function upvoteComment(commentId) {
+        function likeComment(commentId) {
             if (currentUser != 'AnonymousUser') {
                 fetch(`/api/comment/${commentId}/like/`, {
                     method: 'PATCH',
@@ -170,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (response.status === 204) {
                         commentText.value = '';
                         alert('댓글이 삭제되었습니다.')
-                        return fetchComments();
+                        return fetchComment();
                     } else if (response.status === 404) {
                         alert('존재하지 않는 댓글입니다.')
                     } else {
@@ -182,8 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
 
-        answerContainer.style.display = 'none';
-        fetchComments();
+        commentContainer.style.display = 'none';
+        fetchComment();
     })
-    
-});
+}

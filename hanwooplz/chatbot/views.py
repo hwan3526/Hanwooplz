@@ -5,8 +5,6 @@ from django.conf import settings
 from django.http import JsonResponse
 import openai
 
-# Create your views here.
-
 
 class ChatBot():
     def __init__(self, model='gpt-3.5-turbo'):
@@ -41,10 +39,10 @@ class ChatBot():
         self.messages.clear()
 
 def execute_chatbot(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         question = data.get('question')
         chatbot = ChatBot()
         response = chatbot.ask(question)
-        return JsonResponse({"response": response})
+        return JsonResponse({'response': response})
     return render(request, 'index/index.html')

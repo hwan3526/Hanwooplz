@@ -3,8 +3,6 @@ from django.db import models
 from post.models import Post
 from account.models import UserProfile
 
-# Create your models here.
-
 
 class Notifications(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name='user')

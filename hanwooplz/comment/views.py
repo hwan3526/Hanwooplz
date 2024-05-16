@@ -6,18 +6,16 @@ from rest_framework.response import Response
 from comment.models import Comment
 from comment.serializers import CommentSerializer
 
-# Create your views here.
-
 
 class CommentList(APIView):
     def get(self, request, post_id):
-        comments = Comment.objects.filter(post=post_id).order_by("created_at")
+        comments = Comment.objects.filter(post=post_id).order_by('created_at')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
     def post (self, request, post_id):
         comment_data = {
-            "content": request.data.get("content"),
+            'content': request.data.get('content'),
         }
         serializer = CommentSerializer(data=comment_data)
         if serializer.is_valid():
@@ -56,12 +54,12 @@ class CommentLikeView(generics.UpdateAPIView):
 
         if user in comment.like.all():
             comment.like.remove(user)
-            message = "좋아요가 취소되었습니다."
+            message = '좋아요가 취소되었습니다.'
         else:
             comment.like.add(user)
-            message = ""
+            message = ''
 
         comment.save()
         comment_data = self.get_serializer(comment).data
-        context = {"comment_data": comment_data, "message": message}
+        context = {'comment_data': comment_data, 'message': message}
         return Response(context, status=status.HTTP_200_OK)

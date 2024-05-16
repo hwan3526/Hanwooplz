@@ -10,8 +10,6 @@ from post.models import Post
 from project.models import PostProject, ProjectMembers
 from notification.models import Notifications
 
-# Create your views here.
-
 @login_required
 @ensure_csrf_cookie
 def send_application(request):
@@ -55,7 +53,7 @@ def mark_notifications_as_read(request):
 
                     # 현재 사용자가 해당 알림을 소유하고 있는지 확인
                     if request.user == notification.sender:
-                        notification.read_or_not = True  # 알림을 "읽음"으로 표시
+                        notification.read_or_not = True  # 알림을 '읽음'으로 표시
                         notification.save()  # 데이터베이스에 변경사항 저장
                     else:
                         return JsonResponse({'success': False, 'error': '권한이 없습니다.'})
@@ -89,9 +87,7 @@ def get_notifications(request):
                 'senderlink': f'/myinfo/{senderinfo.id}',
             })
 
-        context = {
-        "notifications_list": notifications_list,
-        }
+        context = {'notifications_list': notifications_list}
         return JsonResponse({'notifications': context})
     else:
         return JsonResponse({'notifications': []})
@@ -120,7 +116,6 @@ def accept_reject_notification(request):
                         if members >= projectinfo.target_members:
                             projectinfo.status = 2
                             projectinfo.save()
-                        
 
                     elif result == '거절':
                         notification.accept_or_not = False
