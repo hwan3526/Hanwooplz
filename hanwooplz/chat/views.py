@@ -7,16 +7,15 @@ from django.db.models import Q
 from account.models import UserProfile
 from chat.models import ChatRoom, ChatMessages
 
-# Create your views here.
 
 def format_datetime(dt):
     today = timezone.now().date()
     if dt.date() == today:
-        return dt.strftime("오늘 %p %I:%M")
+        return dt.strftime('오늘 %p %I:%M')
     yesterday = today - timezone.timedelta(days=1)
     if dt.date() == yesterday:
-        return dt.strftime("어제 %p %I:%M")
-    return dt.strftime("%Y-%m-%d %p %I:%M")
+        return dt.strftime('어제 %p %I:%M')
+    return dt.strftime('%Y-%m-%d %p %I:%M')
 
 def get_rooms(request):
     chat_rooms = ChatRoom.objects.filter(Q(sender=request.user.id) | Q(receiver=request.user.id))
@@ -116,9 +115,9 @@ def current_chat(request, room_number, receiver_id):
             })
     userinfo = UserProfile.objects.get(id=receiver_id)
     context = {
-        "room_number" : room_number,
-        "chat_msgs" : formatted_chat_msgs,
-        "latest_messages" : get_rooms(request),
+        'room_number' : room_number,
+        'chat_msgs' : formatted_chat_msgs,
+        'latest_messages' : get_rooms(request),
         'first_unread_index': first_unread_index,
         'username' : userinfo.username,
         'user_id' : userinfo.id,
@@ -151,8 +150,8 @@ def chat_msg(request, room_number):
         return JsonResponse(response_data)
 
     context = {
-        "room_number" : room_number,
-        "chat_msgs" : chat_msgs
+        'room_number' : room_number,
+        'chat_msgs' : chat_msgs
     }
 
     return render(request, 'chat/chat.html', context)

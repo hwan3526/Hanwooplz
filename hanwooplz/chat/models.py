@@ -3,8 +3,6 @@ from django.db import models
 from account.models import UserProfile
 from post.models import Post
 
-# Create your models here.
-
 
 class ChatRoom(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
