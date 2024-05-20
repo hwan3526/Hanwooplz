@@ -38,37 +38,36 @@ if (textArray.length) {
     setTimeout(type, newTextDelay + 250);
 }
 
-jQuery(document).ready(function () {
-    jQuery.get('/portfolio', function (data) {
-        jQuery('#portfolio').html(data);
-        jQuery('#portfolio .navbar').remove();
-        jQuery('#portfolio .chatbot-container').remove();
-        jQuery('#portfolio .select-group').remove();
-        jQuery('#portfolio .page').remove();
-        jQuery('#portfolio .button-black').text('더보기');
-        jQuery('#portfolio .button-black').css('margin-top', '15px');
-        jQuery('#portfolio .button-black').attr('onclick', "window.location.href='/portfolio'");
-    });
+$.get('/portfolio', function (data) {
+    $('#portfolio').html(data);
+    let content = $('#portfolio .post-list').clone();
+    $('#portfolio').html(content);
+    $('#portfolio .select-group').remove();
+    $('#portfolio .page').remove();
+    $('#portfolio .button-black').text('더보기');
+    $('#portfolio .button-black').css('margin-top', '15px');
+    $('#portfolio .button-black').attr('onclick', "window.location.href='/portfolio'");
+});
 
-    jQuery.get('/project', function (data) {
-        jQuery('#project').html(data);
-        jQuery('#project .navbar').remove();
-        jQuery('#project .chatbot-container').remove();
-        jQuery('#project .select-group').remove();
-        jQuery('#project .page').remove();
-        jQuery('#project .button-black').text('더보기');
-        jQuery('#project .button-black').css('margin-top', '15px');
-        jQuery('#project .button-black').attr('onclick', "window.location.href='/project'");
-    });
+$.get('/project', function (data) {
+    $('#project').html(data);
+    let content = $('#project .post-list').clone();
+    $('#project').html(content);
+    $('#project .select-group').remove();
+    $('#project .tab-container').remove();
+    $('#project .page').remove();
+    $('#project .button-black').text('더보기');
+    $('#project .button-black').css('margin-top', '15px');
+    $('#project .button-black').attr('onclick', "window.location.href='/project'");
+});
 
-    jQuery.get('/qna', function (data) {
-        jQuery('#qna').html(data);
-        jQuery('#qna .navbar').remove();
-        jQuery('#qna .chatbot-container').remove();
-        jQuery('#qna .select-group').remove();
-        jQuery('#qna .page').remove();
-        jQuery('#qna .button-black').text('더보기');
-        jQuery('#qna .button-black').css('margin-top', '15px');
-        jQuery('#qna .button-black').attr('onclick', "window.location.href='/qna'");
-    });
+$.get('/qna', function (data) {
+    $('#qna').html(data);
+    let content = $('#qna .post-list').clone();
+    $('#qna').html(content);
+    $('#qna .select-group').remove();
+    $('#qna .page').remove();
+    $('#qna .button-black').text('더보기');
+    $('#qna .button-black').css('margin-top', '15px');
+    $('#qna .button-black').attr('onclick', "window.location.href='/qna'");
 });

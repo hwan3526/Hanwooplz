@@ -2,7 +2,6 @@
     padding: 0;
     margin: 0;
     font-family: consolas;
-    box-sizing: border-box;
 }
 
 body {
@@ -10,10 +9,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    height: 100vh;
     background: #000;
-    font: bold 14px/1.4 'Open Sans', arial, sans-serif;
+    font: bold 1vw 'Open Sans', arial, sans-serif;
+    user-select: none;
 }
 
 .wavy {

@@ -6,16 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/index/index.css' %}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/portfolio_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/project_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_list.css' %}" /> -->
     <title>저기압일땐 고기앞으로</title>
 </head>
 
 <body>
     {% include "nav.html" %}
     <main>
-        <section id="welcome-section">
-            <div class="container">
-                <p>Project is <span class="typed-text"></span><span class="cursor">&nbsp;</span></p>
-            </div>
+        <section id="welcome">
+            <p>Project is <span class="typed-text"></span><span class="cursor">&nbsp;</span></p>
         </section>
         <section id="members">
             <h1>About Hanwooplz team members</h1>
@@ -45,10 +46,16 @@
                     <p>변두현</p>
                 </a>
             </div>
-            <a href="https://github.com/hwan3526/hanwooplz" class="btn" target="_blank">
-                <span>Hanwooplz github</span>
-                <i class="fab fa-github"></i>
-            </a>
+            <div id="repo-grid">
+                <a href="https://github.com/Oreumi-2nd-Hanwooplz/Hanwooplz" class="repo-src btn" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <span>Oreumi-2nd-Hanwooplz/Hanwooplz</span>
+                </a>
+                <a href="https://github.com/hwan3526/hanwooplz" class="repo-refac btn" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <span>hwan3526/Hanwooplz</span>
+                </a>
+            </div>
         </section>
         <section id="projects">
             <h1>프로젝트</h1>
@@ -74,21 +81,16 @@
             <h1>기술스택</h1>
             <div class="marquee">
                 <ul class="marquee-content">
-                    <li><i class="fab fa-github"></i></li>
-                    <li><i class="fab fa-github"></i></li>
-                    <li><i class="fab fa-github"></i></li>
                     <li><i class="fab fa-html5"></i></li>
-                    <li><i class="fab fa-css3"></i></li>
+                    <li><i class="fab fa-css3-alt"></i></li>
                     <li><i class="fab fa-js"></i></li>
                     <li><i class="fab fa-python"></i></li>
-                    <li><i class="fab fa-chrome"></i></li>
-                    <li><i class="fab fa-google"></i></li>
-                    <li><i class="fab fa-node"></i></li>
-                    <li><i class="fab fa-android"></i></li>
+                    <li><img src="{% static 'img/marquee/django.png' %}"></li>
                     <li><i class="fab fa-aws"></i></li>
+                    <li><img src="{% static 'img/marquee/postgresql.png' %}"></li>
+                    <li><i class="fab fa-git-square"></i></li>
                     <li><i class="fab fa-github"></i></li>
-                    <li><i class="fab fa-html5"></i></li>
-                    <li><i class="fab fa-css3"></i></li>
+                    <li><i class="fab fa-docker"></i></li>
                 </ul>
             </div>
         </section>
@@ -96,8 +98,9 @@
         <section id="project" class="post-section"></section>
         <section id="qna" class="post-section"></section>
     </main>
-    {% include "chatbot/chatbot.html" %}
+    <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
+<script src="https://kit.fontawesome.com/9695a3f366.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="{% static 'js/index/index.js' %}"></script>
 
