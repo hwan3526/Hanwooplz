@@ -24,6 +24,7 @@ body {
     color: #000000;
     line-height: 1.4;
     font-family: 'Montserrat', sans-serif;
+    user-select: none;
 }
 
 section {
@@ -263,11 +264,11 @@ h1 {
 }
 
 .marquee-content {
-    padding-left: calc(var(--marquee-width) * 2);
     display: flex;
     list-style: none;
     justify-content: center;
     height: 100%;
+    padding-left: calc(var(--marquee-width) * 2);
     animation: scrolling var(--marquee-animation-duration) linear infinite;
 }
 

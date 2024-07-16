@@ -1,4 +1,3 @@
-const logo = document.getElementById('logo');
 const notificationButton = document.getElementById('notification-button');
 const notificationCount = document.getElementById('notification-count');
 const notificationContainer = document.getElementById('notification-container');
@@ -96,10 +95,6 @@ async function sendAcceptanceResult(notificationId, result) {
         console.error('결과 서버로 전송 중 오류가 발생했습니다.');
     }
 }
-
-logo.addEventListener('click', function () {
-    window.location.href = '/index';
-});
 
 document.addEventListener('DOMContentLoaded', async function () {
     updateNotificationCount();
