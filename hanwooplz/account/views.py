@@ -54,11 +54,15 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('account:login')  # You can change 'login' to the name of your login view.
+            username = form.get('username')
+            password = form.get('password1')
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('/index')
     else:
         form = CustomUserCreationForm()
-
-    return render(request, 'account/register.html', {'form': form})
+        return render(request, 'account/register.html', {'form': form})
 
 def find_id(request):
     if request.user.is_authenticated:
