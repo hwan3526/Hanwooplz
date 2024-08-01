@@ -87,34 +87,20 @@ def find_pw(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         username = request.POST.get('username')
-        user_model = get_user_model()
+        user = get_user_model().objects.filter(email=email, username=username).first()
 
-        try:
-            user = user_model.objects.get(email=email, username=username)
-        except user_model.DoesNotExist:
-            # 사용자를 찾을 수 없음
+        if user:
+            new_password = get_user_model().objects.make_random_password()
+
+            user.set_password(new_password)
+            user.save()
+
+            return render(request, 'account/found_pw.html', {'new_password': new_password})
+        else:
             return render(request, 'account/not_found.html')
-
-        # 새로운 임시 비밀번호 생성
-        new_password = user_model.objects.make_random_password()
-
-        # 비밀번호 업데이트
-        user.set_password(new_password)
-        user.save()
-
-        # 사용자에게 새로운 비밀번호 전달하는 방법 (이메일 등)
-
-        # 여기에서는 임시 비밀번호를 템플릿을 통해 보여줍니다.
-        context = {
-            'new_password': new_password,
-        }
-        return render(request, 'account/found_pw.html', context)
     else:
         return render(request, 'account/find_pw.html')
 
-def found_pw(request):
-    # Your code to render the password reset done page goes here
-    return render(request, 'account/found_pw.html')
 
 def myinfo(request, user_id):
     userinfo = UserProfile.objects.get(id=user_id)
