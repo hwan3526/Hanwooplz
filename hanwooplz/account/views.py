@@ -1,9 +1,9 @@
 from pyexpat.errors import messages
 
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
+from django.contrib.auth import authenticate, login, logout as log_out, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.views import View
 
 from account.forms import LoginForm, CustomUserCreationForm, UserProfileForm
@@ -16,31 +16,40 @@ from qna.models import PostQuestion
 
 class LoginView(View):
     def get(self, request):
-        form = LoginForm()
-        context = {'form': form}
-        return render(request, 'account/login.html', context)
+        if request.user.is_authenticated:
+            return redirect('/index')
+        else:
+            form = LoginForm()
+            return render(request, 'account/login.html', {'form': form})
 
     def post(self, request):
+        if request.user.is_authenticated:
+            return redirect('/index')
+
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
-            if user is not None:
+            if user:
                 login(request, user)
-                return redirect('/')  # Redirect to the main page
+                return redirect('/index')
             else:
-                # 로그인 실패 메시지를 추가하고 다시 로그인 페이지를 렌더링
                 messages.error(request, '로그인에 실패했습니다. 올바른 아이디와 비밀번호를 입력하세요.')
 
-        context = {'form': form}
-        return render(request, 'account/login.html', context)
+        return render(request, 'account/login.html', {'form': form})
 
-def log_out(request):
-    logout(request)
-    return redirect(reverse('account:login'))
+def logout(request):
+    if request.user.is_authenticated:
+        log_out(request)
+        return redirect('/login')
+    else:
+        return redirect('/index')
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('/index')
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -52,19 +61,25 @@ def register(request):
     return render(request, 'account/register.html', {'form': form})
 
 def find_id(request):
+    if request.user.is_authenticated:
+        return redirect('/index')
+
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
         user = get_user_model().objects.filter(full_name=name, email=email).first()
 
         if user:
-            return render(request, 'account/found_id.html', {'user_id': user.username})
+            return render(request, 'account/found_id.html', {'username': user.username})
         else:
             return render(request, 'account/not_found.html')
-
-    return render(request, 'account/find_id.html')
+    else:
+        return render(request, 'account/find_id.html')
 
 def find_pw(request):
+    if request.user.is_authenticated:
+        return redirect('/index')
+
     if request.method == 'POST':
         email = request.POST.get('email')
         username = request.POST.get('username')
@@ -148,20 +163,16 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
-            # Save the form data
             user_profile = form.save(commit=False)
             
-            # Handle user_img upload
             if 'user_img' in request.FILES:
                 user_img = request.FILES['user_img']
-                # Generate a unique filename, for example, based on the user's ID
                 filename = f'user_img_{user_profile.id}_{user_img.name}'
                 user_profile.user_img.save(filename, user_img)
             
             user_profile.save()
             
-            user_id = request.user.id
-            return redirect(reverse('account:myinfo', args=[user_id]))
+            return redirect('/@'+form.fields['username'])
     else:
         form = UserProfileForm(instance=request.user)
         form.fields['username'].widget.attrs['readonly'] = True
@@ -169,6 +180,7 @@ def edit_profile(request):
 
     return render(request, 'account/edit_profile.html', {'form': form})
 
+@login_required
 def change_password(request):
     if request.method == 'POST':
         password_change_form = PasswordChangeForm(request.user, request.POST)
