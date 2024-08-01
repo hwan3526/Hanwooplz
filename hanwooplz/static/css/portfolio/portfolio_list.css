@@ -65,7 +65,7 @@ a {
 }
 
 .post-tile:hover {
-    box-shadow: 0px 35px 77px -17px rgba(0, 0, 0, 0.64);
+    box-shadow: 0px 35px 77px -17px #000000a3;
     transform: scale(1.005);
 }
 
@@ -104,7 +104,7 @@ a {
 
 .no-results {
     margin: 20px 0;
-    color: #777;
+    color: #777777;
     font-size: 24px;
     text-align: center;
 }
@@ -122,7 +122,7 @@ a {
     height: 30px;
     border: 0px;
     border-radius: 5px;
-    background-color: rgb(46, 46, 46);
+    background-color: #2e2e2e;
     color: white;
     font: 12px 굴림;
     font-weight: bold;

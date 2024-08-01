@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 :root {
-    --primary: #ffffff;
     --marquee-width: 80vw;
     --marquee-height: 20vh;
     --marquee-elements: calc(10 - var(--marquee-elements-displayed));
@@ -20,11 +19,10 @@ html {
 }
 
 body {
-    background-color: var(--primary);
-    color: #000000;
+    background-color: white;
+    color: black;
     line-height: 1.4;
     font-family: 'Montserrat', sans-serif;
-    user-select: none;
 }
 
 section {
@@ -69,7 +67,7 @@ h1 {
     display: inline-block;
     width: 3px;
     margin-left: 0.1rem;
-    background-color: #000000;
+    background-color: black;
     animation: blink 1s infinite;
 }
 
@@ -82,7 +80,7 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #f5f5f5;
+    background-color: #f5f5f5;
     text-align: center;
 }
 
@@ -102,7 +100,7 @@ h1 {
     color: inherit;
     text-decoration: none;
     transition: transform 0.3s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px #00000033;
 }
 
 .member-tile img {
@@ -117,7 +115,7 @@ h1 {
     height: 3.2vw;
     margin: 0;
     border-radius: 0 0 10px 10px;
-    background: black;
+    background-color: black;
     color: white;
     font-size: 1vw;
     line-height: 3.2vw;
@@ -165,18 +163,17 @@ h1 {
     align-items: center;
     height: 4vw;
     border-radius: 10px;
-    background: black;
+    background-color: black;
     color: white;
     line-height: 4vw;
     text-decoration: none;
-    transition: background 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
     box-shadow: 0 0 10px black;
     gap: 0.3vw;
-    
 }
 
 .btn:hover {
-    background: #cd7f32;
+    background-color: #cd7f32;
 }
 
 .btn i {
@@ -200,7 +197,7 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #f5f5f5;
+    background-color: #f5f5f5;
     text-align: center;
 }
 
@@ -224,8 +221,8 @@ h1 {
     width: 15vw;
     padding: 1vw;
     border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    box-shadow: 0 0 10px #00000033;
     transition: transform 0.3s;
 }
 
@@ -258,8 +255,8 @@ h1 {
 .marquee {
     width: var(--marquee-width);
     height: var(--marquee-height);
-    background-color: #111;
-    color: #eee;
+    background-color: #111111;
+    color: #eeeeee;
     overflow: hidden;
 }
 
@@ -307,11 +304,11 @@ h1 {
 
 @keyframes blink {
     0% {
-        background-color: #ccc;
+        background-color: #cccccc;
     }
 
     49% {
-        background-color: #ccc;
+        background-color: #cccccc;
     }
 
     50% {
@@ -323,7 +320,7 @@ h1 {
     }
 
     100% {
-        background-color: #ccc;
+        background-color: #cccccc;
     }
 }
 

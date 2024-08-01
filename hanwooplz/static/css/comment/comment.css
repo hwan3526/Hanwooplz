@@ -6,8 +6,8 @@
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    background: #f7f7f7;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+    box-shadow: 0 0 5px #0000001a;
 }
 
 .comment-author {
@@ -16,7 +16,7 @@
 }
 
 .comment-content {
-    color: #333;
+    color: #333333;
 }
 
 .comment-createdat {
@@ -35,7 +35,7 @@
     border: none;
     border-radius: 4px;
     background-color: #3498db;
-    color: #fff;
+    color: white;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -50,15 +50,15 @@
     margin-right: 5px;
     border: none;
     border-radius: 4px;
-    background-color: #333;
-    color: #fff;
+    background-color: #333333;
+    color: white;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .comment-delete:hover {
-    background-color: #555;
+    background-color: #555555;
 }
 
 #comment-input {
@@ -80,7 +80,7 @@
     border: none;
     border-radius: 5px;
     background-color: #3498db;
-    color: #fff;
+    color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }

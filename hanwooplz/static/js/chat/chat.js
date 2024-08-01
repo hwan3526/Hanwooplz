@@ -236,11 +236,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     messageInput.addEventListener('input', function () {
         if (messageInput.value.trim() !== '') {
-            chatMessageSubmitBtn.style.backgroundColor = '#000';
-            chatMessageSubmitBtn.style.color = '#fff';
+            chatMessageSubmitBtn.style.backgroundColor = 'black';
+            chatMessageSubmitBtn.style.color = 'white';
         } else {
-            chatMessageSubmitBtn.style.backgroundColor = '#E1E1E1';
-            chatMessageSubmitBtn.style.color = '#000';
+            chatMessageSubmitBtn.style.backgroundColor = '#e1e1e1';
+            chatMessageSubmitBtn.style.color = 'black';
         }
     });
 });

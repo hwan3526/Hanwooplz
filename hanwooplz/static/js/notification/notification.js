@@ -191,7 +191,7 @@ notificationButton.addEventListener('click', async function (e) {
                 });
 
                 if (!notification.read_or_not) {
-                    listItem.style.backgroundColor = '#ccc';
+                    listItem.style.backgroundColor = '#cccccc';
                 }
 
                 incomingRequestContainer.appendChild(listItem);
@@ -211,7 +211,7 @@ notificationButton.addEventListener('click', async function (e) {
                 });
 
                 if (!notification.read_or_not) {
-                    listItem.style.backgroundColor = '#ccc';
+                    listItem.style.backgroundColor = '#cccccc';
                 }
 
                 responseMessageContainer.appendChild(listItem);
@@ -231,7 +231,7 @@ notificationButton.addEventListener('click', async function (e) {
                 });
 
                 if (!notification.read_or_not) {
-                    listItem.style.backgroundColor = '#ccc';
+                    listItem.style.backgroundColor = '#cccccc';
                 }
 
                 responseMessageContainer.appendChild(listItem);

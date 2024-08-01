@@ -54,7 +54,7 @@ a {
 
 .board-table th {
     padding: 5px;
-    background: #eee;
+    background-color: #eeeeee;
     border-top: 2px solid gray;
 }
 
@@ -75,7 +75,7 @@ a {
 
 .no-results {
     margin: 20px 0;
-    color: #777;
+    color: #777777;
     font-size: 24px;
     text-align: center;
 }
@@ -93,7 +93,7 @@ a {
     height: 30px;
     border: 0px;
     border-radius: 5px;
-    background-color: rgb(46, 46, 46);
+    background-color: #2e2e2e;
     color: white;
     font: 12px 굴림;
     font-weight: bold;

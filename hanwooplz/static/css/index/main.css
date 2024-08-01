@@ -10,20 +10,19 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #000;
+    background-color: black;
     font: bold 1vw 'Open Sans', arial, sans-serif;
-    user-select: none;
 }
 
 .wavy {
     position: relative;
-    -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+    -webkit-box-reflect: below -12px linear-gradient(transparent, #00000033);
 }
 
 .wavy span {
     display: inline-block;
     position: relative;
-    color: #fff;
+    color: white;
     font-size: 2em;
     animation: animate 1.5s ease-in-out infinite;
     text-transform: uppercase;
@@ -31,12 +30,15 @@ body {
 }
 
 @keyframes animate {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     20% {
         transform: translateY(-20px);
     }
+
     40% {
         transform: translateY(0px);
     }
