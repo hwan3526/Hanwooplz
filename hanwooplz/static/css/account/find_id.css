@@ -15,7 +15,7 @@ form {
     background-color: white;
     color: black;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px #00000033;
 }
 
 label {
@@ -25,31 +25,26 @@ label {
 
 input[type="email"],
 input[type="text"] {
-    width: 100%;
     padding: 10px;
     margin: 5px 0;
     border: none;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #0000001a;
     color: black;
     text-align: center;
 }
 
-button {
-    width: 100%;
+input[type="submit"] {
     padding: 10px 20px;
     margin-top: 50px;
-    margin-left: 8px;
     border: none;
     border-radius: 5px;
-    background: black;
+    background-color: black;
     color: white;
+    animation: scaleUp 0.5s ease-in-out;
     cursor: pointer;
 }
 
-button:hover {
-    border-radius: 5px;
-    background: #03e9f4;
-    color: #fff;
-    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+input[type="submit"]:hover {
+    background-color: #555555;
 }

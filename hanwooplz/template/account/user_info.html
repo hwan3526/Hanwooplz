@@ -1,0 +1,141 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/account/user_info.css' %}" />
+    <title>{{full_name}} 님의 정보</title>
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <main class="profile">
+        <div class="profile-info">
+            <div class="profile-left">
+                <div class="profile-pic-wrapper">
+                    {% if user_img %}
+                    <div class="profile-pic"><img src="{{ user_img.url }}">
+                    {% else %}
+                    <div class="profile-pic"><img src="{% static 'img/basicuser.png' %}">
+                    {% endif %}
+                    {% if user_id == request.user.id %}
+                    <a href="/edit-profile">프로필 수정</a>
+                    {% endif %}
+                    </div>
+                    {% if request.user.is_authenticated and user_id != request.user.id %}
+                    <a href="/chat">채팅하기</a>
+                    {% endif %}
+                </div>
+                <div class="external-link-wrapper">
+                    {% if github_link %}
+                    <div id="github-link" class="external-link">
+                        <a href="{{ github_link }}" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if linkedin_link %}
+                    <div id="linkedin-link" class="external-link">
+                        <a href="{{ linkedin_link }}" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-right">
+                <div class="profile-right-top">
+                    <h3 class="profile-username">{{ username }}</h3>
+                    <br>
+                    <h1 class="profile-fullname">{{ full_name }}</h1>
+                </div>
+                <div class="profile-right-bottom">
+                    <div class="profile-bio-job">
+                        <span class="profile-info-job">직무:{{ job }}</span>
+                        <br>
+                        <span class="profile-info-techstack">
+                            주요 기술스택:
+                            {% if tech_stack|length > 1 %}
+                            {{ tech_stack|join:", " }}
+                            {% else %}
+                            {{ tech_stack.0 }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="profile-bio-career">
+                        <span class="profile-info-career">
+                            {% if career == 0 %}
+                            경력: 신입
+                            {% else %}
+                            경력: {{ career }}년
+                            {% endif %}
+                        </span>
+                        <br>
+                        <span class="profile-info-career-detail">상세 경력:{{ career_detail }}</span>
+                        <br>
+                        <p class="profile-intro">
+                            한줄소개:{{ introduction }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-post">
+            <div class="profile-post-nav">
+                <div id="portfolio-tab" class="profile-post-block">Portfolio</div>
+                <div id="project-tab" class="profile-post-block">Projects</div>
+                <div id="qna-tab" class="profile-post-block">QnA</div>
+            </div>
+            <div id="portfolio-posts" class="profile-post-inner">
+                {% if portfolio_list %}
+                {% for portfolio in portfolio_list %}
+                <div class="grid-item">
+                    <a
+                        href="/portfolio/{{ portfolio.portfolio_id }}">
+                        <h2>{{ portfolio.title }}</h2>
+                    </a>
+                    <p>게시일:{{ portfolio.created_at }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>표시할 포트폴리오 게시물이 없습니다.</p>
+                {% endif %}
+            </div>
+            <div id="project-posts" class="profile-post-inner">
+                {% if project_list %}
+                {% for project in project_list %}
+                <div class="grid-item">
+                    <a
+                        href="/project/{{ project.project_id }}">
+                        <h2>{{ project.title }}</h2>
+                    </a>
+                    <p>게시일:{{ project.created_at }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>표시할 프로젝트 게시물이 없습니다.</p>
+                {% endif %}
+            </div>
+            <div id="qna-posts" class="profile-post-inner">
+                {% if qna_list %}
+                {% for qna in qna_list %}
+                <div class="grid-item">
+                    <a
+                        href="/qna/{{ qna.qna_id }}">
+                        <h2>{{ qna.title }}</h2>
+                    </a>
+                    <p>게시일:{{ qna.created_at }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>표시할 QnA 게시물이 없습니다.</p>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    {% include "chatbot/chatbot.html" %}
+</body>
+<script src="{% static 'js/account/userInfo.js' %}"></script>
+
+</html>

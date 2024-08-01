@@ -1,41 +1,30 @@
 :root {
-    --bc-secondary: #ffffff;
-    --bc-bright: #161617;
-    --white: #ffffff;
-    --black: #000000;
-    --blue-darker: #0C84B3;
+    --blue-darker: #0c84b3;
     --gray: #6c757d;
     --gray-extra-dark: #343a40;
     --heading: 3.4rem;
     --paragraph: 1.1rem;
-    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
 body {
     margin: 0;
-    font-family: var(--font-main);
-}
-
-h2 {
-    padding-bottom: 10px;
-    border-bottom: 1px solid gray;
+    font-family: Arial, sans-serif;
 }
 
 .profile {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 100%;
     min-height: 100vh;
     padding-bottom: 120px;
-    margin-top: 0;
-    background-color: var(--bc-secondary);
+    margin-top: 64px;
+    background-color: white;
     transition: all .25s ease-in-out;
 }
 
-.profile-top {
+.profile-info {
     display: grid;
     position: relative;
     width: 60%;
@@ -55,14 +44,14 @@ h2 {
     height: 14em;
 }
 
-.profile-pic-wrapper button {
+.profile-pic-wrapper>a {
     display: block;
     padding: 6px 12px;
     margin: 0 auto;
     border: none;
     border-radius: 4px;
     background-color: #0077b5;
-    color: #fff;
+    color: white;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -83,7 +72,7 @@ h2 {
 }
 
 .profile-pic:hover {
-    border-color: var(--black);
+    border-color: black;
 }
 
 .profile-pic img {
@@ -92,21 +81,23 @@ h2 {
     object-fit: cover;
 }
 
-.profile-pic input[type="submit"] {
+.profile-pic a {
     display: block;
     width: 100%;
     padding: 10px 20px 20px 20px;
     margin-bottom: 25px;
     border: none;
     border-radius: 5px;
-    background: var(--black);
+    background-color: black;
     color: white;
+    text-decoration: none;
+    text-align: center;
     cursor: pointer;
 }
 
-.profile-pic input[type="submit"]:hover {
-    background: var(--white);
-    color: var(--black);
+.profile-pic a:hover {
+    background-color: white;
+    color: black;
 }
 
 .external-link-wrapper {
@@ -125,10 +116,10 @@ h2 {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: white;
     text-align: center;
     transition: 0.6s;
-    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 4px #00000080;
     transform: translate(0);
 }
 
@@ -137,22 +128,22 @@ h2 {
 }
 
 .external-link i {
-    color: #000;
+    color: black;
     font-size: 30px;
     line-height: 60px;
     transition: 0.3s;
 }
 
 .external-link i:hover {
-    color: #fff;
+    color: white;
 }
 
 #github-link a:hover {
-    background-color: rgba(0, 0, 0, 0.829);
+    background-color: #000000d3;
 }
 
 #linkedin-link a:hover {
-    background-color: #E4405F;
+    background-color: #e4405f;
 }
 
 .profile-right {
@@ -160,11 +151,10 @@ h2 {
     justify-content: center;
     height: 250px;
     padding: 20px;
-    margin: 20px 0;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: white;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px #0000001a;
     overflow-y: scroll;
 }
 
@@ -175,15 +165,14 @@ h2 {
 
 .profile-username {
     margin: 0;
-    color: var(--black);
+    color: black;
     font-size: 24px;
     transition: color .25s ease-in-out;
 }
 
 .profile-fullname {
     margin: 0;
-    margin-bottom: 10px;
-    color: var(--black);
+    color: black;
     font-size: 24px;
     transition: color .25s ease-in-out;
 }
@@ -191,28 +180,16 @@ h2 {
 .profile-right-bottom {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.profile-bio-wrapper {
-    display: grid;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 0 .75em 0 0;
-    margin-top: 10px;
     text-align: center;
 }
 
 .profile-bio-job {
     display: grid;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -222,37 +199,35 @@ h2 {
 }
 
 .profile-info-techstack {
-    margin-top: 10px;
     color: #ff0000;
     font-size: 16px;
 }
 
 .profile-bio-career {
-    margin-bottom: 10px;
+    display: grid;
+    margin-top: 20px;
     text-align: center;
 }
 
 .profile-info-career {
-    color: #000000;
+    color: black;
     font-size: 16px;
 }
 
 .profile-info-career-detail {
-    color: #000000;
+    color: black;
     font-size: 16px;
 }
 
 .profile-intro {
     width: 100%;
-    max-height: 100px;
-    margin-top: 20px;
-    color: rgb(0, 0, 0);
+    color: black;
     font-size: 16px;
     line-height: 1.8rem;
     transition: color .25s ease-in-out;
 }
 
-.profile-page {
+.profile-post {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -260,36 +235,35 @@ h2 {
     width: 60%;
 }
 
-.profile-page-nav {
+.profile-post-nav {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    border-top: 2px solid var(--bc-bright);
-    border-bottom: 2px solid var(--bc-secondary);
+    border-top: 2px solid #161617;
+    border-bottom: 2px solid #eeeeee;
     transition: all .25s ease-in-out;
 }
 
-.profile-page-block {
-    color: var(--black);
-    transition: all .25s ease-in-out;
-}
-
-.profile-page-block a {
+.profile-post-block {
     display: block;
     padding: 1.2em 1.4em;
+    border-radius: 5px;
     color: var(--gray-extra-dark);
     font-size: var(--paragraph);
     cursor: pointer;
     transition: color .25s ease-in-out;
 }
 
-.profile-page-block a:hover {
-    color: var(--gray);
+.profile-post-block:hover {
+    background-color: #eeeeee;
 }
 
-.profile-page-inner {
-    display: grid;
+#portfolio-tab {
+    background-color: #dddddd;
+}
+
+.profile-post-inner {
     align-items: center;
     position: relative;
     width: 100%;
@@ -299,25 +273,39 @@ h2 {
     grid-row-gap: 1em;
 }
 
+.profile-post-inner h2 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+}
+
+#portfolio-posts {
+    display: grid;
+}
+
+#project-posts,
+#qna-posts {
+    display: none;
+}
+
 .grid-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd;
     border-radius: 5px;
     background-color: #f5f5f5;
 }
 
 .grid-item a {
     margin-bottom: 10px;
-    color: #333;
+    color: #333333;
     font-weight: bold;
     text-decoration: none;
 }
 
 .grid-item p {
     margin: 0;
-    color: #777;
+    color: #777777;
     font-size: 14px;
 }

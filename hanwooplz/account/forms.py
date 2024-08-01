@@ -6,8 +6,8 @@ User = get_user_model()
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='아이디')
-    password = forms.CharField(widget=forms.PasswordInput, label='비밀번호')
+    username = forms.CharField(label='아이디', label_suffix='')
+    password = forms.CharField(widget=forms.PasswordInput, label='비밀번호', label_suffix='')
 
     def clean(self):
         cleaned_data = super().clean()
@@ -49,6 +49,10 @@ class CustomUserCreationForm(UserCreationForm):
             'linkedin_link' : 'linkedin 링크',
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].help_text = ''
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -61,10 +65,6 @@ class CustomUserCreationForm(UserCreationForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError('비밀번호가 일치하지 않습니다.')
         return password2
-    
-    def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].help_text = ''
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

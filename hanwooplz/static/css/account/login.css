@@ -16,11 +16,12 @@ body {
     background-color: white;
     text-align: center;
     animation: slideIn 1s ease-in-out;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px #00000033;
 }
 
-.login-container h1 {
-    text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
+.login-container h1 a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .login-container p {
@@ -30,41 +31,41 @@ body {
 
 .login-form input[type="text"],
 .login-form input[type="password"] {
-    width: 100%;
     padding: 10px;
     margin: 5px 0;
     border: none;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #0000001a;
     color: black;
     text-align: center;
 }
 
 .login-form input[type="submit"] {
     position: relative;
-    width: 100%;
     padding: 10px 20px;
-    margin-left: 10px;
     border: none;
     border-radius: 5px;
     background-color: black;
     color: white;
+    text-decoration: none;
+    text-align: center;
     animation: scaleUp 0.5s ease-in-out;
     cursor: pointer;
 }
 
 .login-form input[type="submit"]:hover {
-    border-radius: 5px;
-    background: #02f2ff;
-    color: #fff;
-    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+    background-color: #555555;
 }
 
-.login-buttons {
+.account-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
-    margin-left: 20px;
+}
+
+.account-buttons a {
+    color: inherit;
+    text-decoration: none;
 }
 
 @keyframes slideIn {
