@@ -101,51 +101,59 @@ def find_pw(request):
     else:
         return render(request, 'account/find_pw.html')
 
+def user_info(request, username):
+    user_info = UserProfile.objects.filter(username=username).first()
+    if not user_info:
+        return redirect('/index')
+    posts = Post.objects.filter(author=user_info)
 
-def myinfo(request, user_id):
-    userinfo = UserProfile.objects.get(id=user_id)
-    user_posts = Post.objects.filter(author=userinfo)
+    portfolio_list = []
+    project_list = []
+    qna_list = []
 
-    selected_category = request.GET.get('category', 'postportfolio')
-
-    posts = []
-
-    for post in user_posts:
-        if selected_category == 'postportfolio':
-            category = 'portfolio'
-            postcategory = PostPortfolio.objects.filter(post=post).first()
-        elif selected_category == 'postproject':
-            category = 'project'
-            postcategory = PostProject.objects.filter(post=post).first()
-        elif selected_category == 'postquestion':
-            category = 'question'
-            postcategory = PostQuestion.objects.filter(post=post).first()
-
-        if postcategory:
-            posts.append({
+    for post in posts:
+        if post.category == 0:
+            portfolio = PostPortfolio.objects.filter(post=post).first()
+            portfolio_list.append({
                 'title': post.title,
                 'content': post.content,
                 'created_at': post.created_at,
-                'post_id': postcategory.id,
-                'category': category,
+                'portfolio_id': portfolio.id,
+            })
+        elif post.category == 1:
+            project = PostProject.objects.filter(post=post).first()
+            project_list.append({
+                'title': post.title,
+                'content': post.content,
+                'created_at': post.created_at,
+                'project_id': project.id,
+            })
+        elif post.category == 2:
+            qna = PostQuestion.objects.filter(post=post).first()
+            qna_list.append({
+                'title': post.title,
+                'content': post.content,
+                'created_at': post.created_at,
+                'qna_id': qna.id,
             })
 
     context = {
-        'user_id': userinfo.id,
-        'username': userinfo.username,
-        'full_name': userinfo.full_name,
-        'job': userinfo.job,
-        'tech_stack': userinfo.tech_stack,
-        'career': userinfo.career,
-        'career_detail': userinfo.career_detail,
-        'introduction': userinfo.introduction,
-        'posts': posts,
-        'github_link': userinfo.github_link,
-        'linkedin_link': userinfo.linkedin_link,
-        'selected_category': selected_category,
-        'user': userinfo,
+        'user_id': user_info.id,
+        'username': user_info.username,
+        'full_name': user_info.full_name,
+        'job': user_info.job,
+        'tech_stack': user_info.tech_stack,
+        'career': user_info.career,
+        'career_detail': user_info.career_detail,
+        'introduction': user_info.introduction,
+        'github_link': user_info.github_link,
+        'linkedin_link': user_info.linkedin_link,
+        'user_img': user_info.user_img,
+        'portfolio_list': portfolio_list,
+        'project_list': project_list,
+        'qna_list': qna_list,
     }
-    return render(request, 'account/myinfo.html', context)
+    return render(request, 'account/user_info.html', context)
 
 @login_required
 def edit_profile(request):
