@@ -181,13 +181,12 @@ def edit_profile(request):
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        password_change_form = PasswordChangeForm(request.user, request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
 
-        if password_change_form.is_valid():
-            password_change_form.save()
-            update_session_auth_hash(request, request.user) 
-            return redirect(reverse('account:login'))
+        if form.is_valid():
+            form.save()
+            return redirect('/login')
     else:
-        password_change_form = PasswordChangeForm(request.user)
+        form = PasswordChangeForm(request.user)
 
-    return render(request, 'account/change_password.html', {'password_change_form': password_change_form})
+    return render(request, 'account/change_password.html', {'form': form})
