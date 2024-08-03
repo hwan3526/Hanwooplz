@@ -10,31 +10,29 @@ from account.models import UserProfile
 from post.models import Post
 from qna.models import PostQuestion, PostAnswer, AnswerLike
 
-def qna_list(request, page_num=1):
-    items_per_page = 10  # 페이지 당 항목 수
+def list(request, page_num=1):
+    items_per_page = 10
 
-    post_question = PostQuestion.objects.order_by('-id')
-    question_lists = []
+    question = PostQuestion.objects.order_by('-id')
+    question_list = []
 
     query = request.GET.get('search')
-    search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
+    search_type = request.GET.get('search-type')
 
-    # 검색
-    filtered_questions = post_question
+    filtered_questions = question
     if query:
-        if search_type == 'title_content':
-            filtered_questions = post_question.filter(
+        if search_type == 'title-content':
+            filtered_questions = question.filter(
                 Q(post__title__icontains=query) | Q(post__content__icontains=query)
             )
         elif search_type == 'writer':
-            filtered_questions = post_question.filter(
+            filtered_questions = question.filter(
                 Q(post__author__username__icontains=query)
             )
     else:
         query = ''
         search_type = ''
 
-    # 페이지네이션
     page = request.GET.get('page', page_num)
     paginator = Paginator(filtered_questions, items_per_page)
     page_obj = paginator.get_page(page)
@@ -43,239 +41,222 @@ def qna_list(request, page_num=1):
         post = Post.objects.get(id=question.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
-        question_lists.append({
+        question_list.append({
+                    'question_id': question.id,
                     'title': post.title,
-                    'created_at': post.created_at,
-                    'author_id': post.author_id,
-                    'post_question': question.id,
                     'author': author.username,
+                    'created_at': post.created_at,
                 })
 
     context = {
-        'post_lists': question_lists,
+        'post_list': question_list,
         'page_obj': page_obj,
         'query': query,
         'search_type': search_type,
     }
 
-    return render(request, 'qna/qna_list.html', context)
+    return render(request, 'qna/list.html', context)
 
-def qna_read(request, post_question_id=None):
-    if post_question_id:
-        post_question = get_object_or_404(PostQuestion, id=post_question_id)
-        post = get_object_or_404(Post, id=post_question.post_id)
-        author = get_object_or_404(UserProfile, id=post.author_id)
+def read(request, question_id=None):
+    if question_id:
+        question = get_object_or_404(PostQuestion, id=question_id)
+        post_q = get_object_or_404(Post, id=question.post_id)
+        author_q = get_object_or_404(UserProfile, id=post_q.author_id)
 
-        post_answer = PostAnswer.objects.filter(question_id=post_question_id)
-        if post_answer:
-            post_ = Post.objects.filter(id__in=post_answer.values_list('post_id', flat=True))
-            author_ = UserProfile.objects.filter(id__in=post_.values_list('author_id', flat=True))
-            post_answer, post_ , author_ = post_answer.values(), post_.values(), author_.values()
-            for p_ in post_:
-                p_['answer_id'] = p_['id']
-                p_.pop('id')
-            for a_ in author_:
-                a_.pop('id')
+        answer = PostAnswer.objects.filter(question_id=question_id)
+        if answer:
+            post_a = Post.objects.filter(id__in=answer.values_list('post_id', flat=True))
+            author_a = UserProfile.objects.filter(id__in=post_a.values_list('author_id', flat=True))
+            answer, post_a , author_a = answer.values(), post_a.values(), author_a.values()
+            for p in post_a:
+                p['answer_id'] = p['id']
+                p.pop('id')
+            for a in author_a:
+                a.pop('id')
             answers = []
             answer_post_id_list = []
-            for i in range(len(post_answer)):
-                likes = AnswerLike.objects.filter(answer=post_answer[i]['id']).count()
-                answers.append({**post_answer[i],**post_[i],**author_[i],'likes': likes})
-                answer_post_id_list.append(post_answer[i]['post_id'])
-            answered = True if request.user.id in post_.values_list('author_id', flat=True) else False
+            for i in range(len(answer)):
+                likes = AnswerLike.objects.filter(answer=answer[i]['id']).count()
+                answers.append({**answer[i],**post_a[i],**author_a[i],'likes': likes})
+                answer_post_id_list.append(answer[i]['post_id'])
+            answered = True if request.user.id in post_a.values_list('author_id', flat=True) else False
         else:
             answers = []
             answered = False
             answer_post_id_list = []
 
         context = {
-            'title': post.title,
-            'content': post.content,
-            'author': author.username,
-            'author_id': author.id,
-            'created_at': post.created_at,
-            'like': post_question.like.count(),
-            'keywords': post_question.keyword,
-            'post_question_id' : post_question_id,
-            'post_id': post.id,
-            'answers': answers,
+            'question_id' : question_id,
+            'title': post_q.title,
+            'author': author_q.username,
+            'created_at': post_q.created_at,
+            'keyword': question.keyword,
+            'content': post_q.content,
+            'like': question.like.count(),
+            'post_id': post_q.id,
+            'author_id': author_q.id,
+            'answer': answers,
             'answer_post_id_list': answer_post_id_list,
             'answered': answered,
         }
-        return render(request, 'qna/qna_read.html', context)
+        return render(request, 'qna/read.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('qna:qna_list')
+        return redirect('/qna')
 
 @login_required(login_url='login')
-def qna_write_question(request, post_question_id=None):
-    if post_question_id:
-        post_question = get_object_or_404(PostQuestion, id=post_question_id)
-        post = get_object_or_404(Post, id=post_question.post_id)
+def write_question(request, question_id=None):
+    if question_id:
+        question = get_object_or_404(PostQuestion, id=question_id)
+        post = get_object_or_404(Post, id=question.post_id)
     else:
-        post_question = PostQuestion()
+        question = PostQuestion()
         post = Post()
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('qna:qna_list')
+            return redirect('/qna')
         
         request.POST._mutable = True
         request.POST['keyword'] = request.POST.get('keyword').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        post_question_form = PostQuestionForm(request.POST, request.FILES, instance=post_question)
+        question_form = PostQuestionForm(request.POST, request.FILES, instance=question)
 
-        if post_form.is_valid() and post_question_form.is_valid():
+        if post_form.is_valid() and question_form.is_valid():
             post = post_form.save(commit=False)
-            post_question = post_question_form.save(commit=False)
-            if not post_question_id:
+            question = question_form.save(commit=False)
+            if not question_id:
                 post.author_id = request.user.id
                 post.save()
-                post_question.post_id = post.id
-                post_question.save()
-                post_question_id = post_question.id
+                question.post_id = post.id
+                question.save()
+                question_id = question.id
             else:
                 post.save()
-                post_question.save()
+                question.save()
 
-            return redirect('qna:qna_read', post_question_id)
+            return redirect('/qna/'+question_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
                 'title': request.POST.get('title'),
-                'content': request.POST.get('content'),
                 'keyword': request.POST.get('keyword'),
+                'content': request.POST.get('content'),
             }
             return render(request, 'qna/write_question.html', context)
     else:
-        if post_question_id:
+        if question_id:
             if request.user.id == post.author_id:
                 context = {
-                    'post_question_id': post_question_id,
+                    'question_id': question_id,
                     'title': post.title,
+                    'keyword': ' '.join(question.keyword),
                     'content': post.content,
-                    'keyword': ' '.join(post_question.keyword),
-                    'post_author_id': post.author_id,
+                    'author_id': post.author_id,
                 }
                 return render(request, 'qna/write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('qna:qna_read', post_question_id)
+                return redirect('/qna/'+question_id)
         else:
             return render(request, 'qna/write_question.html')
 
 @login_required(login_url='login')
-def qna_write_answer(request, post_question_id, post_answer_id=None):
-    if post_question_id:
-        post_question = get_object_or_404(PostQuestion, id=post_question_id)
-        post_ = get_object_or_404(Post, id=post_question.post_id)
-        author_ = get_object_or_404(UserProfile, id=post_.author_id)
-        if post_answer_id:
-            post_answer = get_object_or_404(PostAnswer, id=post_answer_id)
-            post = get_object_or_404(Post, id=post_answer.post_id)
+def write_answer(request, question_id, answer_id=None):
+    if question_id:
+        question = get_object_or_404(PostQuestion, id=question_id)
+        post_q = get_object_or_404(Post, id=question.post_id)
+        author_q = get_object_or_404(UserProfile, id=post_q.author_id)
+        if answer_id:
+            answer = get_object_or_404(PostAnswer, id=answer_id)
+            post_a = get_object_or_404(Post, id=answer.post_id)
         else:
-            post_answer = PostAnswer()
-            post = Post()
+            answer = PostAnswer()
+            post_a = Post()
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('qna:qna_list')
+        return redirect('/qna')
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
-            post.delete()
-            return redirect('qna:qna_read', post_question_id)
-        if 'temp-save-button' in request.POST:
-            messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
-            context={
-                'title_question': post_.title,
-                'keywords_question': post_question.keyword,
-                'content_question': post_.content,
-                'author_question': author_.username,
-                'author_id_question': author_.id,
-                'created_at_question': post_.created_at,
-                'post_question_id': post_question_id,
-                'content': request.POST.get('content'),
-            }
-            return render(request, 'qna/write_answer.html', context)
-        
+            post_a.delete()
+            return redirect('/qna/'+question_id)
+
         request.POST._mutable = True
         request.POST['title'] = '제목없음'
-        post_form = PostForm(request.POST, request.FILES, instance=post)
+        post_form = PostForm(request.POST, request.FILES, instance=post_a)
 
         if post_form.is_valid():
-            post = post_form.save(commit=False)
-            if not post_answer_id:
-                post.author_id = request.user.id
-                post.save()
-                post_answer.post_id = post.id
-                post_answer.question_id = post_question_id
-                post_answer.save()
+            post_a = post_form.save(commit=False)
+            if not answer_id:
+                post_a.author_id = request.user.id
+                post_a.save()
+                answer.post_id = post_a.id
+                answer.question_id = question_id
+                answer.save()
             else:
-                post.save()
-                post_answer.save()
+                post_a.save()
+                answer.save()
 
-            return redirect('qna:qna_read', post_question_id)
+            return redirect('/qna/'+question_id)
         else:
             messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
-                'title_question': post_.title,
-                'keywords_question': post_question.keyword,
-                'content_question': post_.content,
-                'author_question': author_.username,
-                'author_id_question': author_.id,
-                'created_at_question': post_.created_at,
-                'post_question_id': post_question_id,
-                'content': request.POST.get('content'),
+                'question_id': question_id,
+                'title': post_q.title,
+                'author': author_q.username,
+                'created_at': post_q.created_at,
+                'keyword': question.keyword,
+                'content': post_q.content,
+                'author_id': author_q.id,
+                'answer': request.POST.get('answer'),
             }
             return render(request, 'qna/write_answer.html', context)
     else:
-        if post_answer_id:
-            if request.user.id == post.author_id:
+        if answer_id:
+            if request.user.id == post_a.author_id:
                 context = {
-                    'title_question': post_.title,
-                    'keywords_question': post_question.keyword,
-                    'content_question': post_.content,
-                    'author_question': author_.username,
-                    'author_id_question': author_.id,
-                    'created_at_question': post_.created_at,
-                    'post_question_id': post_question_id,
-                    'post_answer_id': post_answer_id,
-                    'content': post.content,
-                    'post_author_id': post.author_id,
+                    'question_id': question_id,
+                    'title': post_q.title,
+                    'author': author_q.username,
+                    'created_at': post_q.created_at,
+                    'keyword': question.keyword,
+                    'content': post_q.content,
+                    'author_id': author_q.id,
+                    'answer_id': answer_id,
+                    'answer': post_a.content,
                 }
                 return render(request, 'qna/write_answer.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('qna:qna_read', post_question_id)
+                return redirect('/qna/'+question_id)
         else:
             context = {
-                    'title_question': post_.title,
-                    'keywords_question': post_question.keyword,
-                    'content_question': post_.content,
-                    'author_question': author_.username,
-                    'author_id_question': author_.id,
-                    'created_at_question': post_.created_at,
-                    'post_question_id': post_question_id,
+                    'question_id': question_id,
+                    'title': post_q.title,
+                    'author': author_q.username,
+                    'created_at': post_q.created_at,
+                    'keyword': question.keyword,
+                    'content': post_q.content,
+                    'author_id': author_q.id,
             }
             return render(request, 'qna/write_answer.html', context)
 
 @login_required
-def like(request, post_question_id, answer_id=None):
+def like(request, question_id, answer_id=None):
     if request.user.is_authenticated:
         if not answer_id:
-            post = get_object_or_404(PostQuestion, pk=post_question_id)
+            post = get_object_or_404(PostQuestion, id=question_id)
         else:
-            post = get_object_or_404(PostAnswer, pk=answer_id)
-        user = get_object_or_404(UserProfile, pk=request.user.id)
+            post = get_object_or_404(PostAnswer, id=answer_id)
+        user = get_object_or_404(UserProfile, id=request.user.id)
 
         if user in post.like.all():
             post.like.remove(user)
-            message = '추천이 취소됐습니다.'
         else:
             post.like.add(user)
-            message = ''
 
         post.save()
-        return redirect('qna:qna_read', post_question_id)
-    return redirect('qna:qna_read', post_question_id)
+        return redirect('/qna/'+question_id)
+    return redirect('/qna/'+question_id)

@@ -1,4 +1,4 @@
-const showCommentsLink = document.getElementById('show-comments');
+const showCommentsLink = document.getElementById('show-comment');
 const commentContainer = document.getElementById('comment-wrapper');
 let isHidden = true;
 

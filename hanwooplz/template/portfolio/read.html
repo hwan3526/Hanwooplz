@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/portfolio_read.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/read.css' %}">
     <title>{{ title }}</title>
 </head>
 
@@ -18,34 +18,34 @@
                 <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
                 <div class="members">총 참여인원: {{ members }} 명</div>
                 <div class="tech-stack-conatiner">
-                    {% for tech_stack in tech_stacks %}
-                        <div class="tech-stack">#{{ tech_stack }}</div>
+                    {% for ts in tech_stack %}
+                        <div class="tech-stack">#{{ ts }}</div>
                     {% endfor %}
                 </div>
-                <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
+                <div class="ext-link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
                 <div class="content">{{ content | safe }}</div>
                 <div class="subsidiary">
                     <div class="card">
-                        작성자: <a href="/myinfo/{{ author_id }}"><b>{{ author }}</b> 님</a>
-                        {% if user.is_authenticated and author_id != request.user.id %}
-                        <button onclick="window.location.href = '/chat/0/{{ author_id }}'">채팅하기</button>
-                        {% elif not user.is_authenticated %}
+                        작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                        {% if request.user.is_authenticated and author_id != request.user.id %}
+                        <button onclick="window.location.href = '/chat'">채팅하기</button>
+                        {% elif not request.user.is_authenticated %}
                         <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
                         {% endif %}
                         <p>작성 일시: {{ created_at }}</p>
                     </div>
                 </div>
             </div>
-            <div class="button_list_edit">
+            <div class="redirect-button">
                 {% if author_id == request.user.id %}
-                <button class="button-black" onclick="window.location.href = '/portfolio/write/{{ post_portfolio_id }}'">수정하기</button>
+                <button class="button-black" onclick="window.location.href = '/portfolio/edit/{{ portfolio_id }}'">수정하기</button>
                 {% endif %}
-                <button class="button-black" onclick="window.location.href = '/portfolio/list'">목록으로</button>
+                <button class="button-black" onclick="window.location.href = '/portfolio'">목록으로</button>
             </div>
             {% include "comment/comment.html" %}
         </main>
     </div>
-    {% include "chatbot/chatbot.html" %}
+    <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
 <script>
     let postId = '{{ post_id }}';

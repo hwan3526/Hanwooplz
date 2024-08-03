@@ -3,7 +3,7 @@ let answerContainer = document.querySelectorAll('.answer-container')
 if (answerContainer) {
     answerContainer.forEach(container => {
         let answerId = container.getAttribute('data-answer-id');
-        let showComments = container.querySelector('#unpack-comments');
+        let showComment = container.querySelector('#show-comment');
         let commentContainer = container.querySelector('.comment-container');
         let commentText = commentContainer.querySelector('#comment-input');
         let submitButton = commentContainer.querySelector('#comment-submit-button');
@@ -11,7 +11,7 @@ if (answerContainer) {
         let isHidden = true;
 
         // 댓글 펼치기
-        showComments.addEventListener('click', function (event) {
+        showComment.addEventListener('click', function (event) {
             event.preventDefault();
 
             if (isHidden) {

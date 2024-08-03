@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_write.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_read.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/write.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/read.css' %}" />
     <title>게시글 작성</title>
 </head>
 
@@ -14,29 +14,29 @@
     {% include "nav.html" %}
     <section class="main">
         <div class="question-container">
-            <h3 class="title">{{ title_question }}</h3>
+            <h3 class="title">{{ title }}</h3>
             <div class="keyword-conatiner">
-                {% for keyword in keywords_question %}
-                <div class="keyword">#{{ keyword }} </div>
+                {% for kw in keyword %}
+                <div class="keyword">#{{ kw }} </div>
                 {% endfor %}
             </div>
-            <div class="content">{{ content_question | safe }}</div>
+            <div class="content">{{ content | safe }}</div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자: <a href="/myinfo/{{ author_id_question }}"><b>{{ author_question }}</b> 님</a>
-                    <p>작성 일시: {{ created_at_question }}</p>
+                    작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                    <p>작성 일시: {{ created_at }}</p>
                 </div>
             </div>
         </div>
         <form id="post" method="POST"
-            action="{% if post_answer_id %}{% url 'qna:answer_edit' post_question_id post_answer_id %}{% else %}{% url 'qna:answer_write' post_question_id %}{% endif %}"
+            action="{% if answer_id %}'/qna/edit_answer/{{ question_id }}/{{ answer_id }}{% else %}'/qna/write-answer/{{ question_id }}'{% endif %}"
             enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
-                <textarea id="content" name="content">{{ content }}</textarea>
+                <textarea id="content" name="answer">{{ answer }}</textarea>
             </div>
-            <div class="save-button-wrapper">
-                {% if post_author_id == request.user.id %}
+            <div class="redirect-button">
+                {% if author_id == request.user.id %}
                 <input type="submit" class="delete-button" name="delete-button" value="삭제">
                 <input type="submit" class="save-button" value="수정">
                 {% else %}

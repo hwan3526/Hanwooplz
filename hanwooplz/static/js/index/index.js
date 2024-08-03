@@ -39,35 +39,35 @@ if (textArray.length) {
 }
 
 $.get('/portfolio', function (data) {
-    $('#portfolio').html(data);
-    let content = $('#portfolio .post-list').clone();
-    $('#portfolio').html(content);
-    $('#portfolio .select-group').remove();
-    $('#portfolio .page').remove();
-    $('#portfolio .button-black').text('더보기');
-    $('#portfolio .button-black').css('margin-top', '15px');
-    $('#portfolio .button-black').attr('onclick', "window.location.href='/portfolio'");
+    $('#portfolio-section').html(data);
+    let content = $('#portfolio-section .post-list').clone();
+    $('#portfolio-section').html(content);
+    $('#portfolio-section .select-group').remove();
+    $('#portfolio-section .page').remove();
+    $('#portfolio-section .button-black').text('더보기');
+    $('#portfolio-section .button-black').css('margin-top', '15px');
+    $('#portfolio-section .button-black').attr('onclick', "window.location.href='/portfolio'");
 });
 
 $.get('/project', function (data) {
-    $('#project').html(data);
-    let content = $('#project .post-list').clone();
-    $('#project').html(content);
-    $('#project .select-group').remove();
-    $('#project .tab-container').remove();
-    $('#project .page').remove();
-    $('#project .button-black').text('더보기');
-    $('#project .button-black').css('margin-top', '15px');
-    $('#project .button-black').attr('onclick', "window.location.href='/project'");
+    $('#project-section').html(data);
+    let content = $('#project-section .post-list').clone();
+    $('#project-section').html(content);
+    $('#project-section .select-group').remove();
+    $('#project-section .tab-container').remove();
+    $('#project-section .page').remove();
+    $('#project-section .button-black').text('더보기');
+    $('#project-section .button-black').css('margin-top', '15px');
+    $('#project-section .button-black').attr('onclick', "window.location.href='/project'");
 });
 
 $.get('/qna', function (data) {
-    $('#qna').html(data);
-    let content = $('#qna .post-list').clone();
-    $('#qna').html(content);
-    $('#qna .select-group').remove();
-    $('#qna .page').remove();
-    $('#qna .button-black').text('더보기');
-    $('#qna .button-black').css('margin-top', '15px');
-    $('#qna .button-black').attr('onclick', "window.location.href='/qna'");
+    $('#qna-section').html(data);
+    let content = $('#qna-section .post-list').clone();
+    $('#qna-section').html(content);
+    $('#qna-section .select-group').remove();
+    $('#qna-section .page').remove();
+    $('#qna-section .button-black').text('더보기');
+    $('#qna-section .button-black').css('margin-top', '15px');
+    $('#qna-section .button-black').attr('onclick', "window.location.href='/qna'");
 });

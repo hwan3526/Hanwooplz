@@ -5,21 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/portfolio_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio/list.css' %}" />
     <title>포트폴리오</title>
 </head>
 
 <body>
     {% include "nav.html" %}
-    <main>
+    <main class="post-page">
         <div class="post-list">
             <h2>포트폴리오</h2>
             <div class="select-group">
                 <form method="GET" action="" id="search-form">
                     <span class="select-text">SELECT</span>
                     <span>
-                        <select class="select-dropbox" id="search-select" name="search_type">
-                            <option value="title_content">제목+내용</option>
+                        <select class="select-dropbox" id="search-select" name="search-type">
+                            <option value="title-content">제목+내용</option>
                             <option value="writer">작성자</option>
                         </select>
                     </span>
@@ -27,23 +27,23 @@
                     <input type="submit" class="button-black" value="검색">
                 </form>
             </div>
-            {% if post_lists %}
-            <div class="posts-grid">
-                {% for post in post_lists %}
-                <a class="post-tile" href="/portfolio/{{ post.post_portfolio }}">
+            {% if post_list %}
+            <div class="post-grid">
+                {% for post in post_list %}
+                <a class="post-tile" href="/portfolio/{{ post.portfolio_id }}">
                     <picture class="post-thumbnail">
-                        <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}">
+                        <img src="{% static 'img/'|add:post.tech_stack|add:'.svg' %}">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-author">{{ post.author }}</p>
-                    <p class="post-created_at">{{ post.created_at }}</p>
+                    <p class="post-created-at">{{ post.created_at }}</p>
                 </a>
                 {% endfor %}
             </div>
             <div class="page">
                 {% if page_obj.has_previous %}
                     {% if query %}
-                    <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
+                    <span><a href="?page={{ page_obj.previous_page_number }}&search-type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
                     {% else %}
                     <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
                     {% endif %}
@@ -53,13 +53,13 @@
                 {% for page_number in page_obj.paginator.page_range %}
                     {% if page_number == page_obj.number %}
                         {% if query %}
-                        <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
+                        <span><a href="?page={{ page_number }}&search-type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
                         {% else %}
                         <span><a href="?page={{ page_number }}"><b>{{ page_number }}</b></a></span>
                         {% endif %}
                     {% else %}
                         {% if query %}
-                        <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                        <span><a href="?page={{ page_number }}&search-type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
                         {% else %}
                         <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
                         {% endif %}
@@ -67,7 +67,7 @@
                 {% endfor %}
                 {% if page_obj.has_next %}
                     {% if query %}
-                    <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
+                    <span><a href="?page={{ page_obj.next_page_number }}&search-type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
                     {% else %}
                     <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
                     {% endif %}
@@ -78,8 +78,8 @@
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
             {% endif %}
-            <div class="button">
-                {% if user.is_authenticated %}
+            <div class="redirect-button">
+                {% if request.user.is_authenticated %}
                 <button class="button-black" onclick="window.location.href = '/portfolio/write'">글쓰기</button>
                 {% else %}
                 <button class="button-black" onclick="alert('로그인이 필요합니다.')">글쓰기</button>
@@ -87,8 +87,8 @@
             </div>
         </div>
     </main>
-    {% include "chatbot/chatbot.html" %}
+    <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
-<script src="{% static 'js/portfolio/portfolioList.js' %}"></script>
+<script src="{% static 'js/portfolio/list.js' %}"></script>
 
 </html>

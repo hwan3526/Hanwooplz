@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/project/project_read.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/read.css' %}">
     <title>{{ title }}</title>
 </head>
 <body>
@@ -13,8 +13,10 @@
         <main>
             <div class="post-container">
                 <picture>
-                    {% if project_status != 1 %}
-                    <p id="deprecated">{% if project_status == 2 %}모집 완료{% else %}모집 중단{% endif %}</p>
+                    {% if status == 0 %}
+                    <p id="deprecated">모집 중단</p>
+                    {% elif status == 2 %}
+                    <p id="deprecated">모집 완료</p>
                     {% endif %}
                     <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}">
                 </picture>
@@ -30,14 +32,15 @@
                         </select>
                     </form>
                     {% else %}
-                    {% if project_status == 1 %}
-                    <p class="project-status">모집중</p>
-                    {% else %}
-                    <p class="project-status">{% if project_status == 0 %}모집 중단{% else %}모집 완료{% endif %}</p>
+                    {% if status == 1 %}
+                    <p class="status">모집중</p>
+                    {% elif status == 2 %}
+                    <p class="status">모집 완료</p>
+                    {% elif status == 0 %}
+                    <p class="status">모집 중단</p>
                     {% endif %}
                     {% endif %}
                 </div>
-                
                 <div class="info-box">
                     <div class="info-title">프로젝트 기간</div>
                     <div class="info-content">{{ start_date }}~{{ end_date }}</div>
@@ -47,8 +50,8 @@
                     <div class="info-content">{{ members }} 명 / {{ target_members }} 명</div>
                 </div>
                 <div class="tech-stack-conatiner">
-                    {% for tech_stack in tech_stacks %}
-                        <div class="tech-stack">#{{ tech_stack }} </div>
+                    {% for ts in tech_stack %}
+                        <div class="tech-stack">#{{ ts }}</div>
                     {% endfor %}
                 </div>
                 <div class="info-box">
@@ -61,23 +64,23 @@
                 </div>
                 <div class="subsidiary">
                     <div class="card">
-                        작성자: <a href="/myinfo/{{ author_id }}"><b>{{ author }}</b> 님</a>
+                        작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
                         <p>작성 일시: {{ created_at }}</p>
-                        {% if user.is_authenticated and author_id != request.user.id %}
-                        <button onclick="window.location.href = '/chat/0/{{ author_id }}'">채팅하기</button>
-                        {% elif not user.is_authenticated %}
+                        {% if request.user.is_authenticated and author_id != request.user.id %}
+                        <button onclick="window.location.href = '/chat'">채팅하기</button>
+                        {% elif not request.user.is_authenticated %}
                         <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
                         {% endif %}
-                        {% if author_id != request.user.id and project_status == 1 %}
+                        {% if request.user.is_authenticated and author_id != request.user.id and status == 1 %}
                         {% csrf_token %}
-                        <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
+                        <button id="join-button" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="button_list_edit">
+            <div class="redirect-button">
                 {% if author_id == request.user.id %}
-                <button class="button-black" onclick="window.location.href = '/project/write/{{ post_project_id }}'">수정하기</button>
+                <button class="button-black" onclick="window.location.href = '/project/edit/{{ project_id }}'">수정하기</button>
                 {% endif %}
                 <button class="button-black" onclick="window.location.href = '/project'">목록으로</button>
             </div>
@@ -89,10 +92,10 @@
 <script>
     let postId = '{{ post_id }}';
     let currentUser = '{{ request.user }}';
-    let projectStatus = '{{ project_status }}';
-    let projectId = '{{ post_project_id }}';
+    let projectStatus = '{{ status }}';
+    let projectId = '{{ project_id }}';
 </script>
-<script src="{% static 'js/project/projectRead.js' %}"></script>
+<script src="{% static 'js/project/read.js' %}"></script>
 <script src="{% static 'js/project/updateStatus.js' %}"></script>
 
 </html>

@@ -10,11 +10,13 @@ picture {
     align-items: center;
     position: relative;
     width: 100%;
+    height: 300px;
     background-color: white;
 }
 
 picture img {
-    width: 100%;
+    width: 80%;
+    height: 100%;
     background-color: white;
     object-fit: contain;
 }
@@ -39,6 +41,7 @@ a:hover {
     align-items: start;
     max-width: 100%;
     padding: 20px;
+    padding-top: 100px;
     margin-top: 100px;
     border-radius: 5px;
     background-color: #f7f7f7;
@@ -52,6 +55,29 @@ a:hover {
     transform: scale(1);
 }
 
+#deprecated {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #777777;
+    color: white;
+    font-size: 48px;
+    opacity: 0.7;
+}
+
+.title-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 36px;
+    margin-top: 20px;
+}
+
 .title {
     height: inherit;
     color: #3498db;
@@ -59,11 +85,62 @@ a:hover {
     line-height: normal;
 }
 
-.period,
-.members {
-    margin-top: 10px;
-    color: #555555;
-    font-size: 14px;
+#status-form {
+    height: inherit;
+}
+
+#status-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+    height: inherit;
+    padding-left: 5px;
+    border: 0px;
+    border-radius: 8px;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+    height: 100%;
+    border-radius: 8px;
+    background-color: #0077b5;
+    color: white;
+}
+
+.info-box,
+.content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.info-title,
+.content-title {
+    color: #777777;
+}
+
+.info-content,
+.content {
+    display: block;
+    align-items: center;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #eaeaea;
+    font-size: large;
+    line-height: normal;
+}
+
+.content-box {
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    margin-top: 0px;
 }
 
 .tech-stack-conatiner {
@@ -80,23 +157,10 @@ a:hover {
     font-size: 14px;
 }
 
-.ext_link {
-    margin-top: 10px;
-    color: #555555;
-    font-size: 14px;
-}
-
 .content {
-    display: block;
-    align-items: center;
-    width: 100%;
-    padding: 5px;
-    margin-top: 0px;
-    border-radius: 8px;
-    background-color: #eaeaea;
+    margin-top: 20px;
     color: #333333;
-    font-size: large;
-    line-height: normal;
+    font-size: 16px;
 }
 
 .subsidiary {
@@ -132,7 +196,7 @@ a:hover {
     transition: background-color 0.3s;
 }
 
-.button_list_edit {
+.redirect-button {
     display: flex;
     flex-direction: row;
     justify-content: right;

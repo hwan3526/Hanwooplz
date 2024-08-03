@@ -11,36 +11,33 @@ from account.models import UserProfile
 from post.models import Post
 from project.models import PostProject, ProjectMembers
 
-def project_list(request, page_num=1):
-    items_per_page = 9  # 페이지 당 항목 수
+def list(request, page_num=1):
+    items_per_page = 9
 
-    post_project = PostProject.objects.order_by('-id')
-    project_lists = []
+    project = PostProject.objects.order_by('-id')
+    project_list = []
 
     query = request.GET.get('search')
-    search_type = request.GET.get('search_type')
+    search_type = request.GET.get('search-type')
 
-    # 검색
-    filtered_projects = post_project
+    filtered_projects = project
     if query:
-        if search_type == 'title_content':
-            filtered_projects = post_project.filter(
+        if search_type == 'title-content':
+            filtered_projects = project.filter(
                 Q(post__title__icontains=query) | Q(post__content__icontains=query)
             )
         elif search_type == 'writer':
-            filtered_projects = post_project.filter(
+            filtered_projects = project.filter(
                 Q(post__author__username__icontains=query)
             )
     else:
         query = ''
         search_type = ''
 
-    # 모집 여부 필터링
-    filter_option = request.GET.get('filter_option')
+    filter_option = request.GET.get('filter-option')
     if filter_option == 'recruiting':
         filtered_projects = filtered_projects.filter(status=1)
     
-    # 페이지네이션
     page = request.GET.get('page', page_num)
     paginator = Paginator(filtered_projects, items_per_page)
     page_obj = paginator.get_page(page)
@@ -48,135 +45,129 @@ def project_list(request, page_num=1):
     for project in page_obj:
         post = Post.objects.get(id=project.post_id)
         author = UserProfile.objects.get(id=post.author_id)
-        is_recruiting = True if project.status == 1 else False
-        project_status = '모집 완료' if project.status == 2 else '모집 중단'
+        status = project.status
 
-        project_lists.append({
+        project_list.append({
+                    'project_id': project.id,
                     'title': post.title,
-                    'created_at': post.created_at,
-                    'author_id': post.author_id,
-                    'post_project': project.id,
                     'author': author.username,
-                    'tech_stacks': project.tech_stack,
-                    'isRecruiting': is_recruiting,
-                    'project_status': project_status,
+                    'created_at': post.created_at,
+                    'tech_stack': project.tech_stack[0],
+                    'status': status,
                 })
 
     context = {
-        'post_lists': project_lists,
+        'post_list': project_list,
         'page_obj': page_obj,
         'query': query,
         'search_type': search_type,
     }
 
-    return render(request, 'project/project_list.html', context)
+    return render(request, 'project/list.html', context)
 
-def project_read(request, post_project_id=None):
-    if post_project_id:
-        post_project = get_object_or_404(PostProject, id=post_project_id)
-        post = get_object_or_404(Post, id=post_project.post_id)
+def read(request, project_id=None):
+    if project_id:
+        project = get_object_or_404(PostProject, id=project_id)
+        post = get_object_or_404(Post, id=project.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
-        members = ProjectMembers.objects.filter(project=post_project_id).count()
+        members = ProjectMembers.objects.filter(project=project_id).count()
         context = {
+            'project_id' : project_id,
             'title': post.title,
             'author': author.username,
-            'author_id': author.id,
             'created_at': post.created_at,
-            'start_date': post_project.start_date,
-            'end_date': post_project.end_date,
+            'start_date': project.start_date,
+            'end_date': project.end_date,
             'members': members,
-            'target_members': post_project.target_members,
-            'tech_stacks': post_project.tech_stack,
-            'ext_link': post_project.ext_link,
+            'target_members': project.target_members,
+            'tech_stack': project.tech_stack,
+            'ext_link': project.ext_link,
             'content': post.content,
-            'post_project_id' : post_project_id,
+            'status': project.status,
             'post_id': post.id,
-            'project_status': post_project.status,
+            'author_id': author.id,
         }
-        return render(request, 'project/project_read.html', context)
+        return render(request, 'project/read.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('project:project_list')
+        return redirect('/project')
 
 @login_required(login_url='login')
-def project_write(request, post_project_id=None):
-    if post_project_id:
-        post_project = get_object_or_404(PostProject, id=post_project_id)
-        post = get_object_or_404(Post, id=post_project.post_id)
+def write(request, project_id=None):
+    if project_id:
+        project = get_object_or_404(PostProject, id=project_id)
+        post = get_object_or_404(Post, id=project.post_id)
     else:
-        post_project = PostProject()
+        project = PostProject()
         post = Post()
     
-    # 작성 시
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('project:project_list')
+            return redirect('/project')
         
         request.POST._mutable = True
         request.POST['tech_stack'] = request.POST.get('tech_stack').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        post_project_form = PostProjectForm(request.POST, request.FILES, instance=post_project)
+        project_form = PostProjectForm(request.POST, request.FILES, instance=project)
 
-        if post_form.is_valid() and post_project_form.is_valid():
+        if post_form.is_valid() and project_form.is_valid():
             post = post_form.save(commit=False)
-            post_project = post_project_form.save(commit=False)
-            if not post_project_id:
+            project = project_form.save(commit=False)
+            if not project_id:
                 post.author_id = request.user.id
                 post.save()
-                post_project.post_id = post.id
-                post_project.save()
-                post_project_id = post_project.id
-                user = get_object_or_404(UserProfile, pk=request.user.id)
-                project = get_object_or_404(PostProject, pk=post_project_id)
+                project.post_id = post.id
+                project.save()
+                project_id = project.id
+                user = get_object_or_404(UserProfile, id=request.user.id)
+                project = get_object_or_404(PostProject, id=project_id)
                 ProjectMembers.objects.create(project=project, members=user)
             else:
                 post.save()
-                post_project.save()
+                project.save()
 
-            return redirect('project:project_read', post_project_id)
+            return redirect('/project/'+project_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
                 'title': request.POST.get('title'),
                 'start_date': request.POST.get('start_date'),
                 'end_date': request.POST.get('end_date'),
-                'members': request.POST.get('members'),
+                'target_members': request.POST.get('members'),
                 'tech_stack': request.POST.get('tech_stack'),
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
-            return render(request, 'project/project_write.html', context)
-        
-    # 게시물 수정 시
+            return render(request, 'project/write.html', context)
     else:
-        if post_project_id:
+        if project_id:
             if request.user.id == post.author_id:
-                start_date = str(post_project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
-                end_date = str(post_project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
+                start_date = str(project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
+                end_date = str(project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
                 context = {
-                    'post_project_id': post_project_id,
+                    'project_id': project_id,
                     'title': post.title,
                     'start_date': start_date,
                     'end_date': end_date,
-                    'target_members': post_project.target_members,
-                    'tech_stack': ' '.join(post_project.tech_stack),
-                    'ext_link': post_project.ext_link,
+                    'target_members': project.target_members,
+                    'tech_stack': ' '.join(project.tech_stack),
+                    'ext_link': project.ext_link,
                     'content': post.content,
-                    'post_author_id': post.author_id,
+                    'author_id': post.author_id,
                 }
-                return render(request, 'project/project_write.html', context)
+                return render(request, 'project/write.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('project:project_read', post_project_id)
+                return redirect('/project/'+project_id)
         else:
-            return render(request, 'project/project_write.html')
+            return render(request, 'project/write.html')
 
-def update_views(request):
+def update_status(request):
     if request.method == 'POST':
         project_id = request.POST.get('project_id')
         status = request.POST.get('status')
-        project = get_object_or_404(PostProject, pk=project_id)
+        project = get_object_or_404(PostProject, id=project_id)
         project.status = status
         project.save()
         return JsonResponse({'success': True})

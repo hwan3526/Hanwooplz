@@ -80,7 +80,7 @@ a {
     text-align: center;
 }
 
-.button {
+.redirect-button {
     display: flex;
     justify-content: flex-end;
     float: right;

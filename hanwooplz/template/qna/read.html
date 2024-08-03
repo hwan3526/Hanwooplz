@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/read.css' %}">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <div class="main-container">
+        <main>
+            <div class="question-container">
+                <h3 class="title">{{ title }}</h3>
+                <div class="keyword-conatiner">
+                    {% for kw in keyword %}
+                    <div class="keyword">#{{ kw }} </div>
+                    {% endfor %}
+                </div>
+                <div class="content">{{ content | safe }}</div>
+                <div class="subsidiary">
+                    <div class="card">
+                        작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                        {% if request.user.is_authenticated and author_id != request.user.id %}
+                        <button onclick="window.location.href = '/chat'">채팅하기</button>
+                        {% elif not request.user.is_authenticated %}
+                        <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
+                        {% endif %}
+                        <p>작성 일시: {{ created_at }}</p>
+                    </div>
+                </div>
+                <div class="action-button">
+                    <a href="" id="show-comment">댓글</a>
+                    <a href="/qna/like/{{ question_id }}">추천 {{ like }} 회</a>
+                </div>
+            </div>
+            <div class="redirect-button">
+                {% if author_id == request.user.id %}
+                <button class="button-black" onclick="window.location.href = '/qna/edit-question/{{ question_id }}'">수정하기</button>
+                {% endif %}
+                {% if request.user.is_authenticated and not answered %}
+                <button class="button-black" onclick="window.location.href = '/qna/write-answer/{{ question_id }}'">답변하기</button>
+                {% endif %}
+                <button class="button-black" onclick="window.location.href = '/qna'">목록으로</button>
+            </div>
+            <div id="comment-wrapper">
+                {% include "comment/comment.html" %}
+            </div>
+            <div class="answer-container-wrapper">
+                {% for asr in answer %}
+                <div class="answer-container" data-answer-id="{{ asr.answer_id }}">
+                    <div class="content">{{ asr.content | safe }}</div>
+                    <div class="subsidiary">
+                        <div class="card">
+                            작성자: <a href="/@{{ author }}"><b>{{ asr.username }}</b> 님</a>
+                            {% if request.user.is_authenticated and asr.author_id != request.user.id %}
+                            <button onclick="window.location.href = '/chat'">채팅하기</button>
+                            {% elif not request.user.is_authenticated %}
+                            <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
+                            {% endif %}
+                            <p>작성 일시: {{ asr.created_at }}</p>
+                        </div>
+                    </div>
+                    <div class="action-button">
+                        <a href="" id="show-comment">댓글</a>
+                        <a href="/qna/like/{{ question_id }}/{{ asr.id }}">추천 {{ answer.likes }} 회</a>
+                    </div>
+                    <div id="comment-wrapper">
+                        {% include "comment/comment.html" %}
+                    </div>
+                </div>
+                <div class="redirect-button">
+                    {% if asr.author_id == request.user.id %}
+                    <button class="button-black" onclick="window.location.href = '/qna/edit-answer/{{ question_id }}/{{ asr.id }}'">수정하기</button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+    <!-- {% include "chatbot/chatbot.html" %} -->
+</body>
+<script>
+    let postId = '{{ post_id }}';
+    let currentUser = '{{ request.user }}';
+    let answerPostIdList = '{{ answer_post_id_list }}';
+</script>
+<script src="{% static 'js/qna/read.js' %}"></script>
+
+</html>

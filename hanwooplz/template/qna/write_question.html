@@ -5,22 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_write.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/write.css' %}" />
     <title>게시글 작성</title>
 </head>
 
 <body>
     {% include "nav.html" %}
     <section class="main">
-        <form id="post" method="POST" action="{% if post_question_id %}{% url 'qna:question_edit' post_question_id %}{% else %}{% url 'qna:question_write' %}{% endif %}" enctype="multipart/form-data">
+        <form id="post" method="POST" action="{% if question_id %}'/qna/edit-question/{{ question_id }}'{% else %}'/qna/write-question'{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
                 <input type="text" id="title" name="title" placeholder="제목" value="{{ title }}">
                 <input type="text" id="keyword" name="keyword" placeholder="#주제" value="{{ keyword }}">
                 <textarea id="content" name="content">{{ content }}</textarea>
             </div>
-            <div class="save-button-wrapper">
-                {% if post_author_id == request.user.id %}
+            <div class="redirect-button">
+                {% if author_id == request.user.id %}
                 <input type="submit" class="delete-button" name="delete-button" value="삭제">
                 <input type="submit" class="save-button" value="수정">
                 {% else %}

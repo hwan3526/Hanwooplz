@@ -5,21 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/qna_list.css' %}" />
-    <title>질의응답</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/qna/list.css' %}" />
+    <title>QnA</title>
 </head>
 
 <body>
     {% include "nav.html" %}
-    <article>
+    <main class="post-page">
         <div class="post-list">
-            <h2>질의응답</h2>
+            <h2>QnA</h2>
             <div class="select-group">
                 <form method="GET" action="" id="search-form">
                     <span class="select-text">SELECT</span>
                     <span>
-                        <select class="select-dropbox" id="search-select" name="search_type">
-                            <option value="title_content">제목+내용</option>
+                        <select class="select-dropbox" id="search-select" name="search-type">
+                            <option value="title-content">제목+내용</option>
                             <option value="writer">작성자</option>
                         </select>
                     </span>
@@ -27,7 +27,7 @@
                     <input type="submit" class="button-black" value="검색">
                 </form>
             </div>
-            {% if post_lists %}
+            {% if post_list %}
             <table class="board-table">
                 <thead>
                     <tr>
@@ -38,16 +38,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for post in post_lists %}
+                    {% for post in post_list %}
                     <tr>
-                        <td>{{ post.post_question }}</td>
+                        <td>{{ post.question_id }}</td>
                         <td>
-                            <a href="/qna/{{ post.post_question }}">
+                            <a href="/qna/{{ post.question_id }}">
                                 {{ post.title }}
                             </a>
                         </td>
                         <td>
-                            <a href="/myinfo/{{ post.author_id }}">
+                            <a href="/@{{ post.author }}">
                                 {{ post.author }}
                             </a>
                         </td>
@@ -59,7 +59,7 @@
             <div class="page">
             {% if page_obj.has_previous %}
                 {% if query %}
-                <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
+                <span><a href="?page={{ page_obj.previous_page_number }}&search-type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
                 {% else %}
                 <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
                 {% endif %}
@@ -69,13 +69,13 @@
             {% for page_number in page_obj.paginator.page_range %}
                 {% if page_number == page_obj.number %}
                     {% if query %}
-                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
+                    <span><a href="?page={{ page_number }}&search-type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
                     {% else %}
                     <span><a href="?page={{ page_number }}"><b>{{ page_number }}</b></a></span>
                     {% endif %}
                 {% else %}
                     {% if query %}
-                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                    <span><a href="?page={{ page_number }}&search-type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
                     {% else %}
                     <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
                     {% endif %}
@@ -83,7 +83,7 @@
             {% endfor %}
             {% if page_obj.has_next %}
                 {% if query %}
-                <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
+                <span><a href="?page={{ page_obj.next_page_number }}&search-type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
                 {% else %}
                 <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
                 {% endif %}
@@ -94,17 +94,17 @@
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
             {% endif %}
-            <div class="button">
-                {% if user.is_authenticated %}
+            <div class="redirect-button">
+                {% if request.user.is_authenticated %}
                 <button class="button-black" onclick="window.location.href = '/qna/write/question'">글쓰기</button>
                 {% else %}
                 <button class="button-black" onclick="alert('로그인이 필요합니다.')">글쓰기</button>
                 {% endif %}
             </div>
         </div>
-    </article>
-    {% include "chatbot/chatbot.html" %}
+    </main>
+    <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
-<script src="{% static 'js/qna/qnaList.js' %}"></script>
+<script src="{% static 'js/qna/list.js' %}"></script>
 
 </html>

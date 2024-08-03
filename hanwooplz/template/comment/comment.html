@@ -4,7 +4,7 @@
     {% csrf_token %}
     <div class="comment-list">
     </div>
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
     <form method="post" action="">
         <textarea name="comment" id="comment-input" cols="30" rows="3"></textarea>
         <div id="comment-submit-button-wrapper">

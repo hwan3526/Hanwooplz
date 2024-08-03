@@ -13,9 +13,9 @@ function getCookie(name) {
     return cookieValue;
 }
 
-async function sendNotification(recipientId, postId) {
+async function sendApplication(recipientId, postId) {
     const csrftoken = getCookie('csrftoken');
-    const response = await fetch('/send_application/', {
+    const response = await fetch('/send-application/', {
         method: 'POST',
         body: JSON.stringify({ recipient_id: recipientId, post_id: postId }),
         headers: {
@@ -37,6 +37,6 @@ if (joinButton) {
     joinButton.addEventListener('click', function () {
         let recipientId = joinButton.getAttribute('data-recipient-id');
         let postId = joinButton.getAttribute('data-post-id');
-        sendNotification(recipientId, postId);
+        sendApplication(recipientId, postId);
     });
 }

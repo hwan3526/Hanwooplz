@@ -4,23 +4,6 @@ main {
     height: 100%;
 }
 
-picture {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: white;
-}
-
-picture img {
-    width: 80%;
-    height: 100%;
-    background-color: white;
-    object-fit: contain;
-}
-
 a:hover {
     cursor: pointer;
 }
@@ -29,20 +12,22 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 600px;
     height: auto;
     padding-top: 70px;
     padding-bottom: 20px;
-    margin-bottom: 100px;
+    margin: 0 auto;
 }
 
-.post-container {
+.question-container {
     display: flex;
     flex-direction: column;
     align-items: start;
+    width: 100%;
     max-width: 100%;
     padding: 20px;
-    padding-top: 100px;
-    margin-top: 100px;
+    margin: 70px 0px 0px 0px;
     border-radius: 5px;
     background-color: #f7f7f7;
     text-align: center;
@@ -51,31 +36,8 @@ a:hover {
     transition: transform 0.3s;
 }
 
-.post-container:hover {
+.question-container:hover {
     transform: scale(1);
-}
-
-#deprecated {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background-color: #777777;
-    color: white;
-    font-size: 48px;
-    opacity: 0.7;
-}
-
-.title-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 36px;
-    margin-top: 20px;
 }
 
 .title {
@@ -85,69 +47,11 @@ a:hover {
     line-height: normal;
 }
 
-#status-form {
-    height: inherit;
-}
-
-#status-select {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85px;
-    height: inherit;
-    padding-left: 5px;
-    border: 0px;
-    border-radius: 8px;
-}
-
-.project-status {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85px;
-    height: 100%;
-    border-radius: 8px;
-    background-color: #0077b5;
-    color: white;
-}
-
-.info-box,
-.content-box {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
-.info-title,
-.content-title {
-    color: #777777;
-}
-
-.info-content,
-.content {
-    display: block;
-    align-items: center;
-    padding: 5px;
-    border-radius: 8px;
-    background-color: #eaeaea;
-    font-size: large;
-    line-height: normal;
-}
-
-.content-box {
-    width: 100%;
-}
-
-.content {
-    width: 100%;
-    margin-top: 0px;
-}
-
-.tech-stack-conatiner {
+.keyword-conatiner {
     margin: 10px 0;
 }
 
-.tech-stack {
+.keyword {
     display: inline-block;
     padding: 5px 10px;
     margin-right: 5px;
@@ -158,9 +62,16 @@ a:hover {
 }
 
 .content {
-    margin-top: 20px;
+    display: block;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    margin-top: 0px;
+    border-radius: 8px;
+    background-color: #eaeaea;
     color: #333333;
-    font-size: 16px;
+    font-size: large;
+    line-height: normal;
 }
 
 .subsidiary {
@@ -196,7 +107,29 @@ a:hover {
     transition: background-color 0.3s;
 }
 
-.button_list_edit {
+.action-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.action-button a {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    background: #3498db;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.action-buttons a:hover {
+    background-color: #555555;
+}
+
+.redirect-button {
     display: flex;
     flex-direction: row;
     justify-content: right;
@@ -216,10 +149,33 @@ a:hover {
     transition: background-color 0.3s;
 }
 
+.button-black:last-child {
+    margin-right: 0;
+}
+
 .button-black:hover {
     background-color: #555555;
 }
 
-.button-black:last-child {
-    margin-right: 0;
+#comment-wrapper {
+    display: none;
+}
+
+.answer-container-wrapper {
+    margin: 30px 0px 150px 0px;
+}
+
+.answer-container {
+    width: 100%;
+    padding: 20px;
+    margin: 30px 0px 0px 0px;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    text-align: center;
+    box-shadow: 0 0 10px #0000001a;
+    transition: transform 0.3s;
+}
+
+.answer-container:hover {
+    transform: scale(1.05);
 }
