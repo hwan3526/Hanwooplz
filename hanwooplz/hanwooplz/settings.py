@@ -49,14 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'index',
     'account',
+    'post',
     'portfolio',
     'project',
     'qna',
     'comment',
-    'chat',
     'notification',
-    'chatbot',
-    'post',
+    # 'chat',
+    # 'chatbot',
 ]
 
 ASGI_APPLICATION = 'hanwooplz.asgi.application'
