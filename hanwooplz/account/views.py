@@ -1,3 +1,4 @@
+import os
 from pyexpat.errors import messages
 
 from django.contrib.auth import authenticate, login, logout as log_out, get_user_model
@@ -6,6 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.views import View
 
+from hanwooplz.settings import BASE_DIR
 from account.forms import LoginForm, CustomUserCreationForm, UserProfileForm
 from account.models import UserProfile
 from post.models import Post
@@ -169,14 +171,17 @@ def edit_profile(request):
 
         if form.is_valid():
             user_profile = form.save(commit=False)
-            
+
             if 'profile_image' in request.FILES:
+                if user_profile.profile_image:
+                    user_profile_old = UserProfile.objects.get(id=request.user.id)
+                    os.remove(BASE_DIR / user_profile_old.profile_image.name)
                 profile_image = request.FILES['profile_image']
                 filename = f'{request.user.username}_{profile_image.name}'
                 user_profile.profile_image.save(filename, profile_image)
-            
+
             user_profile.save()
-            
+
             return redirect('/@'+request.user.username)
     else:
         form = UserProfileForm(instance=request.user)

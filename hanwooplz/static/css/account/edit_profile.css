@@ -26,6 +26,38 @@ body {
     margin-bottom: 15px;
 }
 
+.login-form .profile-image-button {
+    display: flex;
+    margin-top: 5px;
+}
+
+.login-form #profile_image-clear_id {
+    display: none;
+}
+
+.login-form #profile-image-clear,
+.login-form #profile-image-upload {
+    width: fit-content;
+    padding: 5px 10px;
+    margin: 0 8px 0 0;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    animation: scaleUp 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.login-form #profile-image-clear:hover,
+.login-form #profile-image-upload:hover {
+    background-color: #555555;
+}
+
+.login-form #id_profile_image {
+    display: none;
+}
+
 .login-form label {
     display: block;
     color: black;

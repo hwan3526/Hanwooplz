@@ -78,10 +78,10 @@ class UserProfileForm(forms.ModelForm):
         model = User
         fields = ['profile_image', 'username', 'email', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
         labels = {
-            'profile_image': '프로필 이미지',            
+            'profile_image': '프로필 이미지',
             'username': '유저 아이디',
-            'full_name': '이름', 
-            'job': '직무', 
+            'full_name': '이름',
+            'job': '직무',
             'tech_stack': '주력 기술 스택',
             'career': '경력',
             'career_detail': '경력 세부사항',
