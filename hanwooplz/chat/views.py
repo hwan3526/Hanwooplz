@@ -54,7 +54,7 @@ def get_rooms(request):
 
     return latest_messages
 
-@login_required
+@login_required(login_url='/login')
 def current_chat(request, room_number, receiver_id):
     current_chat = None
     formatted_chat_msgs = []
@@ -125,7 +125,7 @@ def current_chat(request, room_number, receiver_id):
 
     return render(request, 'chat/chat.html', context)
 
-@login_required
+@login_required(login_url='/login')
 def chat_msg(request, room_number):
     room = get_object_or_404(ChatRoom, pk=room_number)
 

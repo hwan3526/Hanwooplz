@@ -92,7 +92,7 @@ def read(request, project_id=None):
         messages.info('올바르지 않은 접근입니다.')
         return redirect('/project')
 
-@login_required(login_url='login')
+@login_required(login_url='/login')
 def write(request, project_id=None):
     if project_id:
         project = get_object_or_404(Project, id=project_id)

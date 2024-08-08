@@ -10,7 +10,7 @@ from post.models import Post
 from project.models import Project, ProjectMembers
 from notification.models import Notification
 
-@login_required
+@login_required(login_url='/login')
 @ensure_csrf_cookie
 def send_application(request):
     if request.method == 'POST':

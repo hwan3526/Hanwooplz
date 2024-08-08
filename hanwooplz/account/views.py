@@ -35,7 +35,11 @@ class LoginView(View):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('/index')
+                next = request.GET.get('next')
+                if next:
+                    return redirect(next)
+                else:
+                    return redirect('/index')
             else:
                 messages.error(request, '로그인에 실패했습니다. 올바른 아이디와 비밀번호를 입력하세요.')
 
@@ -164,7 +168,7 @@ def user_info(request, username):
     }
     return render(request, 'account/user_info.html', context)
 
-@login_required
+@login_required(login_url='/login')
 def edit_profile(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
@@ -190,7 +194,7 @@ def edit_profile(request):
 
     return render(request, 'account/edit_profile.html', {'form': form})
 
-@login_required
+@login_required(login_url='/login')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

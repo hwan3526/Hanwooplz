@@ -82,7 +82,7 @@ def read(request, portfolio_id=None):
         messages.info('올바르지 않은 접근입니다.')
         return redirect('/portfolio')
 
-@login_required(login_url='login')
+@login_required(login_url='/login')
 def write(request, portfolio_id=None):
     if portfolio_id:
         portfolio = get_object_or_404(Portfolio, id=portfolio_id)

@@ -104,7 +104,7 @@ def read(request, question_id=None):
         messages.info('올바르지 않은 접근입니다.')
         return redirect('/qna')
 
-@login_required(login_url='login')
+@login_required(login_url='/login')
 def write_question(request, question_id=None):
     if question_id:
         question = get_object_or_404(Question, id=question_id)
@@ -160,7 +160,7 @@ def write_question(request, question_id=None):
         else:
             return render(request, 'qna/write_question.html')
 
-@login_required(login_url='login')
+@login_required(login_url='/login')
 def write_answer(request, question_id, answer_id=None):
     if question_id:
         question = get_object_or_404(Question, id=question_id)
@@ -241,7 +241,7 @@ def write_answer(request, question_id, answer_id=None):
             }
             return render(request, 'qna/write_answer.html', context)
 
-@login_required
+@login_required(login_url='/login')
 def like(request, question_id, answer_id=None):
     if request.user.is_authenticated:
         if not answer_id:
