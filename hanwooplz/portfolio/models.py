@@ -1,7 +1,7 @@
 from django.db import models
 
-from post.models import PostPnP
+from post.models import PnP
 
 
-class PostPortfolio(PostPnP):
+class Portfolio(PnP):
     members = models.IntegerField(default=1)

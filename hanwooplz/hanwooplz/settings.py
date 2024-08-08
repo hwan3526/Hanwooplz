@@ -168,10 +168,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / 'static',
 ]
-PROFILE_URL = 'profile/'
-PROFILE_ROOT = BASE_DIR / 'profile'
+PROFILE_URL = 'profile_image/'
+PROFILE_ROOT = BASE_DIR / 'static/profile_image'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

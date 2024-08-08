@@ -15,8 +15,8 @@
         <div class="profile-info">
             <div class="profile-left">
                 <div class="profile-pic-wrapper">
-                    {% if user_img %}
-                    <div class="profile-pic"><img src="{{ user_img.url }}">
+                    {% if profile_image %}
+                    <div class="profile-pic"><img src="{{ profile_image.url }}">
                     {% else %}
                     <div class="profile-pic"><img src="{% static 'img/basicuser.png' %}">
                     {% endif %}

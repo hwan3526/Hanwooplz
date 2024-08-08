@@ -1,9 +1,9 @@
 from django import forms
 
-from project.models import PostProject
+from project.models import Project
 
 
-class PostProjectForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
-        model = PostProject
+        model = Project
         fields = ['start_date', 'end_date', 'target_members', 'tech_stack', 'ext_link']

@@ -3,6 +3,7 @@
 !**/migrations/__init__.py
 hanwooplz/hanwooplz/secrets.json
 hanwooplz/static/js/tinymce
+hanwooplz/static/profile_image
 
 # Created by https://www.toptal.com/developers/gitignore/api/django,macos,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,macos,windows,visualstudiocode

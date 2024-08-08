@@ -7,8 +7,8 @@ from django.db.models import Q
 
 from account.models import UserProfile
 from post.models import Post
-from project.models import PostProject, ProjectMembers
-from notification.models import Notifications
+from project.models import Project, ProjectMembers
+from notification.models import Notification
 
 @login_required
 @ensure_csrf_cookie
@@ -25,9 +25,9 @@ def send_application(request):
             sender = UserProfile.objects.get(pk=sender_id)
 
             # 중복 레코드 방지를 위해 먼저 확인
-            if not Notifications.objects.filter(user=recipient, sender=sender, post=post).exists():
+            if not Notification.objects.filter(user=recipient, sender=sender, post=post).exists():
                 # 중복 레코드가 없을 때만 알림 메시지 생성
-                notification = Notifications(user=recipient, sender=sender, post=post, accept_or_not=None)
+                notification = Notification(user=recipient, sender=sender, post=post, accept_or_not=None)
                 notification.save()
                 success = True
             else:
@@ -49,7 +49,7 @@ def mark_notifications_as_read(request):
 
             for notification_id in notification_ids:
                 try:
-                    notification = Notifications.objects.get(id=notification_id)
+                    notification = Notification.objects.get(id=notification_id)
 
                     # 현재 사용자가 해당 알림을 소유하고 있는지 확인
                     if request.user == notification.sender:
@@ -57,7 +57,7 @@ def mark_notifications_as_read(request):
                         notification.save()  # 데이터베이스에 변경사항 저장
                     else:
                         return JsonResponse({'success': False, 'error': '권한이 없습니다.'})
-                except Notifications.DoesNotExist:
+                except Notification.DoesNotExist:
                     return JsonResponse({'success': False, 'error': f'알림을 찾을 수 없습니다: {notification_id}'})
             return JsonResponse({'success': True})
         except json.JSONDecodeError:
@@ -67,12 +67,12 @@ def mark_notifications_as_read(request):
 
 def get_notifications(request):
     if request.user.is_authenticated:
-        notifications = Notifications.objects.filter(Q(user=request.user) | Q(sender=request.user)).order_by('-created_at')
+        notifications = Notification.objects.filter(Q(user=request.user) | Q(sender=request.user)).order_by('-created_at')
 
         notifications_list = []
         for notification in notifications:
             postinfo = Post.objects.get(id=notification.post.id)
-            projectinfo = PostProject.objects.get(post_id=postinfo.id)
+            projectinfo = Project.objects.get(post_id=postinfo.id)
             senderinfo = UserProfile.objects.get(id=notification.sender.id)
             created_at_formatted = notification.created_at.strftime('%Y-%m-%d %H:%M')
             notifications_list.append({
@@ -101,7 +101,7 @@ def accept_reject_notification(request):
             
             if notification_id is not None and result is not None:
                 try:
-                    notification = Notifications.objects.get(id=notification_id)
+                    notification = Notification.objects.get(id=notification_id)
 
                     if result == '수락':
                         notification.accept_or_not = True
@@ -109,7 +109,7 @@ def accept_reject_notification(request):
                         
                         # 추가적인 작업을 수행 (예: ProjectMembers에 멤버 추가)
                         sender = notification.sender.id
-                        projectinfo = PostProject.objects.get(post_id=notification.post.id)
+                        projectinfo = Project.objects.get(post_id=notification.post.id)
                         projectid = projectinfo.id
                         ProjectMembers.objects.create(members_id=sender, project_id=projectid)
                         members = ProjectMembers.objects.filter(project_id=projectid).count()
@@ -124,7 +124,7 @@ def accept_reject_notification(request):
                     response_data = {'success': True}
                     return JsonResponse(response_data)
 
-                except Notifications.DoesNotExist:
+                except Notification.DoesNotExist:
                     response_data = {'success': False, 'error': '알림을 찾을 수 없습니다.'}
                     return JsonResponse(response_data)
 

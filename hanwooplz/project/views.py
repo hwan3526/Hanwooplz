@@ -6,15 +6,15 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 from post.forms import PostForm
-from project.forms import PostProjectForm
+from project.forms import ProjectForm
 from account.models import UserProfile
 from post.models import Post
-from project.models import PostProject, ProjectMembers
+from project.models import Project, ProjectMembers
 
 def list(request, page_num=1):
     items_per_page = 9
 
-    project = PostProject.objects.order_by('-id')
+    project = Project.objects.order_by('-id')
     project_list = []
 
     query = request.GET.get('search')
@@ -52,7 +52,7 @@ def list(request, page_num=1):
                     'title': post.title,
                     'author': author.username,
                     'created_at': post.created_at,
-                    'tech_stack': project.tech_stack[0],
+                    'tech_stack': project.tech_stack.split()[0],
                     'status': status,
                 })
 
@@ -67,7 +67,7 @@ def list(request, page_num=1):
 
 def read(request, project_id=None):
     if project_id:
-        project = get_object_or_404(PostProject, id=project_id)
+        project = get_object_or_404(Project, id=project_id)
         post = get_object_or_404(Post, id=project.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
         members = ProjectMembers.objects.filter(project=project_id).count()
@@ -80,7 +80,7 @@ def read(request, project_id=None):
             'end_date': project.end_date,
             'members': members,
             'target_members': project.target_members,
-            'tech_stack': project.tech_stack,
+            'tech_stack': project.tech_stack.split(),
             'ext_link': project.ext_link,
             'content': post.content,
             'status': project.status,
@@ -95,10 +95,10 @@ def read(request, project_id=None):
 @login_required(login_url='login')
 def write(request, project_id=None):
     if project_id:
-        project = get_object_or_404(PostProject, id=project_id)
+        project = get_object_or_404(Project, id=project_id)
         post = get_object_or_404(Post, id=project.post_id)
     else:
-        project = PostProject()
+        project = Project()
         post = Post()
     
     if request.method == 'POST':
@@ -106,10 +106,8 @@ def write(request, project_id=None):
             post.delete()
             return redirect('/project')
         
-        request.POST._mutable = True
-        request.POST['tech_stack'] = request.POST.get('tech_stack').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        project_form = PostProjectForm(request.POST, request.FILES, instance=project)
+        project_form = ProjectForm(request.POST, request.FILES, instance=project)
 
         if post_form.is_valid() and project_form.is_valid():
             post = post_form.save(commit=False)
@@ -121,7 +119,7 @@ def write(request, project_id=None):
                 project.save()
                 project_id = project.id
                 user = get_object_or_404(UserProfile, id=request.user.id)
-                project = get_object_or_404(PostProject, id=project_id)
+                project = get_object_or_404(Project, id=project_id)
                 ProjectMembers.objects.create(project=project, members=user)
             else:
                 post.save()
@@ -151,7 +149,7 @@ def write(request, project_id=None):
                     'start_date': start_date,
                     'end_date': end_date,
                     'target_members': project.target_members,
-                    'tech_stack': ' '.join(project.tech_stack),
+                    'tech_stack': project.tech_stack,
                     'ext_link': project.ext_link,
                     'content': post.content,
                     'author_id': post.author_id,
@@ -167,7 +165,7 @@ def update_status(request):
     if request.method == 'POST':
         project_id = request.POST.get('project_id')
         status = request.POST.get('status')
-        project = get_object_or_404(PostProject, id=project_id)
+        project = get_object_or_404(Project, id=project_id)
         project.status = status
         project.save()
         return JsonResponse({'success': True})

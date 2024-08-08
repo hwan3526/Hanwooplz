@@ -43,7 +43,7 @@ textarea {
     resize: none;
 }
 
-.login-form #user-img {
+.login-form #profile-image {
     width: 100px;
     height: 100px;
 }

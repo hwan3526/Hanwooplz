@@ -1,10 +1,10 @@
-const idUserImg = document.getElementById('id_user_img');
-const userImg = document.getElementById('user-img');
+const idProfileImage = document.getElementById('id_profile_image');
+const profileImage = document.getElementById('profile-image');
 
-idUserImg.addEventListener("change", function () {
-    userImg.src = URL.createObjectURL(this.files[0]);
+idProfileImage.addEventListener("change", function () {
+    profileImage.src = URL.createObjectURL(this.files[0]);
 });
 
-userImg.addEventListener("load", function () {
-    URL.revokeObjectURL(userImg.src)
+profileImage.addEventListener("load", function () {
+    URL.revokeObjectURL(profileImage.src)
 });

@@ -5,15 +5,15 @@ from django.db.models import Q
 from django.contrib import messages
 
 from post.forms import PostForm
-from portfolio.forms import PostPortfolioForm
+from portfolio.forms import PortfolioForm
 from account.models import UserProfile
 from post.models import Post
-from portfolio.models import PostPortfolio
+from portfolio.models import Portfolio
 
 def list(request, page_num=1):
     items_per_page = 9
 
-    portfolio = PostPortfolio.objects.order_by('-id')
+    portfolio = Portfolio.objects.order_by('-id')
     portfolio_list = []
 
     query = request.GET.get('search')
@@ -46,7 +46,7 @@ def list(request, page_num=1):
                     'title': post.title,
                     'author': author.username,
                     'created_at': post.created_at,
-                    'tech_stack': portfolio.tech_stack[0],
+                    'tech_stack': portfolio.tech_stack.split()[0]
                 })
 
     context = {
@@ -60,7 +60,7 @@ def list(request, page_num=1):
 
 def read(request, portfolio_id=None):
     if portfolio_id:
-        portfolio = get_object_or_404(PostPortfolio, id=portfolio_id)
+        portfolio = get_object_or_404(Portfolio, id=portfolio_id)
         post = get_object_or_404(Post, id=portfolio.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
         context = {
@@ -71,7 +71,7 @@ def read(request, portfolio_id=None):
             'start_date': portfolio.start_date,
             'end_date': portfolio.end_date,
             'members': portfolio.members,
-            'tech_stack': portfolio.tech_stack,
+            'tech_stack': portfolio.tech_stack.split(),
             'ext_link': portfolio.ext_link,
             'content': post.content,
             'post_id': post.id,
@@ -85,10 +85,10 @@ def read(request, portfolio_id=None):
 @login_required(login_url='login')
 def write(request, portfolio_id=None):
     if portfolio_id:
-        portfolio = get_object_or_404(PostPortfolio, id=portfolio_id)
+        portfolio = get_object_or_404(Portfolio, id=portfolio_id)
         post = get_object_or_404(Post, id=portfolio.post_id)
     else:
-        portfolio = PostPortfolio()
+        portfolio = Portfolio()
         post = Post()
     
     if request.method == 'POST':
@@ -96,10 +96,8 @@ def write(request, portfolio_id=None):
             post.delete()
             return redirect('/portfolio')
         
-        request.POST._mutable = True
-        request.POST['tech_stack'] = request.POST.get('tech_stack').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        portfolio_form = PostPortfolioForm(request.POST, request.FILES, instance=portfolio)
+        portfolio_form = PortfolioForm(request.POST, request.FILES, instance=portfolio)
 
         if post_form.is_valid() and portfolio_form.is_valid():
             post = post_form.save(commit=False)
@@ -138,7 +136,7 @@ def write(request, portfolio_id=None):
                     'start_date': start_date,
                     'end_date': end_date,
                     'members': portfolio.members,
-                    'tech_stack': ' '.join(portfolio.tech_stack),
+                    'tech_stack': portfolio.tech_stack,
                     'ext_link': portfolio.ext_link,
                     'content': post.content,
                     'author_id': post.author_id,

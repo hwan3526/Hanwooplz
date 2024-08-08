@@ -1,9 +1,9 @@
 from django import forms
 
-from qna.models import PostQuestion
+from qna.models import Question
 
 
-class PostQuestionForm(forms.ModelForm):
+class QuestionForm(forms.ModelForm):
     class Meta:
-        model = PostQuestion
+        model = Question
         fields = ['keyword']

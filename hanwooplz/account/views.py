@@ -9,9 +9,9 @@ from django.views import View
 from account.forms import LoginForm, CustomUserCreationForm, UserProfileForm
 from account.models import UserProfile
 from post.models import Post
-from portfolio.models import PostPortfolio
-from project.models import PostProject
-from qna.models import PostQuestion
+from portfolio.models import Portfolio
+from project.models import Project
+from qna.models import Question, Answer
 
 
 class LoginView(View):
@@ -113,7 +113,7 @@ def user_info(request, username):
 
     for post in posts:
         if post.category == 0:
-            portfolio = PostPortfolio.objects.filter(post=post).first()
+            portfolio = Portfolio.objects.filter(post=post).first()
             portfolio_list.append({
                 'title': post.title,
                 'content': post.content,
@@ -121,7 +121,7 @@ def user_info(request, username):
                 'portfolio_id': portfolio.id,
             })
         elif post.category == 1:
-            project = PostProject.objects.filter(post=post).first()
+            project = Project.objects.filter(post=post).first()
             project_list.append({
                 'title': post.title,
                 'content': post.content,
@@ -129,9 +129,16 @@ def user_info(request, username):
                 'project_id': project.id,
             })
         elif post.category == 2:
-            qna = PostQuestion.objects.filter(post=post).first()
+            qna = Question.objects.filter(post=post).first()
             qna_list.append({
                 'title': post.title,
+                'content': post.content,
+                'created_at': post.created_at,
+                'qna_id': qna.id,
+            })
+        elif post.category == 3:
+            qna = Answer.objects.filter(post=post).first()
+            qna_list.append({
                 'content': post.content,
                 'created_at': post.created_at,
                 'qna_id': qna.id,
@@ -142,13 +149,13 @@ def user_info(request, username):
         'username': user_info.username,
         'full_name': user_info.full_name,
         'job': user_info.job,
-        'tech_stack': user_info.tech_stack,
+        'tech_stack': user_info.tech_stack.split(),
         'career': user_info.career,
         'career_detail': user_info.career_detail,
         'introduction': user_info.introduction,
         'github_link': user_info.github_link,
         'linkedin_link': user_info.linkedin_link,
-        'user_img': user_info.user_img,
+        'profile_image': user_info.profile_image,
         'portfolio_list': portfolio_list,
         'project_list': project_list,
         'qna_list': qna_list,
@@ -163,14 +170,14 @@ def edit_profile(request):
         if form.is_valid():
             user_profile = form.save(commit=False)
             
-            if 'user_img' in request.FILES:
-                user_img = request.FILES['user_img']
-                filename = f'user_img_{user_profile.id}_{user_img.name}'
-                user_profile.user_img.save(filename, user_img)
+            if 'profile_image' in request.FILES:
+                profile_image = request.FILES['profile_image']
+                filename = f'{request.user.username}_{profile_image.name}'
+                user_profile.profile_image.save(filename, profile_image)
             
             user_profile.save()
             
-            return redirect('/@'+form.fields['username'])
+            return redirect('/@'+request.user.username)
     else:
         form = UserProfileForm(instance=request.user)
         form.fields['username'].widget.attrs['readonly'] = True

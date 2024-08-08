@@ -5,15 +5,15 @@ from django.db.models import Q
 from django.contrib import messages
 
 from post.forms import PostForm
-from qna.forms import PostQuestionForm
+from qna.forms import QuestionForm
 from account.models import UserProfile
 from post.models import Post
-from qna.models import PostQuestion, PostAnswer, AnswerLike
+from qna.models import Question, Answer, AnswerLike
 
 def list(request, page_num=1):
     items_per_page = 10
 
-    question = PostQuestion.objects.order_by('-id')
+    question = Question.objects.order_by('-id')
     question_list = []
 
     query = request.GET.get('search')
@@ -59,11 +59,11 @@ def list(request, page_num=1):
 
 def read(request, question_id=None):
     if question_id:
-        question = get_object_or_404(PostQuestion, id=question_id)
+        question = get_object_or_404(Question, id=question_id)
         post_q = get_object_or_404(Post, id=question.post_id)
         author_q = get_object_or_404(UserProfile, id=post_q.author_id)
 
-        answer = PostAnswer.objects.filter(question_id=question_id)
+        answer = Answer.objects.filter(question_id=question_id)
         if answer:
             post_a = Post.objects.filter(id__in=answer.values_list('post_id', flat=True))
             author_a = UserProfile.objects.filter(id__in=post_a.values_list('author_id', flat=True))
@@ -90,7 +90,7 @@ def read(request, question_id=None):
             'title': post_q.title,
             'author': author_q.username,
             'created_at': post_q.created_at,
-            'keyword': question.keyword,
+            'keyword': question.keyword.split(),
             'content': post_q.content,
             'like': question.like.count(),
             'post_id': post_q.id,
@@ -107,10 +107,10 @@ def read(request, question_id=None):
 @login_required(login_url='login')
 def write_question(request, question_id=None):
     if question_id:
-        question = get_object_or_404(PostQuestion, id=question_id)
+        question = get_object_or_404(Question, id=question_id)
         post = get_object_or_404(Post, id=question.post_id)
     else:
-        question = PostQuestion()
+        question = Question()
         post = Post()
     
     if request.method == 'POST':
@@ -118,10 +118,8 @@ def write_question(request, question_id=None):
             post.delete()
             return redirect('/qna')
         
-        request.POST._mutable = True
-        request.POST['keyword'] = request.POST.get('keyword').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        question_form = PostQuestionForm(request.POST, request.FILES, instance=question)
+        question_form = QuestionForm(request.POST, request.FILES, instance=question)
 
         if post_form.is_valid() and question_form.is_valid():
             post = post_form.save(commit=False)
@@ -151,7 +149,7 @@ def write_question(request, question_id=None):
                 context = {
                     'question_id': question_id,
                     'title': post.title,
-                    'keyword': ' '.join(question.keyword),
+                    'keyword': question.keyword,
                     'content': post.content,
                     'author_id': post.author_id,
                 }
@@ -165,14 +163,14 @@ def write_question(request, question_id=None):
 @login_required(login_url='login')
 def write_answer(request, question_id, answer_id=None):
     if question_id:
-        question = get_object_or_404(PostQuestion, id=question_id)
+        question = get_object_or_404(Question, id=question_id)
         post_q = get_object_or_404(Post, id=question.post_id)
         author_q = get_object_or_404(UserProfile, id=post_q.author_id)
         if answer_id:
-            answer = get_object_or_404(PostAnswer, id=answer_id)
+            answer = get_object_or_404(Answer, id=answer_id)
             post_a = get_object_or_404(Post, id=answer.post_id)
         else:
-            answer = PostAnswer()
+            answer = Answer()
             post_a = Post()
     else:
         messages.info('올바르지 않은 접근입니다.')
@@ -207,7 +205,7 @@ def write_answer(request, question_id, answer_id=None):
                 'title': post_q.title,
                 'author': author_q.username,
                 'created_at': post_q.created_at,
-                'keyword': question.keyword,
+                'keyword': question.keyword.split(),
                 'content': post_q.content,
                 'author_id': author_q.id,
                 'answer': request.POST.get('answer'),
@@ -221,7 +219,7 @@ def write_answer(request, question_id, answer_id=None):
                     'title': post_q.title,
                     'author': author_q.username,
                     'created_at': post_q.created_at,
-                    'keyword': question.keyword,
+                    'keyword': question.keyword.split(),
                     'content': post_q.content,
                     'author_id': author_q.id,
                     'answer_id': answer_id,
@@ -237,7 +235,7 @@ def write_answer(request, question_id, answer_id=None):
                     'title': post_q.title,
                     'author': author_q.username,
                     'created_at': post_q.created_at,
-                    'keyword': question.keyword,
+                    'keyword': question.keyword.split(),
                     'content': post_q.content,
                     'author_id': author_q.id,
             }
@@ -247,9 +245,9 @@ def write_answer(request, question_id, answer_id=None):
 def like(request, question_id, answer_id=None):
     if request.user.is_authenticated:
         if not answer_id:
-            post = get_object_or_404(PostQuestion, id=question_id)
+            post = get_object_or_404(Question, id=question_id)
         else:
-            post = get_object_or_404(PostAnswer, id=answer_id)
+            post = get_object_or_404(Answer, id=answer_id)
         user = get_object_or_404(UserProfile, id=request.user.id)
 
         if user in post.like.all():

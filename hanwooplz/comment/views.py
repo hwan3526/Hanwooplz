@@ -13,7 +13,7 @@ class CommentList(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
-    def post (self, request, post_id):
+    def post(self, request, post_id):
         comment_data = {
             'content': request.data.get('content'),
         }
