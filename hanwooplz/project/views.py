@@ -114,6 +114,7 @@ def write(request, project_id=None):
             project = project_form.save(commit=False)
             if not project_id:
                 post.author_id = request.user.id
+                post.category = 1
                 post.save()
                 project.post_id = post.id
                 project.save()

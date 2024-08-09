@@ -111,43 +111,41 @@ def user_info(request, username):
     user_info = UserProfile.objects.filter(username=username).first()
     if not user_info:
         return redirect('/index')
-    posts = Post.objects.filter(author=user_info)
+    post_list = Post.objects.filter(author=user_info)
 
     portfolio_list = []
     project_list = []
-    qna_list = []
+    question_list = []
+    answer_list = []
 
-    for post in posts:
+    for post in post_list:
         if post.category == 0:
             portfolio = Portfolio.objects.filter(post=post).first()
             portfolio_list.append({
-                'title': post.title,
-                'content': post.content,
-                'created_at': post.created_at,
                 'portfolio_id': portfolio.id,
+                'title': post.title,
+                'created_at': post.created_at,
             })
         elif post.category == 1:
             project = Project.objects.filter(post=post).first()
             project_list.append({
-                'title': post.title,
-                'content': post.content,
-                'created_at': post.created_at,
                 'project_id': project.id,
+                'title': post.title,
+                'created_at': post.created_at,
             })
         elif post.category == 2:
-            qna = Question.objects.filter(post=post).first()
-            qna_list.append({
+            question = Question.objects.filter(post=post).first()
+            question_list.append({
+                'question_id': question.id,
                 'title': post.title,
-                'content': post.content,
                 'created_at': post.created_at,
-                'qna_id': qna.id,
             })
         elif post.category == 3:
-            qna = Answer.objects.filter(post=post).first()
-            qna_list.append({
+            answer = Answer.objects.filter(post=post).first()
+            answer_list.append({
+                'question_id': answer.question_id,
                 'content': post.content,
                 'created_at': post.created_at,
-                'qna_id': qna.id,
             })
 
     context = {
@@ -164,7 +162,8 @@ def user_info(request, username):
         'profile_image': user_info.profile_image,
         'portfolio_list': portfolio_list,
         'project_list': project_list,
-        'qna_list': qna_list,
+        'question_list': question_list,
+        'answer_list': answer_list,
     }
     return render(request, 'account/user_info.html', context)
 

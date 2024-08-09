@@ -245,7 +245,7 @@ body {
     transition: all .25s ease-in-out;
 }
 
-.profile-post-block {
+.profile-post-tab {
     display: block;
     padding: 1.2em 1.4em;
     border-radius: 5px;
@@ -255,15 +255,11 @@ body {
     transition: color .25s ease-in-out;
 }
 
-.profile-post-block:hover {
+.profile-post-tab:hover {
     background-color: #eeeeee;
 }
 
-#portfolio-tab {
-    background-color: #dddddd;
-}
-
-.profile-post-inner {
+.profile-post-body {
     align-items: center;
     position: relative;
     width: 100%;
@@ -273,18 +269,8 @@ body {
     grid-row-gap: 1em;
 }
 
-.profile-post-inner h2 {
-    padding-bottom: 10px;
-    border-bottom: 1px solid gray;
-}
-
-#portfolio-posts {
-    display: grid;
-}
-
-#project-posts,
-#qna-posts {
-    display: none;
+.profile-post-body>p {
+    margin-top: 5px;
 }
 
 .grid-item {
@@ -302,6 +288,14 @@ body {
     color: #333333;
     font-weight: bold;
     text-decoration: none;
+}
+
+.grid-item h2 {
+    padding-bottom: 10px;
+    white-space: nowrap;
+    border-bottom: 1px solid gray;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .grid-item p {

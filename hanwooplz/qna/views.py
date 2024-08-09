@@ -126,6 +126,7 @@ def write_question(request, question_id=None):
             question = question_form.save(commit=False)
             if not question_id:
                 post.author_id = request.user.id
+                post.category = 2
                 post.save()
                 question.post_id = post.id
                 question.save()
@@ -189,6 +190,7 @@ def write_answer(request, question_id, answer_id=None):
             post_a = post_form.save(commit=False)
             if not answer_id:
                 post_a.author_id = request.user.id
+                post_a.category = 3
                 post_a.save()
                 answer.post_id = post_a.id
                 answer.question_id = question_id

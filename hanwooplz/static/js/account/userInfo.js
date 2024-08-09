@@ -1,37 +1,59 @@
 const portfolioTab = document.getElementById('portfolio-tab');
 const projectTab = document.getElementById('project-tab');
-const qnaTab = document.getElementById('qna-tab');
+const questionTab = document.getElementById('question-tab');
+const answerTab = document.getElementById('answer-tab');
 
-const portfolioPosts = document.getElementById('portfolio-posts');
-const projectPosts = document.getElementById('project-posts');
-const qnaPosts = document.getElementById('qna-posts');
+const portfolioPost = document.getElementById('portfolio-post');
+const projectPost = document.getElementById('project-post');
+const questionPost = document.getElementById('question-post');
+const answerPost = document.getElementById('answer-post');
 
 portfolioTab.addEventListener('click', function () {
     portfolioTab.style.backgroundColor = '#dddddd';
-    projectTab.style.backgroundColor = 'white';
-    qnaTab.style.backgroundColor = 'white';
+    projectTab.style.backgroundColor = '';
+    questionTab.style.backgroundColor = '';
+    answerTab.style.backgroundColor = '';
 
-    portfolioPosts.style.display = 'grid';
-    projectPosts.style.display = 'none';
-    qnaPosts.style.display = 'none';
+    portfolioPost.style.display = 'grid';
+    projectPost.style.display = 'none';
+    questionPost.style.display = 'none';
+    answerPost.style.display = 'none';
 });
 
 projectTab.addEventListener('click', function () {
-    portfolioTab.style.backgroundColor = 'white';
+    portfolioTab.style.backgroundColor = '';
     projectTab.style.backgroundColor = '#dddddd';
-    qnaTab.style.backgroundColor = 'white';
+    questionTab.style.backgroundColor = '';
+    answerTab.style.backgroundColor = '';
 
-    portfolioPosts.style.display = 'none';
-    projectPosts.style.display = 'grid';
-    qnaPosts.style.display = 'none';
+    portfolioPost.style.display = 'none';
+    projectPost.style.display = 'grid';
+    questionPost.style.display = 'none';
+    answerPost.style.display = 'none';
 });
 
-qnaTab.addEventListener('click', function () {
-    portfolioTab.style.backgroundColor = 'white';
-    projectTab.style.backgroundColor = 'white';
-    qnaTab.style.backgroundColor = '#dddddd';
+questionTab.addEventListener('click', function () {
+    portfolioTab.style.backgroundColor = '';
+    projectTab.style.backgroundColor = '';
+    questionTab.style.backgroundColor = '#dddddd';
+    answerTab.style.backgroundColor = '';
 
-    portfolioPosts.style.display = 'none';
-    projectPosts.style.display = 'none';
-    qnaPosts.style.display = 'grid';
+    portfolioPost.style.display = 'none';
+    projectPost.style.display = 'none';
+    questionPost.style.display = 'grid';
+    answerPost.style.display = 'none';
 });
+
+answerTab.addEventListener('click', function () {
+    portfolioTab.style.backgroundColor = '';
+    projectTab.style.backgroundColor = '';
+    questionTab.style.backgroundColor = '';
+    answerTab.style.backgroundColor = '#dddddd';
+
+    portfolioPost.style.display = 'none';
+    projectPost.style.display = 'none';
+    questionPost.style.display = 'none';
+    answerPost.style.display = 'grid';
+});
+
+portfolioTab.click();

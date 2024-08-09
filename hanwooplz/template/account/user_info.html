@@ -83,16 +83,16 @@
         </div>
         <div class="profile-post">
             <div class="profile-post-nav">
-                <div id="portfolio-tab" class="profile-post-block">Portfolio</div>
-                <div id="project-tab" class="profile-post-block">Projects</div>
-                <div id="qna-tab" class="profile-post-block">QnA</div>
+                <div id="portfolio-tab" class="profile-post-tab">Portfolio</div>
+                <div id="project-tab" class="profile-post-tab">Project</div>
+                <div id="question-tab" class="profile-post-tab">Question</div>
+                <div id="answer-tab" class="profile-post-tab">Answer</div>
             </div>
-            <div id="portfolio-posts" class="profile-post-inner">
+            <div id="portfolio-post" class="profile-post-body">
                 {% if portfolio_list %}
                 {% for portfolio in portfolio_list %}
                 <div class="grid-item">
-                    <a
-                        href="/portfolio/{{ portfolio.portfolio_id }}">
+                    <a href="/portfolio/{{ portfolio.portfolio_id }}">
                         <h2>{{ portfolio.title }}</h2>
                     </a>
                     <p>게시일:{{ portfolio.created_at }}</p>
@@ -102,12 +102,11 @@
                 <p>표시할 포트폴리오 게시물이 없습니다.</p>
                 {% endif %}
             </div>
-            <div id="project-posts" class="profile-post-inner">
+            <div id="project-post" class="profile-post-body">
                 {% if project_list %}
                 {% for project in project_list %}
                 <div class="grid-item">
-                    <a
-                        href="/project/{{ project.project_id }}">
+                    <a href="/project/{{ project.project_id }}">
                         <h2>{{ project.title }}</h2>
                     </a>
                     <p>게시일:{{ project.created_at }}</p>
@@ -117,19 +116,32 @@
                 <p>표시할 프로젝트 게시물이 없습니다.</p>
                 {% endif %}
             </div>
-            <div id="qna-posts" class="profile-post-inner">
-                {% if qna_list %}
-                {% for qna in qna_list %}
+            <div id="question-post" class="profile-post-body">
+                {% if question_list %}
+                {% for question in question_list %}
                 <div class="grid-item">
-                    <a
-                        href="/qna/{{ qna.qna_id }}">
-                        <h2>{{ qna.title }}</h2>
+                    <a href="/qna/{{ question.question_id }}">
+                        <h2>{{ question.title }}</h2>
                     </a>
-                    <p>게시일:{{ qna.created_at }}</p>
+                    <p>게시일:{{ question.created_at }}</p>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p>표시할 QnA 게시물이 없습니다.</p>
+                <p>표시할 질문 게시물이 없습니다.</p>
+                {% endif %}
+            </div>
+            <div id="answer-post" class="profile-post-body">
+                {% if answer_list %}
+                {% for answer in answer_list %}
+                <div class="grid-item">
+                    <a href="/qna/{{ answer.question_id }}">
+                        <h2>{{ answer.content }}</h2>
+                    </a>
+                    <p>게시일:{{ answer.created_at }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>표시할 답변 게시물이 없습니다.</p>
                 {% endif %}
             </div>
         </div>

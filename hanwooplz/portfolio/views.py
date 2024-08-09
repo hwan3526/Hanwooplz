@@ -90,12 +90,12 @@ def write(request, portfolio_id=None):
     else:
         portfolio = Portfolio()
         post = Post()
-    
+
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
             return redirect('/portfolio')
-        
+
         post_form = PostForm(request.POST, request.FILES, instance=post)
         portfolio_form = PortfolioForm(request.POST, request.FILES, instance=portfolio)
 
@@ -104,6 +104,7 @@ def write(request, portfolio_id=None):
             portfolio = portfolio_form.save(commit=False)
             if not portfolio_id:
                 post.author_id = request.user.id
+                post.category = 0
                 post.save()
                 portfolio.post_id = post.id
                 portfolio.save()
