@@ -14,30 +14,33 @@
     <main class="profile">
         <div class="profile-info">
             <div class="profile-left">
-                <div class="profile-pic-wrapper">
+                <div class="profile-pic">
                     {% if profile_image %}
-                    <div class="profile-pic"><img src="{{ profile_image.url }}">
+                    <img src="{{ profile_image.url }}">
                     {% else %}
-                    <div class="profile-pic"><img src="{% static 'img/basicuser.png' %}">
+                    <img src="{% static 'img/basicuser.png' %}">
                     {% endif %}
                     {% if user_id == request.user.id %}
                     <a href="/edit-profile">프로필 수정</a>
                     {% endif %}
-                    </div>
-                    {% if request.user.is_authenticated and user_id != request.user.id %}
-                    <a href="/chat">채팅하기</a>
-                    {% endif %}
                 </div>
-                <div class="external-link-wrapper">
+                <div class="action-button-wrapper">
+                    {% if request.user.is_authenticated and user_id != request.user.id %}
+                    <div id="chat-link" class="action-button">
+                        <a href="/chat" target="_blank">
+                            <i class="fas fa-comment-dots"></i>
+                        </a>
+                    </div>
+                    {% endif %}
                     {% if github_link %}
-                    <div id="github-link" class="external-link">
+                    <div id="github-link" class="action-button">
                         <a href="{{ github_link }}" target="_blank">
                             <i class="fab fa-github"></i>
                         </a>
                     </div>
                     {% endif %}
                     {% if linkedin_link %}
-                    <div id="linkedin-link" class="external-link">
+                    <div id="linkedin-link" class="action-button">
                         <a href="{{ linkedin_link }}" target="_blank">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
@@ -146,7 +149,7 @@
             </div>
         </div>
     </main>
-    {% include "chatbot/chatbot.html" %}
+    <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
 <script src="{% static 'js/account/userInfo.js' %}"></script>
 
