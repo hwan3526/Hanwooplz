@@ -49,7 +49,7 @@
                         {% elif post.status == 2 %}
                         <p id="deprecated">모집 완료</p>
                         {% endif %}
-                        <img src="{% static 'img/'|add:post.tech_stack|add:'.svg' %}">
+                        <img src="{% static 'img/techstack/'|add:post.tech_stack|add:'.svg' %}">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-author">{{ post.author }}</p>

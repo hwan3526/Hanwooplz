@@ -32,7 +32,7 @@
                 {% for post in post_list %}
                 <a class="post-tile" href="/portfolio/{{ post.portfolio_id }}">
                     <picture class="post-thumbnail">
-                        <img src="{% static 'img/'|add:post.tech_stack|add:'.svg' %}">
+                        <img src="{% static 'img/techstack/'|add:post.tech_stack|add:'.svg' %}">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-author">{{ post.author }}</p>
