@@ -210,7 +210,7 @@ def write_answer(request, question_id, answer_id=None):
                 'keyword': question.keyword.split(),
                 'content': post_q.content,
                 'author_id': author_q.id,
-                'answer': request.POST.get('answer'),
+                'answer': request.POST.get('content'),
             }
             return render(request, 'qna/write_answer.html', context)
     else:

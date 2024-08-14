@@ -33,7 +33,7 @@
             enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
-                <textarea id="content" name="answer">{{ answer }}</textarea>
+                <textarea id="content" name="content">{{ answer }}</textarea>
             </div>
             <div class="redirect-button">
                 {% if author_id == request.user.id %}
