@@ -22,7 +22,7 @@
             <div class="title-box">
                 <h3 class="title">{{ title }}</h3>
                 {% if author_id == request.user.id %}
-                <form id="status-form" method="POST">
+                <form id="status-form" method="post">
                     {% csrf_token %}
                     <select id="status" name="status">
                         <option value="1">모집중</option>
