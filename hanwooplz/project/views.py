@@ -93,74 +93,96 @@ def read(request, project_id=None):
         return redirect('/project')
 
 @login_required(login_url='/login')
-def write(request, project_id=None):
-    if project_id:
-        project = get_object_or_404(Project, id=project_id)
-        post = get_object_or_404(Post, id=project.post_id)
-    else:
-        project = Project()
-        post = Post()
-    
+def write(request):
+    project = Project()
+    post = Post()
+
     if request.method == 'POST':
-        if 'delete-button' in request.POST:
-            post.delete()
-            return redirect('/project')
-        
         post_form = PostForm(request.POST, request.FILES, instance=post)
         project_form = ProjectForm(request.POST, request.FILES, instance=project)
 
         if post_form.is_valid() and project_form.is_valid():
             post = post_form.save(commit=False)
             project = project_form.save(commit=False)
-            if not project_id:
-                post.author_id = request.user.id
-                post.category = 1
-                post.save()
-                project.post_id = post.id
-                project.save()
-                project_id = project.id
-                user = get_object_or_404(UserProfile, id=request.user.id)
-                project = get_object_or_404(Project, id=project_id)
-                ProjectMembers.objects.create(project=project, members=user)
-            else:
-                post.save()
-                project.save()
 
-            return redirect('/project/'+project_id)
+            post.author_id = request.user.id
+            post.category = 1
+            post.save()
+            project.post_id = post.id
+            project.save()
+
+            return redirect('/project/'+str(project.id))
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
                 'title': request.POST.get('title'),
                 'start_date': request.POST.get('start_date'),
                 'end_date': request.POST.get('end_date'),
-                'target_members': request.POST.get('members'),
+                'target_members': request.POST.get('target_members'),
                 'tech_stack': request.POST.get('tech_stack'),
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
             return render(request, 'project/write.html', context)
     else:
-        if project_id:
-            if request.user.id == post.author_id:
-                start_date = str(project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
-                end_date = str(project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
-                context = {
-                    'project_id': project_id,
-                    'title': post.title,
-                    'start_date': start_date,
-                    'end_date': end_date,
-                    'target_members': project.target_members,
-                    'tech_stack': project.tech_stack,
-                    'ext_link': project.ext_link,
-                    'content': post.content,
-                    'author_id': post.author_id,
-                }
-                return render(request, 'project/write.html', context)
-            else:
-                messages.info('올바르지 않은 접근입니다.')
-                return redirect('/project/'+project_id)
+        return render(request, 'project/write.html')
+
+@login_required(login_url='/login')
+def edit(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    post = get_object_or_404(Post, id=project.post_id)
+
+    if request.method == 'POST':        
+        post_form = PostForm(request.POST, request.FILES, instance=post)
+        project_form = ProjectForm(request.POST, request.FILES, instance=project)
+
+        if post_form.is_valid() and project_form.is_valid():
+            post_form.save()
+            project_form.save()
+
+            return redirect('/project/'+str(project_id))
         else:
-            return render(request, 'project/write.html')
+            messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
+            context={
+                'title': request.POST.get('title'),
+                'start_date': request.POST.get('start_date'),
+                'end_date': request.POST.get('end_date'),
+                'target_members': request.POST.get('target_members'),
+                'tech_stack': request.POST.get('tech_stack'),
+                'ext_link': request.POST.get('ext_link'),
+                'content': request.POST.get('content'),
+            }
+            return render(request, 'project/write.html', context)
+    else:
+        if request.user.id == post.author_id:
+            start_date = str(project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
+            end_date = str(project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
+            context = {
+                'project_id': project_id,
+                'title': post.title,
+                'start_date': start_date,
+                'end_date': end_date,
+                'target_members': project.target_members,
+                'tech_stack': project.tech_stack,
+                'ext_link': project.ext_link,
+                'content': post.content,
+                'author_id': post.author_id,
+            }
+            return render(request, 'project/write.html', context)
+        else:
+            messages.info('올바르지 않은 접근입니다.')
+            return redirect('/project/'+str(project_id))
+
+@login_required(login_url='/login')
+def delete(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    post = get_object_or_404(Post, id=project.post_id)
+
+    if request.user.id == post.author_id:
+        post.delete()
+        return redirect('/project')
+    else:
+        return redirect('/project/'+str(project_id))
 
 def update_status(request):
     if request.method == 'POST':
@@ -170,4 +192,5 @@ def update_status(request):
         project.status = status
         project.save()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+    else:
+        return JsonResponse({'success': False})

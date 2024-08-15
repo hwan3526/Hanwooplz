@@ -1,12 +1,14 @@
-body{
+body {
   background-color: #f8f9fa;
 }
 
-textarea{
+textarea {
   width: 100%;
   height: 500px;
+  padding: 11px 16px;
   border: none;
   resize: none;
+  box-sizing: border-box;
 }
 
 .main {
@@ -16,12 +18,6 @@ textarea{
   top: 70px;
   padding-top: 30px;
   margin-bottom: 400px;
-}
-
-.main form {
-  display: block;
-  flex-direction: row; 
-  gap: 20px;
 }
 
 .write-box input {
@@ -35,7 +31,7 @@ textarea{
   outline: none;
 }
 
-.redirect-button {
+.submit-button-wrapper {
   display: flex;
   justify-content: right;
   width: 100%;
@@ -43,23 +39,7 @@ textarea{
   margin-top: 5px;
 }
 
-.delete-button {
-  display: flex;
-  justify-content: center;
-  width: 100px;
-  height: 25px;
-  margin-right: 5px;
-  border: 1px solid #1e1e1e;
-  border-radius: 3px;
-  background-color: #f8f9fa;
-  color: #1e1e1e;
-  cursor: pointer;
-  appearance: none;
-}
-
-.save-button {
-  display: flex;
-  justify-content: center;
+.submit-button {
   width: 100px;
   height: 25px;
   border: 1px solid #1e1e1e;
@@ -67,5 +47,4 @@ textarea{
   background-color: #1e1e1e;
   color: #f9f8f4;
   cursor: pointer;
-  appearance: none;
 }

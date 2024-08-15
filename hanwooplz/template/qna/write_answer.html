@@ -13,17 +13,17 @@
 <body>
     {% include "nav.html" %}
     <section class="main">
-        <div class="question-container">
+        <div class="question">
             <h3 class="title">{{ title }}</h3>
             <div class="keyword-conatiner">
                 {% for kw in keyword %}
-                <div class="keyword">#{{ kw }} </div>
+                <div class="keyword">#{{ kw }}</div>
                 {% endfor %}
             </div>
             <div class="content">{{ content | safe }}</div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                    작성자 <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
                     <p>작성 일시: {{ created_at }}</p>
                 </div>
             </div>
@@ -35,12 +35,11 @@
             <div class="write-box">
                 <textarea id="content" name="content">{{ answer }}</textarea>
             </div>
-            <div class="redirect-button">
-                {% if author_id == request.user.id %}
-                <input type="submit" class="delete-button" name="delete-button" value="삭제">
-                <input type="submit" class="save-button" value="수정">
+            <div class="submit-button-wrapper">
+                {% if answer_id %}
+                <input type="submit" class="submit-button" value="수정">
                 {% else %}
-                <input type="submit" class="save-button" value="글 작성">
+                <input type="submit" class="submit-button" value="글 작성">
                 {% endif %}
             </div>
         </form>

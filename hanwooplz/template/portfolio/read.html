@@ -11,40 +11,52 @@
 
 <body>
     {% include "nav.html" %}
-    <div class="main-container">
-        <main>
-            <div class="post-container">
-                <h3 class="title">{{ title }}</h3>
-                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
-                <div class="members">총 참여인원: {{ members }} 명</div>
-                <div class="tech-stack-conatiner">
-                    {% for ts in tech_stack %}
-                        <div class="tech-stack">#{{ ts }}</div>
-                    {% endfor %}
+    <main class="main-container">
+        <div class="post">
+            <h3 class="title">{{ title }}</h3>
+            <div class="info-box">
+                <div class="info-title">프로젝트 기간</div>
+                <div class="info-content">{{ start_date }}~{{ end_date }}</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">총 참여인원</div>
+                <div class="info-content">{{ members }} 명</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">기술 스택</div>
+                <div class="tech-stack-container">
+                {% for ts in tech_stack %}
+                    <div class="tech-stack">#{{ ts }}</div>
+                {% endfor %}
                 </div>
-                <div class="ext-link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">외부 링크</div>
+                <div class="info-content"><a href="{{ ext_link }}">{{ ext_link }}</a></div>
+            </div>
+            <div class="content-box">
+                <div class="content-title">내용</div>
                 <div class="content">{{ content | safe }}</div>
-                <div class="subsidiary">
-                    <div class="card">
-                        작성자: <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
-                        {% if request.user.is_authenticated and author_id != request.user.id %}
-                        <button onclick="window.location.href = '/chat'">채팅하기</button>
-                        {% elif not request.user.is_authenticated %}
-                        <button onclick="alert('로그인이 필요합니다.')">채팅하기</button>
-                        {% endif %}
-                        <p>작성 일시: {{ created_at }}</p>
-                    </div>
+            </div>
+            <div class="subsidiary">
+                <div class="card">
+                    작성자 <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                    {% if request.user.is_authenticated and author_id != request.user.id %}
+                    <button class="button-blue" onclick="window.location.href = '/chat'">채팅하기</button>
+                    {% endif %}
+                    <p>작성 일시: {{ created_at }}</p>
                 </div>
             </div>
-            <div class="redirect-button">
-                {% if author_id == request.user.id %}
-                <button class="button-black" onclick="window.location.href = '/portfolio/edit/{{ portfolio_id }}'">수정하기</button>
-                {% endif %}
-                <button class="button-black" onclick="window.location.href = '/portfolio'">목록으로</button>
-            </div>
-            {% include "comment/comment.html" %}
-        </main>
-    </div>
+        </div>
+        <div class="action-button-wrapper">
+            {% if author_id == request.user.id %}
+            <button class="button-black" onclick="window.location.href = '/portfolio/delete/{{ portfolio_id }}'">삭제</button>
+            <button class="button-black" onclick="window.location.href = '/portfolio/edit/{{ portfolio_id }}'">수정</button>
+            {% endif %}
+            <button class="button-black" onclick="window.location.href = '/portfolio'">목록으로</button>
+        </div>
+        {% include "comment/comment.html" %}
+    </main>
     <!-- {% include "chatbot/chatbot.html" %} -->
 </body>
 <script>

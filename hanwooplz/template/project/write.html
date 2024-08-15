@@ -18,8 +18,7 @@
             {% csrf_token %}
             <div class="write-box">
                 <input type="text" id="title" name="title" placeholder="제목" value="{{ title }}">
-                <p>프로젝트 기간:
-                </p>
+                <p>프로젝트 기간: </p>
                 <input type="date" id="start_date" name="start_date" placeholder="시작일" value="{{ start_date }}">
                 <p>~</p>
                 <input type="date" id="end_date" name="end_date" placeholder="종료일" value="{{ end_date }}">
@@ -28,12 +27,11 @@
                 <input type="text" id="ext_link" name="ext_link" placeholder="외부 링크" value="{{ ext_link }}">
                 <textarea id="content" name="content">{{ content }}</textarea>
             </div>
-            <div class="redirect-button">
-                {% if author_id == request.user.id %}
-                <input type="submit" class="delete-button" name="delete-button" value="삭제">
-                <input type="submit" class="save-button" value="수정">
+            <div class="submit-button-wrapper">
+                {% if project_id %}
+                <input type="submit" class="submit-button" value="수정">
                 {% else %}
-                <input type="submit" class="save-button" value="글 작성">
+                <input type="submit" class="submit-button" value="글 작성">
                 {% endif %}
             </div>
         </form>

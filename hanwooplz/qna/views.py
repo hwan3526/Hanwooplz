@@ -105,37 +105,25 @@ def read(request, question_id=None):
         return redirect('/qna')
 
 @login_required(login_url='/login')
-def write_question(request, question_id=None):
-    if question_id:
-        question = get_object_or_404(Question, id=question_id)
-        post = get_object_or_404(Post, id=question.post_id)
-    else:
-        question = Question()
-        post = Post()
-    
+def write_question(request):
+    question = Question()
+    post = Post()
+
     if request.method == 'POST':
-        if 'delete-button' in request.POST:
-            post.delete()
-            return redirect('/qna')
-        
         post_form = PostForm(request.POST, request.FILES, instance=post)
         question_form = QuestionForm(request.POST, request.FILES, instance=question)
 
         if post_form.is_valid() and question_form.is_valid():
             post = post_form.save(commit=False)
             question = question_form.save(commit=False)
-            if not question_id:
-                post.author_id = request.user.id
-                post.category = 2
-                post.save()
-                question.post_id = post.id
-                question.save()
-                question_id = question.id
-            else:
-                post.save()
-                question.save()
 
-            return redirect('/qna/'+question_id)
+            post.author_id = request.user.id
+            post.category = 2
+            post.save()
+            question.post_id = post.id
+            question.save()
+
+            return redirect('/qna/'+str(question.id))
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -145,61 +133,119 @@ def write_question(request, question_id=None):
             }
             return render(request, 'qna/write_question.html', context)
     else:
-        if question_id:
-            if request.user.id == post.author_id:
-                context = {
-                    'question_id': question_id,
-                    'title': post.title,
-                    'keyword': question.keyword,
-                    'content': post.content,
-                    'author_id': post.author_id,
-                }
-                return render(request, 'qna/write_question.html', context)
-            else:
-                messages.info('올바르지 않은 접근입니다.')
-                return redirect('/qna/'+question_id)
-        else:
-            return render(request, 'qna/write_question.html')
+        return render(request, 'qna/write_question.html')
 
 @login_required(login_url='/login')
-def write_answer(request, question_id, answer_id=None):
-    if question_id:
-        question = get_object_or_404(Question, id=question_id)
-        post_q = get_object_or_404(Post, id=question.post_id)
-        author_q = get_object_or_404(UserProfile, id=post_q.author_id)
-        if answer_id:
-            answer = get_object_or_404(Answer, id=answer_id)
-            post_a = get_object_or_404(Post, id=answer.post_id)
-        else:
-            answer = Answer()
-            post_a = Post()
-    else:
-        messages.info('올바르지 않은 접근입니다.')
-        return redirect('/qna')
-    
-    if request.method == 'POST':
-        if 'delete-button' in request.POST:
-            post_a.delete()
-            return redirect('/qna/'+question_id)
+def edit_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    post = get_object_or_404(Post, id=question.post_id)
 
-        request.POST._mutable = True
-        request.POST['title'] = '제목없음'
+    if request.method == 'POST':
+        post_form = PostForm(request.POST, request.FILES, instance=post)
+        question_form = QuestionForm(request.POST, request.FILES, instance=question)
+
+        if post_form.is_valid() and question_form.is_valid():
+            post_form.save()
+            question_form.save()
+
+            return redirect('/qna/'+str(question_id))
+        else:
+            messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
+            context={
+                'title': request.POST.get('title'),
+                'keyword': request.POST.get('keyword'),
+                'content': request.POST.get('content'),
+            }
+            return render(request, 'qna/write_question.html', context)
+    else:
+        if request.user.id == post.author_id:
+            context = {
+                'question_id': question_id,
+                'title': post.title,
+                'keyword': question.keyword,
+                'content': post.content,
+                'author_id': post.author_id,
+            }
+            return render(request, 'qna/write_question.html', context)
+        else:
+            messages.info('올바르지 않은 접근입니다.')
+            return redirect('/qna/'+str(question_id))
+
+@login_required(login_url='/login')
+def delete_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    post = get_object_or_404(Post, id=question.post_id)
+
+    if request.user.id == post.author_id:
+        post.delete()
+        return redirect('/qna')
+    else:
+        return redirect('/qna/'+str(question_id))
+
+@login_required(login_url='/login')
+def write_answer(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    post_q = get_object_or_404(Post, id=question.post_id)
+    author_q = get_object_or_404(UserProfile, id=post_q.author_id)
+
+    answer = Answer()
+    post_a = Post()
+
+    if request.method == 'POST':
         post_form = PostForm(request.POST, request.FILES, instance=post_a)
 
         if post_form.is_valid():
             post_a = post_form.save(commit=False)
-            if not answer_id:
-                post_a.author_id = request.user.id
-                post_a.category = 3
-                post_a.save()
-                answer.post_id = post_a.id
-                answer.question_id = question_id
-                answer.save()
-            else:
-                post_a.save()
-                answer.save()
 
-            return redirect('/qna/'+question_id)
+            post_a.author_id = request.user.id
+            post_a.category = 3
+            post_a.save()
+            answer.post_id = post_a.id
+            answer.question_id = question_id
+            answer.save()
+
+            return redirect('/qna/'+str(question_id))
+        else:
+            messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
+            context={
+                'question_id': question_id,
+                'title': post_q.title,
+                'author': author_q.username,
+                'created_at': post_q.created_at,
+                'keyword': question.keyword.split(),
+                'content': post_q.content,
+                'author_id': author_q.id,
+                'answer': request.POST.get('content'),
+            }
+            return render(request, 'qna/write_answer.html', context)
+    else:        
+        context = {
+                'question_id': question_id,
+                'title': post_q.title,
+                'author': author_q.username,
+                'created_at': post_q.created_at,
+                'keyword': question.keyword.split(),
+                'content': post_q.content,
+                'author_id': author_q.id,
+        }
+        return render(request, 'qna/write_answer.html', context)
+
+@login_required(login_url='/login')
+def edit_answer(request, question_id, answer_id):
+    question = get_object_or_404(Question, id=question_id)
+    post_q = get_object_or_404(Post, id=question.post_id)
+    author_q = get_object_or_404(UserProfile, id=post_q.author_id)
+
+    answer = get_object_or_404(Answer, id=answer_id)
+    post_a = get_object_or_404(Post, id=answer.post_id)
+
+    if request.method == 'POST':
+        post_form = PostForm(request.POST, request.FILES, instance=post_a)
+
+        if post_form.is_valid():
+            post_form.save()
+
+            return redirect('/qna/'+str(question_id))
         else:
             messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -214,34 +260,33 @@ def write_answer(request, question_id, answer_id=None):
             }
             return render(request, 'qna/write_answer.html', context)
     else:
-        if answer_id:
-            if request.user.id == post_a.author_id:
-                context = {
-                    'question_id': question_id,
-                    'title': post_q.title,
-                    'author': author_q.username,
-                    'created_at': post_q.created_at,
-                    'keyword': question.keyword.split(),
-                    'content': post_q.content,
-                    'author_id': author_q.id,
-                    'answer_id': answer_id,
-                    'answer': post_a.content,
-                }
-                return render(request, 'qna/write_answer.html', context)
-            else:
-                messages.info('올바르지 않은 접근입니다.')
-                return redirect('/qna/'+question_id)
-        else:
+        if request.user.id == post_a.author_id:
             context = {
-                    'question_id': question_id,
-                    'title': post_q.title,
-                    'author': author_q.username,
-                    'created_at': post_q.created_at,
-                    'keyword': question.keyword.split(),
-                    'content': post_q.content,
-                    'author_id': author_q.id,
+                'question_id': question_id,
+                'title': post_q.title,
+                'author': author_q.username,
+                'created_at': post_q.created_at,
+                'keyword': question.keyword.split(),
+                'content': post_q.content,
+                'author_id': author_q.id,
+                'answer_id': answer_id,
+                'answer': post_a.content,
             }
             return render(request, 'qna/write_answer.html', context)
+        else:
+            messages.info('올바르지 않은 접근입니다.')
+            return redirect('/qna/'+str(question_id))
+
+@login_required(login_url='/login')
+def delete_answer(request, question_id, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    post = get_object_or_404(Post, id=answer.post_id)
+
+    if request.user.id == post.author_id:
+        post.delete()
+        return redirect('/qna/'+str(question_id))
+    else:
+        return redirect('/qna/'+str(question_id))
 
 @login_required(login_url='/login')
 def like(request, question_id, answer_id=None):
@@ -258,5 +303,5 @@ def like(request, question_id, answer_id=None):
             post.like.add(user)
 
         post.save()
-        return redirect('/qna/'+question_id)
-    return redirect('/qna/'+question_id)
+        return redirect('/qna/'+str(question_id))
+    return redirect('/qna/'+str(question_id))

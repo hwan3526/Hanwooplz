@@ -27,12 +27,11 @@
                 <input type="text" id="ext_link" name="ext_link" placeholder="외부 링크" value="{{ ext_link }}">
                 <textarea id="content" name="content">{{ content }}</textarea>
             </div>
-            <div class="redirect-button">
-                {% if author_id == request.user.id %}
-                <input type="submit" class="delete-button" name="delete-button" value="삭제">
-                <input type="submit" class="save-button" value="수정">
+            <div class="submit-button-wrapper">
+                {% if portfolio_id %}
+                <input type="submit" class="submit-button" value="수정">
                 {% else %}
-                <input type="submit" class="save-button" value="글 작성">
+                <input type="submit" class="submit-button" value="글 작성">
                 {% endif %}
             </div>
         </form>
