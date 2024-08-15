@@ -14,7 +14,7 @@ class Post(models.Model):
     '''
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    edited_at = models.DateTimeField(blank=True)
+    edited_at = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=50, default='Untitled')
     content = HTMLField()
     category = models.IntegerField()
