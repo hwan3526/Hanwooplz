@@ -12,8 +12,8 @@
 <body>
     {% include "nav.html" %}
     <section class="main">
-        <form id="post" method="POST"
-            action="{% if project_id %}'/project/edit/{{ project_id }}{% else %}'/project/write'{% endif %}"
+        <form method="POST"
+            action="{% if project_id %}/project/edit/{{ project_id }}{% else %}/project/write{% endif %}"
             enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">

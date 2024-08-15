@@ -28,8 +28,8 @@
                 </div>
             </div>
         </div>
-        <form id="post" method="POST"
-            action="{% if answer_id %}'/qna/edit_answer/{{ question_id }}/{{ answer_id }}{% else %}'/qna/write-answer/{{ question_id }}'{% endif %}"
+        <form method="POST"
+            action="{% if answer_id %}/qna/edit-answer/{{ question_id }}/{{ answer_id }}{% else %}/qna/write-answer/{{ question_id }}{% endif %}"
             enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
