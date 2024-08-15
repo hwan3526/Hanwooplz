@@ -2,89 +2,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    background-color: white;
-    color: black;
     font-family: Arial, sans-serif;
 }
 
 .profile-container {
-    padding: 50px 100px;
-    border-radius: 30px;
+    padding: 50px 80px;
+    border-radius: 20px;
     background-color: #ffffffd0;
     text-align: left;
     animation: slideIn 1s ease-in-out;
     box-shadow: 0 0 10px #00000033;
 }
 
-.profile-container h1 {
-    color: inherit;
-    text-decoration: none;
-}
-
-.login-form .form-group {
-    margin-bottom: 15px;
-}
-
-.login-form .profile-image-button {
-    display: flex;
-    margin-top: 5px;
-}
-
-.login-form #profile_image-clear_id {
-    display: none;
-}
-
-.login-form #profile-image-clear,
-.login-form #profile-image-upload {
-    width: fit-content;
-    padding: 5px 10px;
-    margin: 0 8px 0 0;
-    border: none;
-    border-radius: 5px;
-    background-color: black;
-    color: white;
-    font-size: 12px;
-    animation: scaleUp 0.5s ease-in-out;
-    cursor: pointer;
-}
-
-.login-form #profile-image-clear:hover,
-.login-form #profile-image-upload:hover {
-    background-color: #555555;
-}
-
-.login-form #id_profile_image {
-    display: none;
-}
-
-.login-form label {
-    display: block;
-    color: black;
-}
-
-.login-form input,
-textarea {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #0000001a;
-    color: black;
-    box-sizing: border-box;
-    resize: none;
-}
-
-.login-form #profile-image {
-    width: 100px;
-    height: 100px;
-}
-
-.login-form .submit-wrapper {
-    margin-top: 50px;
-}
-
-.login-form a {
+.profile-form a {
     display: block;
     padding: 10px 20px;
     border: none;
@@ -93,15 +23,25 @@ textarea {
     color: white;
     text-decoration: none;
     text-align: center;
-    animation: scaleUp 0.5s ease-in-out;
     cursor: pointer;
 }
 
-.login-form a:hover {
+.profile-form a:hover {
     background-color: #555555;
 }
 
-.login-form input[type="submit"] {
+.profile-form input,
+.profile-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0000001a;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.profile-form input[type="submit"] {
     padding: 10px 20px;
     margin-top: 15px;
     border: none;
@@ -109,12 +49,59 @@ textarea {
     background-color: black;
     color: white;
     font-size: 16px;
-    animation: scaleUp 0.5s ease-in-out;
     cursor: pointer;
 }
 
-.login-form input[type="submit"]:hover {
+.profile-form input[type="submit"]:hover {
     background-color: #555555;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+}
+
+#profile-image {
+    width: 100px;
+    height: 100px;
+}
+
+.profile-image-button-wrapper {
+    display: flex;
+    margin-top: 5px;
+}
+
+#profile_image-clear_id {
+    display: none;
+}
+
+#id_profile_image {
+    display: none;
+}
+
+#profile-image-clear,
+#profile-image-upload {
+    width: fit-content;
+    padding: 5px 10px;
+    margin: 0 8px 0 0;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#profile-image-clear:hover,
+#profile-image-upload:hover {
+    background-color: #555555;
+}
+
+.submit-button-wrapper {
+    margin-top: 50px;
 }
 
 @keyframes slideIn {
@@ -126,15 +113,5 @@ textarea {
     100% {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes scaleUp {
-    0% {
-        transform: scale(0.9);
-    }
-
-    100% {
-        transform: scale(1);
     }
 }

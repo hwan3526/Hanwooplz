@@ -12,7 +12,7 @@
 <body>
     <div class="profile-container">
         <h1>Edit Profile</h1>
-        <form method="post" class="login-form" enctype="multipart/form-data">
+        <form method="post" class="profile-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="{{ form.profile_image.id_for_label }}">프로필 이미지</label>
@@ -21,7 +21,7 @@
                 {% else %}
                 <img id="profile-image" src="{% static 'img/basicuser.png' %}">
                 {% endif %}
-                <div class="profile-image-button">
+                <div class="profile-image-button-wrapper">
                     <input type="checkbox" name="profile_image-clear" id="profile_image-clear_id">
                     <p id="profile-image-clear">기본 프로필 전환</p>
                     <input type="file" name="profile_image" accept="image/*" id="id_profile_image">
@@ -68,7 +68,7 @@
                 <label for="{{ form.linkedin_link.id_for_label }}">LinkedIn 링크</label>
                 {{ form.linkedin_link }}
             </div>
-            <div class="submit-wrapper">
+            <div class="submit-button-wrapper">
                 <a href="/change-password">비밀번호 변경</a>
                 <input type="submit" value="프로필 수정">
             </div>
