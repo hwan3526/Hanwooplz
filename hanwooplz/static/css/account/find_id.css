@@ -3,18 +3,14 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background-color: white;
-    color: white;
     font-family: Arial, sans-serif;
 }
 
 form {
     padding: 100px;
     border-radius: 20px;
-    background-color: white;
-    color: black;
     text-align: center;
+    animation: slideIn 1s ease-in-out;
     box-shadow: 0 0 10px #00000033;
 }
 
@@ -30,7 +26,6 @@ input[type="text"] {
     border: none;
     border-radius: 5px;
     background-color: #0000001a;
-    color: black;
     text-align: center;
 }
 
@@ -41,10 +36,21 @@ input[type="submit"] {
     border-radius: 5px;
     background-color: black;
     color: white;
-    animation: scaleUp 0.5s ease-in-out;
     cursor: pointer;
 }
 
 input[type="submit"]:hover {
     background-color: #555555;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

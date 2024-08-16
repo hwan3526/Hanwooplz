@@ -49,39 +49,28 @@
                 </div>
             </div>
             <div class="profile-right">
-                <div class="profile-right-top">
-                    <h3 class="profile-username">{{ username }}</h3>
-                    <br>
-                    <h1 class="profile-fullname">{{ full_name }}</h1>
-                </div>
-                <div class="profile-right-bottom">
-                    <div class="profile-bio-job">
-                        <span class="profile-info-job">직무:{{ job }}</span>
-                        <br>
-                        <span class="profile-info-techstack">
-                            주요 기술스택:
-                            {% if tech_stack|length > 1 %}
-                            {{ tech_stack|join:", " }}
-                            {% else %}
-                            {{ tech_stack.0 }}
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div class="profile-bio-career">
-                        <span class="profile-info-career">
-                            {% if career == 0 %}
-                            경력: 신입
-                            {% else %}
-                            경력: {{ career }}년
-                            {% endif %}
-                        </span>
-                        <br>
-                        <span class="profile-info-career-detail">상세 경력:{{ career_detail }}</span>
-                        <br>
-                        <p class="profile-intro">
-                            한줄소개:{{ introduction }}</p>
-                    </div>
-                </div>
+                <h3 class="profile-username">{{ username }}</h3>
+                <br>
+                <h1 class="profile-fullname">{{ full_name }}</h1>
+                <br>
+                <span class="profile-position">직무:{{ job }}</span>
+                <br>
+                <span class="profile-techstack">
+                    주요 기술스택:
+                    {{ tech_stack|join:", " }}
+                </span>
+                <br>
+                <span class="profile-career-meta">
+                    {% if career == 0 %}
+                    경력: 신입
+                    {% else %}
+                    경력: {{ career }}년
+                    {% endif %}
+                </span>
+                <br>
+                <span class="profile-career-detail">상세 경력:{{ career_detail }}</span>
+                <br>
+                <p class="profile-intro">한줄소개:{{ introduction }}</p>
             </div>
         </div>
         <div class="profile-post">

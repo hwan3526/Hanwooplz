@@ -56,4 +56,19 @@ answerTab.addEventListener('click', function () {
     answerPost.style.display = 'grid';
 });
 
+const profilePostTab = document.querySelectorAll('.profile-post-tab');
+const profilePostBody = document.querySelectorAll('.profile-post-body');
+let maxHeight = 0;
+
+for (let i = 0; i < 4; i++) {
+    profilePostTab[i].click();
+    if (maxHeight < profilePostBody[i].offsetHeight) {
+        maxHeight = profilePostBody[i].offsetHeight;
+    }
+}
+
+profilePostBody.forEach(function (body) {
+    body.style.height = maxHeight + 'px';
+});
+
 portfolioTab.click();
