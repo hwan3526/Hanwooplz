@@ -26,6 +26,7 @@
                     <p id="profile-image-clear">기본 프로필 전환</p>
                     <input type="file" name="profile_image" accept="image/*" id="id_profile_image">
                     <p id="profile-image-upload">프로필 업로드</p>
+                    <p id="change-password"><a href="/change-password">비밀번호 변경</a></p>
                 </div>
             </div>
             <div class="form-group">
@@ -68,10 +69,7 @@
                 <label for="{{ form.linkedin_link.id_for_label }}">LinkedIn 링크</label>
                 {{ form.linkedin_link }}
             </div>
-            <div class="submit-button-wrapper">
-                <a href="/change-password">비밀번호 변경</a>
-                <input type="submit" value="프로필 수정">
-            </div>
+            <input type="submit" value="프로필 수정">
         </form>
     </div>
 </body>

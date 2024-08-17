@@ -30,6 +30,22 @@ body {
     background-color: #555555;
 }
 
+.profile-form p {
+    width: fit-content;
+    padding: 5px 10px;
+    margin: 0;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.profile-form p:hover {
+    background-color: #555555;
+}
+
 .profile-form input,
 .profile-form textarea {
     width: 100%;
@@ -43,7 +59,7 @@ body {
 
 .profile-form input[type="submit"] {
     padding: 10px 20px;
-    margin-top: 15px;
+    margin-top: 30px;
     border: none;
     border-radius: 5px;
     background-color: black;
@@ -72,6 +88,7 @@ body {
 .profile-image-button-wrapper {
     display: flex;
     margin-top: 5px;
+    gap: 7px;
 }
 
 #profile_image-clear_id {
@@ -80,28 +97,6 @@ body {
 
 #id_profile_image {
     display: none;
-}
-
-#profile-image-clear,
-#profile-image-upload {
-    width: fit-content;
-    padding: 5px 10px;
-    margin: 0 8px 0 0;
-    border: none;
-    border-radius: 5px;
-    background-color: black;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-#profile-image-clear:hover,
-#profile-image-upload:hover {
-    background-color: #555555;
-}
-
-.submit-button-wrapper {
-    margin-top: 50px;
 }
 
 @keyframes slideIn {
