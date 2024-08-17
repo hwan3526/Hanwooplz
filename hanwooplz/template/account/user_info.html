@@ -84,9 +84,7 @@
                 {% if portfolio_list %}
                 {% for portfolio in portfolio_list %}
                 <div class="grid-item">
-                    <a href="/portfolio/{{ portfolio.portfolio_id }}">
-                        <h2>{{ portfolio.title }}</h2>
-                    </a>
+                    <h2><a href="/portfolio/{{ portfolio.portfolio_id }}">{{ portfolio.title }}</a></h2>
                     <p>게시일:{{ portfolio.created_at }}</p>
                 </div>
                 {% endfor %}
@@ -98,9 +96,7 @@
                 {% if project_list %}
                 {% for project in project_list %}
                 <div class="grid-item">
-                    <a href="/project/{{ project.project_id }}">
-                        <h2>{{ project.title }}</h2>
-                    </a>
+                    <h2><a href="/project/{{ project.project_id }}">{{ project.title }}</a></h2>
                     <p>게시일:{{ project.created_at }}</p>
                 </div>
                 {% endfor %}
@@ -112,9 +108,7 @@
                 {% if question_list %}
                 {% for question in question_list %}
                 <div class="grid-item">
-                    <a href="/qna/{{ question.question_id }}">
-                        <h2>{{ question.title }}</h2>
-                    </a>
+                    <h2><a href="/qna/{{ question.question_id }}">{{ question.title }}</a></h2>
                     <p>게시일:{{ question.created_at }}</p>
                 </div>
                 {% endfor %}
@@ -126,9 +120,7 @@
                 {% if answer_list %}
                 {% for answer in answer_list %}
                 <div class="grid-item">
-                    <a href="/qna/{{ answer.question_id }}">
-                        <h2>{{ answer.content }}</h2>
-                    </a>
+                    <h2><a href="/qna/{{ answer.question_id }}">{{ answer.content }}</a></h2>
                     <p>게시일:{{ answer.created_at }}</p>
                 </div>
                 {% endfor %}

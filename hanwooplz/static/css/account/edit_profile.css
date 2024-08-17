@@ -5,6 +5,11 @@ body {
     font-family: Arial, sans-serif;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
+
 .profile-container {
     padding: 50px 80px;
     border-radius: 20px;
@@ -12,22 +17,6 @@ body {
     text-align: left;
     animation: slideIn 1s ease-in-out;
     box-shadow: 0 0 10px #00000033;
-}
-
-.profile-form a {
-    display: block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: black;
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-}
-
-.profile-form a:hover {
-    background-color: #555555;
 }
 
 .profile-form p {
