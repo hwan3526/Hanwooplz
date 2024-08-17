@@ -1,31 +1,25 @@
 * {
     padding: 0;
     margin: 0;
-    font-family: consolas;
 }
 
 body {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: black;
-    font: bold 1vw 'Open Sans', arial, sans-serif;
 }
 
 .wavy {
-    position: relative;
     -webkit-box-reflect: below -12px linear-gradient(transparent, #00000033);
 }
 
 .wavy span {
     display: inline-block;
-    position: relative;
     color: white;
-    font-size: 2em;
+    font: bold 38px Consolas, sans-serif;
     animation: animate 1.5s ease-in-out infinite;
-    text-transform: uppercase;
     animation-delay: calc(.1s * var(--i));
 }
 

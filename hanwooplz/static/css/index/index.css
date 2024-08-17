@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 :root {
-    --marquee-width: 80vw;
-    --marquee-height: 20vh;
+    --marquee-width: 1536px;
+    --marquee-height: 183.8px;
     --marquee-elements: calc(10 - var(--marquee-elements-displayed));
     --marquee-elements-displayed: 5;
     --marquee-element-width: calc(var(--marquee-width) / var(--marquee-elements-displayed));
@@ -14,48 +14,33 @@
     margin: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background-color: white;
-    color: black;
-    line-height: 1.4;
-    font-family: 'Montserrat', sans-serif;
-}
-
 section {
-    height: 100vh;
-}
-
-img {
-    max-width: 100%;
-}
-
-h1 {
-    padding: 6vh 0;
-    margin: 0;
-    font-size: 2vw;
-    animation: show-text 0.5s ease-in 1s forwards;
-    text-shadow: 0 1px 5px black;
-    opacity: 0;
-}
-
-#welcome {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+}
+
+h1 {
+    padding: 55px 0;
+    font-size: 38px;
+    text-shadow: 0 1px 5px black;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+#welcome {
+    font-family: 'Montserrat', sans-serif;
 }
 
 #welcome p {
-    padding: 0.5rem;
     font-weight: bold;
-    font-size: 6vw;
-    letter-spacing: 0.1rem;
-    text-align: center;
-    overflow: hidden;
+    font-size: 115px;
+    letter-spacing: 1.6px;
 }
 
 #welcome p span.typed-text {
@@ -66,7 +51,7 @@ h1 {
 #welcome p span.cursor {
     display: inline-block;
     width: 3px;
-    margin-left: 0.1rem;
+    margin-left: 1.6px;
     background-color: black;
     animation: blink 1s infinite;
 }
@@ -75,99 +60,70 @@ h1 {
     animation: none;
 }
 
-#members {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#member {
     background-color: #f5f5f5;
-    text-align: center;
 }
 
-#members-grid {
+#member-grid {
     display: flex;
     justify-content: center;
-    width: 80vw;
-    margin: 0 10vw;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2em;
+    width: 1500px;
+    gap: 32px;
 }
 
 .member-tile {
-    position: relative;
-    width: 18vw;
+    width: 223px;
     border-radius: 10px;
-    color: inherit;
-    text-decoration: none;
     transition: transform 0.3s;
     box-shadow: 0 0 10px #00000033;
-}
-
-.member-tile img {
-    display: block;
-    width: 100%;
-    height: calc(100% - 3.2vw);
-    border-radius: 10px 10px 0 0;
-    object-fit: cover;
-}
-
-.member-tile p {
-    height: 3.2vw;
-    margin: 0;
-    border-radius: 0 0 10px 10px;
-    background-color: black;
-    color: white;
-    font-size: 1vw;
-    line-height: 3.2vw;
-    vertical-align: middle;
 }
 
 .member-tile:hover {
     transform: scale(1.1);
 }
 
-.member-tile:hover p {
-    opacity: 1;
+.member-tile img {
+    display: block;
+    width: 100%;
+    border-radius: 10px 10px 0 0;
 }
 
-.member-tile:hover p::before,
-.member-tile:hover p::after {
-    visibility: visible;
-}
-
-.member-tile p::before {
-    margin-right: 5px;
-    font-size: 0.9rem;
-    visibility: hidden;
-}
-
-.member-tile p::after {
-    margin-left: 5px;
-    font-size: 0.9rem;
-    visibility: hidden;
+.member-tile p {
+    height: 61px;
+    border-radius: 0 0 10px 10px;
+    background-color: black;
+    color: white;
+    font-size: 19px;
+    line-height: 61px;
+    text-align: center;
 }
 
 #repo-grid {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 6vh 0;
-    gap: 2vw;
+    margin: 55px 0;
+    gap: 38px;
+}
+
+#repo-src {
+    width: 460px;
+}
+
+#repo-refac {
+    width: 345px;
 }
 
 .btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 4vw;
+    height: 76px;
     border-radius: 10px;
     background-color: black;
     color: white;
-    line-height: 4vw;
-    text-decoration: none;
+    line-height: 76px;
     transition: background-color 0.3s ease-in-out;
     box-shadow: 0 0 10px black;
-    gap: 0.3vw;
+    gap: 5.75px;
 }
 
 .btn:hover {
@@ -175,59 +131,44 @@ h1 {
 }
 
 .btn i {
-    font-size: 2vw;
+    font-size: 38.4px;
 }
 
 .btn span {
-    font-size: 1vw;
+    font-size: 19.2px;
 }
 
-.repo-src {
-    width: 24vw;
-}
-
-.repo-refac {
-    width: 18vw;
-}
-
-#projects {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#project {
     background-color: #f5f5f5;
-    text-align: center;
 }
 
-#projects p {
-    font-size: 1.3rem;
+#project p {
+    font-size: 21px;
+    text-align: center;
     font-style: italic;
     text-shadow: 0 1px 5px black;
 }
 
-#projects-grid {
+#project-grid {
     display: flex;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 4vw;
+    gap: 76.8px;
 }
 
 .project-tile {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 15vw;
-    padding: 1vw;
+    width: 326px;
+    padding: 19.2px;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 0 10px #00000033;
     transition: transform 0.3s;
+    box-sizing: border-box;
 }
 
 .project-tile img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
+    width: 100%;
 }
 
 .project-tile p {
@@ -241,13 +182,6 @@ h1 {
 
 .project-tile:hover p {
     opacity: 1;
-}
-
-#tech-stack {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .marquee {
@@ -272,32 +206,12 @@ h1 {
     justify-content: center;
     align-items: center;
     width: var(--marquee-element-width);
-    max-height: 100%;
     font-size: calc(var(--marquee-height)*3/4);
-    text-align: center;
-    white-space: nowrap;
     flex-shrink: 0;
 }
 
 .marquee-content li img {
     height: 100%;
-    margin: 0 2vw;
-}
-
-.post-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@keyframes show-text {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
 }
 
 @keyframes blink {
