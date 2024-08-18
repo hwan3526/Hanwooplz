@@ -5,12 +5,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.register-container {
+form {
     padding: 50px 80px;
     border-radius: 20px;
     background-color: #ffffffd0;
@@ -19,8 +14,17 @@ a {
     box-shadow: 0 0 10px #00000033;
 }
 
-.register-form input,
-.register-form textarea {
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+label {
+    display: block;
+}
+
+input,
+textarea {
     width: 100%;
     padding: 10px;
     border: none;
@@ -30,7 +34,7 @@ a {
     resize: none;
 }
 
-.register-form input[type="submit"] {
+input[type="submit"] {
     padding: 10px 20px;
     margin-top: 50px;
     border: none;
@@ -41,16 +45,12 @@ a {
     cursor: pointer;
 }
 
-.register-form input[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #555555;
 }
 
 .form-group {
     margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
 }
 
 @keyframes slideIn {

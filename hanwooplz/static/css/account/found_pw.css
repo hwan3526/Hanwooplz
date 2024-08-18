@@ -6,20 +6,13 @@ body {
     font-family: Arial, sans-serif;
 }
 
-b {
-    color: #03e9f4;
-}
-
 a {
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: black;
-    color: white;
+    color: inherit;
     text-decoration: none;
 }
 
-a:hover {
-    background-color: #555555;
+b {
+    color: #03e9f4;
 }
 
 .page-box {
@@ -32,11 +25,16 @@ a:hover {
     box-shadow: 0 0 10px #00000033;
 }
 
-.button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 5px;
+.page-box>a {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+}
+
+.page-box>a:hover {
+    background-color: #555555;
 }
 
 @keyframes slideIn {

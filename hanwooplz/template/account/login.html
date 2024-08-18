@@ -10,13 +10,11 @@
 </head>
 
 <body>
-    <div class="login-container">
+    <form method="post">
+        {% csrf_token %}
         <h1><a href="/index">Hanwooplz</a></h1>
-        <form method="post" class="login-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="로그인">
-        </form>
+        {{ form.as_p }}
+        <input type="submit" value="로그인">
         <div class="account-buttons">
             <a href="/register">회원가입</a>
             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -24,7 +22,7 @@
             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <a href="/find-pw">비밀번호 찾기</a>
         </div>
-    </div>
+    </form>
 </body>
 
 </html>

@@ -10,68 +10,66 @@
 </head>
 
 <body>
-    <div class="profile-container">
-        <h1>Edit Profile</h1>
-        <form method="post" class="profile-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="{{ form.profile_image.id_for_label }}">프로필 이미지</label>
-                {% if request.user.profile_image %}
-                <img id="profile-image" src="{{ request.user.profile_image.url }}">
-                {% else %}
-                <img id="profile-image" src="{% static 'img/basicuser.png' %}">
-                {% endif %}
-                <div class="profile-image-button-wrapper">
-                    <input type="checkbox" name="profile_image-clear" id="profile_image-clear_id">
-                    <p id="profile-image-clear">기본 프로필 전환</p>
-                    <input type="file" name="profile_image" accept="image/*" id="id_profile_image">
-                    <p id="profile-image-upload">프로필 업로드</p>
-                    <p id="change-password"><a href="/change-password">비밀번호 변경</a></p>
-                </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1><a href="/index">Edit Profile</a></h1>
+        <div class="form-group">
+            <label for="{{ form.profile_image.id_for_label }}">프로필 이미지</label>
+            {% if request.user.profile_image %}
+            <img id="profile-image" src="{{ request.user.profile_image.url }}">
+            {% else %}
+            <img id="profile-image" src="{% static 'img/basicuser.png' %}">
+            {% endif %}
+            <div class="profile-image-button-wrapper">
+                <input type="checkbox" name="profile_image-clear" id="profile_image-clear_id">
+                <button type="button" id="profile-image-clear">기본 프로필 전환</button>
+                <input type="file" name="profile_image" accept="image/*" id="id_profile_image">
+                <button type="button" id="profile-image-upload">프로필 업로드</button>
+                <a href="/change-password">비밀번호 변경</a>
             </div>
-            <div class="form-group">
-                <label for="{{ form.username.id_for_label }}">아이디</label>
-                {{ form.username }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.email.id_for_label }}">이메일</label>
-                {{ form.email }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.full_name.id_for_label }}">이름</label>
-                {{ form.full_name }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.job.id_for_label }}">직무</label>
-                {{ form.job }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.tech_stack.id_for_label }}">주력 기술 스택</label>
-                {{ form.tech_stack }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.career.id_for_label }}">경력</label>
-                {{ form.career }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.career_detail.id_for_label }}">경력세부사항</label>
-                {{ form.career_detail }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.introduction.id_for_label }}">한줄 소개</label>
-                {{ form.introduction }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.github_link.id_for_label }}">Github 링크</label>
-                {{ form.github_link }}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.linkedin_link.id_for_label }}">LinkedIn 링크</label>
-                {{ form.linkedin_link }}
-            </div>
-            <input type="submit" value="프로필 수정">
-        </form>
-    </div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">아이디</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">이메일</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.full_name.id_for_label }}">이름</label>
+            {{ form.full_name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.job.id_for_label }}">직무</label>
+            {{ form.job }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.tech_stack.id_for_label }}">주력 기술 스택</label>
+            {{ form.tech_stack }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.career.id_for_label }}">경력</label>
+            {{ form.career }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.career_detail.id_for_label }}">경력세부사항</label>
+            {{ form.career_detail }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.introduction.id_for_label }}">한줄 소개</label>
+            {{ form.introduction }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.github_link.id_for_label }}">Github 링크</label>
+            {{ form.github_link }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.linkedin_link.id_for_label }}">LinkedIn 링크</label>
+            {{ form.linkedin_link }}
+        </div>
+        <input type="submit" value="프로필 수정">
+    </form>
 </body>
 <script src="{% static 'js/account/editProfile.js' %}"></script>
 

@@ -12,11 +12,12 @@
 <body>
     <form method="post">
         {% csrf_token %}
+        <h1><a href="/index">Hanwooplz</a></h1>
         <label for="email">이메일</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" name="email" required>
         <br>
         <label for="name">이&nbsp;름</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" name="name" required>
         <br>
         <input type="submit" value="아이디 찾기">
     </form>

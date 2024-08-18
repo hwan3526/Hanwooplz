@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/account/user_info.css' %}" />
-    <title>{{ full_name }} 님의 정보</title>
+    <title>{{ full_name }} 님의 페이지</title>
 </head>
 
 <body>
@@ -80,10 +80,10 @@
                 <div id="question-tab" class="profile-post-tab">Question</div>
                 <div id="answer-tab" class="profile-post-tab">Answer</div>
             </div>
-            <div id="portfolio-post" class="profile-post-body">
+            <div id="portfolio-post" class="profile-post-grid">
                 {% if portfolio_list %}
                 {% for portfolio in portfolio_list %}
-                <div class="grid-item">
+                <div class="profile-post-tile">
                     <h2><a href="/portfolio/{{ portfolio.portfolio_id }}">{{ portfolio.title }}</a></h2>
                     <p>게시일:{{ portfolio.created_at }}</p>
                 </div>
@@ -92,10 +92,10 @@
                 <p>표시할 포트폴리오 게시물이 없습니다.</p>
                 {% endif %}
             </div>
-            <div id="project-post" class="profile-post-body">
+            <div id="project-post" class="profile-post-grid">
                 {% if project_list %}
                 {% for project in project_list %}
-                <div class="grid-item">
+                <div class="profile-post-tile">
                     <h2><a href="/project/{{ project.project_id }}">{{ project.title }}</a></h2>
                     <p>게시일:{{ project.created_at }}</p>
                 </div>
@@ -104,10 +104,10 @@
                 <p>표시할 프로젝트 게시물이 없습니다.</p>
                 {% endif %}
             </div>
-            <div id="question-post" class="profile-post-body">
+            <div id="question-post" class="profile-post-grid">
                 {% if question_list %}
                 {% for question in question_list %}
-                <div class="grid-item">
+                <div class="profile-post-tile">
                     <h2><a href="/qna/{{ question.question_id }}">{{ question.title }}</a></h2>
                     <p>게시일:{{ question.created_at }}</p>
                 </div>
@@ -116,10 +116,10 @@
                 <p>표시할 질문 게시물이 없습니다.</p>
                 {% endif %}
             </div>
-            <div id="answer-post" class="profile-post-body">
+            <div id="answer-post" class="profile-post-grid">
                 {% if answer_list %}
                 {% for answer in answer_list %}
-                <div class="grid-item">
+                <div class="profile-post-tile">
                     <h2><a href="/qna/{{ answer.question_id }}">{{ answer.content }}</a></h2>
                     <p>게시일:{{ answer.created_at }}</p>
                 </div>

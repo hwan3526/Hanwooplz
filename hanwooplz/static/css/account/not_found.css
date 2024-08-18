@@ -6,8 +6,10 @@ body {
     font-family: Arial, sans-serif;
 }
 
-a {
+button {
     padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
     border-radius: 5px;
     background-color: black;
     color: white;
@@ -15,7 +17,7 @@ a {
     cursor: pointer;
 }
 
-a:hover {
+button:hover {
     background-color: #555555;
 }
 
@@ -27,13 +29,6 @@ a:hover {
     text-align: center;
     animation: slideIn 1s ease-in-out;
     box-shadow: 0 0 10px #00000033;
-}
-
-.button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 5px;
 }
 
 @keyframes slideIn {
