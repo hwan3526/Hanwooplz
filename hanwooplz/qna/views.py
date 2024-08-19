@@ -192,6 +192,8 @@ def write_answer(request, question_id):
     post_a = Post()
 
     if request.method == 'POST':
+        request.POST._mutable = True
+        request.POST['title'] = 'Untitled'
         post_form = PostForm(request.POST, request.FILES, instance=post_a)
 
         if post_form.is_valid():
@@ -240,6 +242,8 @@ def edit_answer(request, question_id, answer_id):
     post_a = get_object_or_404(Post, id=answer.post_id)
 
     if request.method == 'POST':
+        request.POST._mutable = True
+        request.POST['title'] = 'Untitled'
         post_form = PostForm(request.POST, request.FILES, instance=post_a)
 
         if post_form.is_valid():
