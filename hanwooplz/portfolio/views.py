@@ -10,51 +10,57 @@ from account.models import UserProfile
 from post.models import Post
 from portfolio.models import Portfolio
 
-def list(request, page_num=1):
-    items_per_page = 9
+def list(request):
+    post_per_page = 9
 
     portfolio = Portfolio.objects.order_by('-id')
     portfolio_list = []
 
-    query = request.GET.get('search')
+    search = request.GET.get('search')
     search_type = request.GET.get('search-type')
 
-    filtered_portfolios = portfolio
-    if query:
+    if search:
         if search_type == 'title-content':
-            filtered_portfolios = portfolio.filter(
-                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            portfolio = portfolio.filter(
+                Q(post__title__icontains=search) | Q(post__content__icontains=search)
             )
         elif search_type == 'writer':
-            filtered_portfolios = portfolio.filter(
-                Q(post__author__username__icontains=query)
+            portfolio = portfolio.filter(
+                Q(post__author__username__icontains=search)
             )
-    else:
-        query = ''
-        search_type = ''
 
-    page = request.GET.get('page', page_num)
-    paginator = Paginator(filtered_portfolios, items_per_page)
-    page_obj = paginator.get_page(page)
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(portfolio, post_per_page)
+    portfolio_page = paginator.get_page(page)
+    page_start = page//10*10
+    page_end = min(paginator.num_pages, page//10*10+10)
+    page_range = paginator.page_range[page_start:page_end]
 
-    for portfolio in page_obj:
+    for portfolio in portfolio_page:
         post = Post.objects.get(id=portfolio.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
         portfolio_list.append({
-                    'portfolio_id': portfolio.id,
-                    'title': post.title,
-                    'author': author.username,
-                    'created_at': post.created_at,
-                    'tech_stack': portfolio.tech_stack.split()[0]
-                })
+            'portfolio_id': portfolio.id,
+            'title': post.title,
+            'author': author.username,
+            'created_at': post.created_at,
+            'tech_stack': portfolio.tech_stack.split()[0]
+        })
 
     context = {
-        'post_list': portfolio_list,
-        'page_obj': page_obj,
-        'query': query,
-        'search_type': search_type,
+        'portfolio_list': portfolio_list,
+        'page_range': page_range,
+        'current_page': portfolio_page.number,
     }
+
+    previous = page_range[0]-10
+    next = page_range[-1]+1
+
+    if previous in paginator.page_range:
+        context['previous'] = previous
+    if next in paginator.page_range:
+        context['next'] = next
 
     return render(request, 'portfolio/list.html', context)
 
