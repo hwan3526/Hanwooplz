@@ -200,8 +200,7 @@ a {
     text-decoration: none;
 }
 
-.profile-post-tile p {
-    margin: 0;
+.profile-post-tile span {
     color: #777777;
     font-size: 14px;
 }
