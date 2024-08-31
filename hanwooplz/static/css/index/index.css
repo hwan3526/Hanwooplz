@@ -14,6 +14,12 @@
     margin: 0;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
 section {
     display: flex;
     flex-direction: column;
@@ -73,9 +79,9 @@ a {
 
 .member-tile {
     border-radius: 10px;
+    background-color: black;
     transition: transform 0.3s;
     box-shadow: 0 0 10px #00000033;
-    background-color: black;
 }
 
 .member-tile:hover {
