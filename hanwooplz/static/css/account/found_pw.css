@@ -20,7 +20,7 @@ b {
     flex-direction: column;
     padding: 100px;
     border-radius: 20px;
-    text-align: center;
+    align-items: center;
     animation: slideIn 1s ease-in-out;
     box-shadow: 0 0 10px #00000033;
 }

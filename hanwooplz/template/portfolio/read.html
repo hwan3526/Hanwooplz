@@ -15,45 +15,51 @@
         <div class="post">
             <h3 class="title">{{ title }}</h3>
             <div class="info-box">
-                <div class="info-title">프로젝트 기간</div>
-                <div class="info-content">{{ start_date }}~{{ end_date }}</div>
+                <span class="info-title">프로젝트 기간</span>
+                <span class="info-content">{{ start_date }}~{{ end_date }}</span>
             </div>
             <div class="info-box">
-                <div class="info-title">총 참여인원</div>
-                <div class="info-content">{{ members }} 명</div>
+                <span class="info-title">총 참여인원</span>
+                <span class="info-content">{{ members }} 명</span>
             </div>
             <div class="info-box">
-                <div class="info-title">기술 스택</div>
+                <span class="info-title">기술 스택</span>
                 <div class="tech-stack-container">
                 {% for ts in tech_stack %}
-                    <div class="tech-stack">#{{ ts }}</div>
+                    <span class="tech-stack">#{{ ts }}</span>
                 {% endfor %}
                 </div>
             </div>
             <div class="info-box">
-                <div class="info-title">외부 링크</div>
-                <div class="info-content"><a href="{{ ext_link }}">{{ ext_link }}</a></div>
+                <span class="info-title">외부 링크</span>
+                <span class="info-content">
+                    <a href="{{ ext_link }}">{{ ext_link }}</a>
+                </span>
             </div>
             <div class="content-box">
-                <div class="content-title">내용</div>
-                <div class="content">{{ content | safe }}</div>
+                <span class="content-title">내용</span>
+                <span class="content">{{ content | safe }}</span>
             </div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자 <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                    <span>작성자</span>
+                    <span><a href="/@{{ author }}"><b>{{ author }}</b> 님</a></span>
                     {% if request.user.is_authenticated and author_id != request.user.id %}
-                    <button class="button-blue" onclick="window.location.href = '/chat'">채팅하기</button>
+                    <a href="/chat">채팅하기</a>
                     {% endif %}
-                    <p>작성 일시: {{ created_at }}</p>
+                    <span>작성 일시: {{ created_at }}</span>
+                    {% if edited_at %}
+                    <span>편집 일시: {{ edited_at }}</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="action-button-wrapper">
             {% if author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '/portfolio/delete/{{ portfolio_id }}'">삭제</button>
-            <button class="button-black" onclick="window.location.href = '/portfolio/edit/{{ portfolio_id }}'">수정</button>
+            <a href="/portfolio/delete/{{ portfolio_id }}">삭제</a>
+            <a href="/portfolio/edit/{{ portfolio_id }}">수정</a>
             {% endif %}
-            <button class="button-black" onclick="window.location.href = '/portfolio'">목록으로</button>
+            <a href="/portfolio">목록으로</a>
         </div>
         {% include "comment/comment.html" %}
     </main>

@@ -73,7 +73,8 @@ def read(request, portfolio_id=None):
             'portfolio_id' : portfolio_id,
             'title': post.title,
             'author': author.username,
-            'created_at': post.created_at,
+            'created_at': post.created_at.replace(microsecond=0),
+            'edited_at': post.edited_at.replace(microsecond=0),
             'start_date': portfolio.start_date,
             'end_date': portfolio.end_date,
             'members': portfolio.members,
@@ -83,6 +84,9 @@ def read(request, portfolio_id=None):
             'post_id': post.id,
             'author_id': author.id,
         }
+        if context['created_at']==context['edited_at']:
+            context.pop('edited_at')
+
         return render(request, 'portfolio/read.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
