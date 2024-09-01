@@ -1,5 +1,5 @@
 tinymce.init({
-    selector: 'textarea#content',
+    selector: 'textarea[name="content"]',
     plugins: 'advcode advlist advtable autosave charmap codesample editimage emoticons help image link lists nonbreaking pagebreak searchreplace table visualblocks visualchars preview',
     menubar: 'edit view insert format table',
     toolbar1: 'checklist bullist numlist | link image | removeformat | preview | help',
@@ -34,7 +34,7 @@ tinymce.init({
 });
 
 let question_container = document.querySelector('.question-container');
-if (question_container != null) {
-    question_container.style.width = '30%';
-    question_container.style.margin = '0px 20px 0px 0px';
+if (question_container) {
+    question_container.style.width = '600px';
+    question_container.style.marginRight = '20px';
 }
