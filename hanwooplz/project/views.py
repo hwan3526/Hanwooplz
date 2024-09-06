@@ -11,57 +11,67 @@ from account.models import UserProfile
 from post.models import Post
 from project.models import Project, ProjectMembers
 
-def list(request, page_num=1):
-    items_per_page = 9
+def list(request):
+    post_per_page = 9
 
     project = Project.objects.order_by('-id')
     project_list = []
 
-    query = request.GET.get('search')
+    search = request.GET.get('search')
     search_type = request.GET.get('search-type')
 
-    filtered_projects = project
-    if query:
+    if search:
         if search_type == 'title-content':
-            filtered_projects = project.filter(
-                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            project = project.filter(
+                Q(post__title__icontains=search) | Q(post__content__icontains=search)
             )
         elif search_type == 'writer':
-            filtered_projects = project.filter(
-                Q(post__author__username__icontains=query)
+            project = project.filter(
+                Q(post__author__username__icontains=search)
             )
-    else:
-        query = ''
-        search_type = ''
 
     filter_option = request.GET.get('filter-option')
-    if filter_option == 'recruiting':
-        filtered_projects = filtered_projects.filter(status=1)
+    if filter_option == 'process':
+        project = project.filter(status=1)
+    elif filter_option == 'stop':
+        project = project.filter(status=0)
+    elif filter_option == 'done':
+        project = project.filter(status=2)
     
-    page = request.GET.get('page', page_num)
-    paginator = Paginator(filtered_projects, items_per_page)
-    page_obj = paginator.get_page(page)
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(project, post_per_page)
+    project_page = paginator.get_page(page)
+    page_start = page//10*10
+    page_end = min(paginator.num_pages, page//10*10+10)
+    page_range = paginator.page_range[page_start:page_end]
 
-    for project in page_obj:
+    for project in project_page:
         post = Post.objects.get(id=project.post_id)
         author = UserProfile.objects.get(id=post.author_id)
         status = project.status
 
         project_list.append({
-                    'project_id': project.id,
-                    'title': post.title,
-                    'author': author.username,
-                    'created_at': post.created_at,
-                    'tech_stack': project.tech_stack.split()[0],
-                    'status': status,
-                })
+            'project_id': project.id,
+            'title': post.title,
+            'author': author.username,
+            'created_at': post.created_at,
+            'tech_stack': project.tech_stack.split()[0],
+            'status': status,
+        })
 
     context = {
-        'post_list': project_list,
-        'page_obj': page_obj,
-        'query': query,
-        'search_type': search_type,
+        'project_list': project_list,
+        'page_range': page_range,
+        'current_page': project_page.number,
     }
+
+    previous = page_range[0]-10
+    next = page_range[-1]+1
+
+    if previous in paginator.page_range:
+        context['previous'] = previous
+    if next in paginator.page_range:
+        context['next'] = next
 
     return render(request, 'project/list.html', context)
 
