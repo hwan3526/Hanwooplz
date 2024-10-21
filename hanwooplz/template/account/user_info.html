@@ -75,12 +75,12 @@
         </div>
         <div class="profile-post">
             <div class="profile-post-nav">
-                <div id="portfolio-tab" class="profile-post-tab">Portfolio</div>
-                <div id="project-tab" class="profile-post-tab">Project</div>
-                <div id="question-tab" class="profile-post-tab">Question</div>
-                <div id="answer-tab" class="profile-post-tab">Answer</div>
+                <div class="profile-post-tab">Portfolio</div>
+                <div class="profile-post-tab">Project</div>
+                <div class="profile-post-tab">Question</div>
+                <div class="profile-post-tab">Answer</div>
             </div>
-            <div id="portfolio-post" class="profile-post-grid">
+            <div class="profile-post-grid">
                 {% if portfolio_list %}
                 {% for portfolio in portfolio_list %}
                 <div class="profile-post-tile">
@@ -92,7 +92,7 @@
                 <span>표시할 포트폴리오 게시물이 없습니다.</span>
                 {% endif %}
             </div>
-            <div id="project-post" class="profile-post-grid">
+            <div class="profile-post-grid">
                 {% if project_list %}
                 {% for project in project_list %}
                 <div class="profile-post-tile">
@@ -104,7 +104,7 @@
                 <span>표시할 프로젝트 게시물이 없습니다.</span>
                 {% endif %}
             </div>
-            <div id="question-post" class="profile-post-grid">
+            <div class="profile-post-grid">
                 {% if question_list %}
                 {% for question in question_list %}
                 <div class="profile-post-tile">
@@ -116,7 +116,7 @@
                 <span>표시할 질문 게시물이 없습니다.</span>
                 {% endif %}
             </div>
-            <div id="answer-post" class="profile-post-grid">
+            <div class="profile-post-grid">
                 {% if answer_list %}
                 {% for answer in answer_list %}
                 <div class="profile-post-tile">

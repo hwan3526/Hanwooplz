@@ -170,11 +170,19 @@ a {
     background-color: #eeeeee;
 }
 
+.profile-post-tab.active {
+    background-color: #dddddd;
+}
+
 .profile-post-grid {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 16px;
     grid-row-gap: 16px;
+}
+
+.profile-post-grid.active {
+    display: grid;
 }
 
 .profile-post-tile {
