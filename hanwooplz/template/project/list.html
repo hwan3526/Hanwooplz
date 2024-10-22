@@ -36,9 +36,9 @@
             <div class="post-tile">
                 <a href="/project/{{ project.project_id }}">
                     {% if project.status == 0 %}
-                    <span>모집 중단</span>
+                    <span class="deprecated">모집 중단</span>
                     {% elif project.status == 2 %}
-                    <span>모집 완료</span>
+                    <span class="deprecated">모집 완료</span>
                     {% endif %}
                     <img src="{% static 'img/techstack/'|add:project.tech_stack|add:'.svg' %}">
                 </a>
