@@ -62,10 +62,10 @@ def list(request):
     context = {
         'project_list': project_list,
         'page_range': page_range,
-        'current_page': project_page.number,
+        'current': project_page.number,
     }
 
-    previous = page_range[0]-10
+    previous = page_range[0]-1
     next = page_range[-1]+1
 
     if previous in paginator.page_range:

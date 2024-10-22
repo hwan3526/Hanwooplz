@@ -40,7 +40,7 @@
                 <a href="?page={{ previous }}">◀ 이전</a>
             {% endif %}
             {% for page in page_range %}
-                {% if page == current_page %}
+                {% if page == current %}
                     <a href="?page={{ page }}"><b>{{ page }}</b></a>
                 {% else %}
                     <a href="?page={{ page }}">{{ page }}</a>
