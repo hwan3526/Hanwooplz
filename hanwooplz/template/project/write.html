@@ -11,31 +11,42 @@
 
 <body>
     {% include "nav.html" %}
-    <section class="main">
-        <form method="post"
-            action="{% if project_id %}/project/edit/{{ project_id }}{% else %}/project/write{% endif %}"
-            enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="write-box">
-                <input type="text" id="title" name="title" placeholder="제목" value="{{ title }}">
-                <p>프로젝트 기간: </p>
-                <input type="date" id="start_date" name="start_date" placeholder="시작일" value="{{ start_date }}">
-                <p>~</p>
-                <input type="date" id="end_date" name="end_date" placeholder="종료일" value="{{ end_date }}">
-                <input type="text" id="target_members" name="target_members" placeholder="참여인원수" value="{{ target_members }}">
-                <input type="text" id="tech_stack" name="tech_stack" placeholder="사용 기술 스택" value="{{ tech_stack }}">
-                <input type="text" id="ext_link" name="ext_link" placeholder="외부 링크" value="{{ ext_link }}">
-                <textarea id="content" name="content">{{ content }}</textarea>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="write-box">
+            <div class="write-item">
+                <span>제목</span>
+                <input type="text" name="title" placeholder="최대 50자까지" value="{{ title }}">
             </div>
-            <div class="submit-button-wrapper">
-                {% if project_id %}
-                <input type="submit" class="submit-button" value="수정">
-                {% else %}
-                <input type="submit" class="submit-button" value="글 작성">
-                {% endif %}
+            <div class="write-item">
+                <span>프로젝트 기간</span>
+                <div>
+                    <input type="date" name="start_date" placeholder="시작일" value="{{ start_date }}">
+                    <span>~</span>
+                    <input type="date" name="end_date" placeholder="종료일" value="{{ end_date }}">
+                </div>
             </div>
-        </form>
-    </section>
+            <div class="write-item">
+                <span>참여인원수</span>
+                <input type="text" name="target_members" placeholder="숫자만 입력" value="{{ target_members }}">
+            </div>
+            <div class="write-item">
+                <span>기술 스택</span>
+                <input type="text" name="tech_stack" placeholder="공백으로 구분하여 입력" value="{{ tech_stack }}">
+            </div>
+            <div class="write-item">
+                <span>외부 링크</span>
+                <input type="text" name="ext_link" placeholder="프로젝트와 관련된 페이지의 링크" value="{{ ext_link }}">
+            </div>
+            <div class="write-item">
+                <span>내용</span>
+                <textarea name="content" placeholder="프로젝트에 관해 서술">{{ content }}</textarea>
+            </div>
+        </div>
+        <div class="submit-button-wrapper">
+            <input type="submit" class="submit-button" value="작성 완료">
+        </div>
+    </form>
 </body>
 <script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static 'js/tinymce.js' %}"></script>
