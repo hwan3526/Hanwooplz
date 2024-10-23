@@ -66,11 +66,9 @@
         {% else %}
         <span>게시물이 없습니다.</span>
         {% endif %}
-        {% if request.user.is_authenticated %}
         <div class="action-button-wrapper">    
             <a href="/project/write">글쓰기</a>
         </div>
-        {% endif %}
     </main>
     <!-- {% include "chatbot/chatbot.html" %} -->
 </body>

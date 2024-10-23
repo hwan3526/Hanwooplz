@@ -11,33 +11,32 @@ from post.models import Post
 from qna.models import Question, Answer, AnswerLike
 
 def list(request, page_num=1):
-    items_per_page = 10
+    post_per_page = 10
 
     question = Question.objects.order_by('-id')
     question_list = []
 
-    query = request.GET.get('search')
+    search = request.GET.get('search')
     search_type = request.GET.get('search-type')
 
-    filtered_questions = question
-    if query:
+    if search:
         if search_type == 'title-content':
-            filtered_questions = question.filter(
-                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            question = question.filter(
+                Q(post__title__icontains=search) | Q(post__content__icontains=search)
             )
         elif search_type == 'writer':
-            filtered_questions = question.filter(
-                Q(post__author__username__icontains=query)
+            question = question.filter(
+                Q(post__author__username__icontains=search)
             )
-    else:
-        query = ''
-        search_type = ''
 
-    page = request.GET.get('page', page_num)
-    paginator = Paginator(filtered_questions, items_per_page)
-    page_obj = paginator.get_page(page)
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(question, post_per_page)
+    question_page = paginator.get_page(page)
+    page_start = page//10*10
+    page_end = min(paginator.num_pages, page//10*10+10)
+    page_range = paginator.page_range[page_start:page_end]
 
-    for question in page_obj:
+    for question in question_page:
         post = Post.objects.get(id=question.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
@@ -49,11 +48,18 @@ def list(request, page_num=1):
                 })
 
     context = {
-        'post_list': question_list,
-        'page_obj': page_obj,
-        'query': query,
-        'search_type': search_type,
+        'question_list': question_list,
+        'page_range': page_range,
+        'current': question_page.number,
     }
+
+    previous = page_range[0]-1
+    next = page_range[-1]+1
+
+    if previous in paginator.page_range:
+        context['previous'] = previous
+    if next in paginator.page_range:
+        context['next'] = next
 
     return render(request, 'qna/list.html', context)
 
