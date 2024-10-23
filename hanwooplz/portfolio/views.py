@@ -132,6 +132,10 @@ def edit(request, portfolio_id):
     portfolio = get_object_or_404(Portfolio, id=portfolio_id)
     post = get_object_or_404(Post, id=portfolio.post_id)
 
+    if request.user.id != post.author_id:
+        messages.info('올바르지 않은 접근입니다.')
+        return redirect('/portfolio/'+str(portfolio_id))
+
     if request.method == 'POST':
         portfolio_form = PortfolioForm(request.POST, request.FILES, instance=portfolio)
         post_form = PostForm(request.POST, request.FILES, instance=post)
@@ -154,32 +158,28 @@ def edit(request, portfolio_id):
             }
             return render(request, 'portfolio/write.html', context)
     else:
-        if request.user.id == post.author_id:
-            start_date = str(portfolio.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
-            end_date = str(portfolio.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
-            context = {
-                'portfolio_id': portfolio_id,
-                'title': post.title,
-                'start_date': start_date,
-                'end_date': end_date,
-                'members': portfolio.members,
-                'tech_stack': portfolio.tech_stack,
-                'ext_link': portfolio.ext_link,
-                'content': post.content,
-                'author_id': post.author_id,
-            }
-            return render(request, 'portfolio/write.html', context)
-        else:
-            messages.info('올바르지 않은 접근입니다.')
-            return redirect('/portfolio/'+str(portfolio_id))
+        start_date = str(portfolio.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
+        end_date = str(portfolio.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
+        context = {
+            'portfolio_id': portfolio_id,
+            'title': post.title,
+            'start_date': start_date,
+            'end_date': end_date,
+            'members': portfolio.members,
+            'tech_stack': portfolio.tech_stack,
+            'ext_link': portfolio.ext_link,
+            'content': post.content,
+            'author_id': post.author_id,
+        }
+        return render(request, 'portfolio/write.html', context)
 
 @login_required(login_url='/login')
 def delete(request, portfolio_id):
     portfolio = get_object_or_404(Portfolio, id=portfolio_id)
     post = get_object_or_404(Post, id=portfolio.post_id)
 
-    if request.user.id == post.author_id:
-        post.delete()
-        return redirect('/portfolio')
-    else:
+    if request.user.id != post.author_id:
         return redirect('/portfolio/'+str(portfolio_id))
+
+    post.delete()
+    return redirect('/portfolio')

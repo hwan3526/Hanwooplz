@@ -142,13 +142,17 @@ def edit(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     post = get_object_or_404(Post, id=project.post_id)
 
-    if request.method == 'POST':        
-        post_form = PostForm(request.POST, request.FILES, instance=post)
-        project_form = ProjectForm(request.POST, request.FILES, instance=project)
+    if request.user.id != post.author_id:
+        messages.info('올바르지 않은 접근입니다.')
+        return redirect('/project/'+str(project_id))
 
-        if post_form.is_valid() and project_form.is_valid():
-            post_form.save()
+    if request.method == 'POST':        
+        project_form = ProjectForm(request.POST, request.FILES, instance=project)
+        post_form = PostForm(request.POST, request.FILES, instance=post)
+
+        if project_form.is_valid() and post_form.is_valid():
             project_form.save()
+            post_form.save()
 
             return redirect('/project/'+str(project_id))
         else:
@@ -164,35 +168,31 @@ def edit(request, project_id):
             }
             return render(request, 'project/write.html', context)
     else:
-        if request.user.id == post.author_id:
-            start_date = str(project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
-            end_date = str(project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
-            context = {
-                'project_id': project_id,
-                'title': post.title,
-                'start_date': start_date,
-                'end_date': end_date,
-                'target_members': project.target_members,
-                'tech_stack': project.tech_stack,
-                'ext_link': project.ext_link,
-                'content': post.content,
-                'author_id': post.author_id,
-            }
-            return render(request, 'project/write.html', context)
-        else:
-            messages.info('올바르지 않은 접근입니다.')
-            return redirect('/project/'+str(project_id))
+        start_date = str(project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
+        end_date = str(project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
+        context = {
+            'project_id': project_id,
+            'title': post.title,
+            'start_date': start_date,
+            'end_date': end_date,
+            'target_members': project.target_members,
+            'tech_stack': project.tech_stack,
+            'ext_link': project.ext_link,
+            'content': post.content,
+            'author_id': post.author_id,
+        }
+        return render(request, 'project/write.html', context)
 
 @login_required(login_url='/login')
 def delete(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     post = get_object_or_404(Post, id=project.post_id)
 
-    if request.user.id == post.author_id:
-        post.delete()
-        return redirect('/project')
-    else:
+    if request.user.id != post.author_id:
         return redirect('/project/'+str(project_id))
+
+    post.delete()
+    return redirect('/project')
 
 def update_status(request):
     if request.method == 'POST':
