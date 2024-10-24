@@ -1,26 +1,49 @@
-a:hover {
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    background-color: white;
+}
+
+picture img {
+    width: 100%;
+    background-color: white;
+    object-fit: contain;
+}
+
+a {
+    color: black;
     text-decoration: none;
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 64px;
+    width: 600px;
+    margin: 128px 0;
 }
 
-.question {
+.question,
+.answer {
     display: flex;
     flex-direction: column;
-    width: 600px;
     padding: 20px;
-    margin-top: 64px;
     border-radius: 5px;
     background-color: #f7f7f7;
-    gap: 10px;
     box-shadow: 0 0 10px #0000001a;
-    transition: transform 0.3s;
     box-sizing: border-box;
+}
+
+.answer {
+    margin-top: 32px;
 }
 
 .title {
@@ -30,13 +53,14 @@ a:hover {
 
 .keyword-container {
     display: flex;
-    width: 100%;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .keyword {
     display: inline-block;
     padding: 5px 10px;
-    margin-right: 5px;
     border-radius: 5px;
     background-color: #3498db;
     color: white;
@@ -44,48 +68,46 @@ a:hover {
 }
 
 .content {
-    align-items: center;
     width: 100%;
     padding: 5px;
-    border-radius: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
     background-color: #eaeaea;
     color: #333333;
     font-size: large;
+    box-sizing: border-box;
 }
 
 .subsidiary {
     display: flex;
     justify-content: center;
-    width: 100%;
     margin-top: 10px;
 }
 
 .card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 10px;
     border-radius: 5px;
     background-color: white;
     color: #555555;
     font-size: 12px;
-    text-align: center;
     gap: 6px;
     box-shadow: 0 0 5px #0000001a;
 }
 
-.button-blue {
-    display: block;
-    width: fit-content;
+.card>a {
     padding: 6px 12px;
-    border: none;
     border-radius: 4px;
-    background-color: #0077b5;
+    background-color: #3498db;
     color: white;
     font-size: 14px;
-    cursor: pointer;
     transition: background-color 0.3s;
+}
+
+.card>a:hover {
+    background-color: #217dbb;
 }
 
 .reaction-button-wrapper {
@@ -93,11 +115,11 @@ a:hover {
     justify-content: right;
     width: 100%;
     margin-top: 10px;
+    gap: 5px;
 }
 
-.button-sky {
+.reaction-button-wrapper button[type="button"] {
     padding: 10px 20px;
-    margin-right: 10px;
     border: none;
     border-radius: 4px;
     background: #3498db;
@@ -107,8 +129,8 @@ a:hover {
     transition: background-color 0.3s;
 }
 
-.button-sky:last-child {
-    margin-right: 0px;
+.reaction-button-wrapper button[type="button"]:hover {
+    background-color: #217dbb;
 }
 
 .action-button-wrapper {
@@ -116,46 +138,22 @@ a:hover {
     justify-content: right;
     width: 600px;
     margin-top: 10px;
+    gap: 5px;
 }
 
-.button-black {
+.action-button-wrapper a {
     padding: 6px 12px;
-    margin-right: 5px;
-    border: none;
     border-radius: 4px;
     background-color: #333333;
     color: white;
     font-size: 14px;
-    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.button-black:hover {
+.action-button-wrapper a:hover {
     background-color: #555555;
 }
 
-.button-black:last-child {
-    margin-right: 0;
-}
-
-#comment-wrapper {
-    display: none;
-}
-
-.buffer-zone {
-    height: 20px;
-}
-
-.answer {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 5px;
-    background-color: #f7f7f7;
-    box-shadow: 0 0 10px #0000001a;
-    transition: transform 0.3s;
-    gap: 10px;
-    box-sizing: border-box;
+.action-button-wrapper a:nth-last-child(3):hover {
+    background-color: #cc3333;
 }

@@ -64,7 +64,7 @@ def list(request):
 
     return render(request, 'portfolio/list.html', context)
 
-def read(request, portfolio_id=None):
+def read(request, portfolio_id):
     if portfolio_id:
         portfolio = get_object_or_404(Portfolio, id=portfolio_id)
         post = get_object_or_404(Post, id=portfolio.post_id)
@@ -73,8 +73,8 @@ def read(request, portfolio_id=None):
             'portfolio_id' : portfolio_id,
             'title': post.title,
             'author': author.username,
-            'created_at': post.created_at.replace(microsecond=0),
-            'edited_at': post.edited_at.replace(microsecond=0),
+            'created_at': post.created_at,
+            'edited_at': post.edited_at,
             'start_date': portfolio.start_date,
             'end_date': portfolio.end_date,
             'members': portfolio.members,

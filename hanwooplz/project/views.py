@@ -75,7 +75,7 @@ def list(request):
 
     return render(request, 'project/list.html', context)
 
-def read(request, project_id=None):
+def read(request, project_id):
     if project_id:
         project = get_object_or_404(Project, id=project_id)
         post = get_object_or_404(Post, id=project.post_id)
@@ -86,6 +86,7 @@ def read(request, project_id=None):
             'title': post.title,
             'author': author.username,
             'created_at': post.created_at,
+            'edited_at': post.edited_at,
             'start_date': project.start_date,
             'end_date': project.end_date,
             'members': members,

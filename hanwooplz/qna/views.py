@@ -10,7 +10,7 @@ from account.models import UserProfile
 from post.models import Post
 from qna.models import Question, Answer, AnswerLike
 
-def list(request, page_num=1):
+def list(request):
     post_per_page = 10
 
     question = Question.objects.order_by('-id')
@@ -63,7 +63,7 @@ def list(request, page_num=1):
 
     return render(request, 'qna/list.html', context)
 
-def read(request, question_id=None):
+def read(request, question_id):
     if question_id:
         question = get_object_or_404(Question, id=question_id)
         post_q = get_object_or_404(Post, id=question.post_id)
@@ -75,15 +75,16 @@ def read(request, question_id=None):
             author_a = UserProfile.objects.filter(id__in=post_a.values_list('author_id', flat=True))
             answer, post_a , author_a = answer.values(), post_a.values(), author_a.values()
             for p in post_a:
-                p['answer_id'] = p['id']
                 p.pop('id')
-            for a in author_a:
-                a.pop('id')
             answers = []
             answer_post_id_list = []
             for i in range(len(answer)):
-                likes = AnswerLike.objects.filter(answer=answer[i]['id']).count()
-                answers.append({**answer[i],**post_a[i],**author_a[i],'likes': likes})
+                like = AnswerLike.objects.filter(answer=answer[i]['id']).count()
+                answers.append({
+                    **answer[i], **post_a[i],
+                    'author': author_a[i]['username'],
+                    'like': like
+                })
                 answer_post_id_list.append(answer[i]['post_id'])
             answered = True if request.user.id in post_a.values_list('author_id', flat=True) else False
         else:
@@ -96,6 +97,7 @@ def read(request, question_id=None):
             'title': post_q.title,
             'author': author_q.username,
             'created_at': post_q.created_at,
+            'edited_at': post_q.edited_at,
             'keyword': question.keyword.split(),
             'content': post_q.content,
             'like': question.like.count(),

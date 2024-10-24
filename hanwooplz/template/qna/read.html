@@ -22,62 +22,61 @@
             <div class="content">{{ content | safe }}</div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자 <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
+                    <span>작성자</span>
+                    <span><a href="/@{{ author }}"><b>{{ author }}</b> 님</a></span>
                     {% if request.user.is_authenticated and author_id != request.user.id %}
-                    <button class="button-blue" onclick="window.location.href = '/chat'">채팅하기</button>
+                    <a href="/chat">채팅하기</a>
                     {% endif %}
-                    <p>작성 일시: {{ created_at }}</p>
+                    <span>작성 일시: {{ created_at }}</span>
+                    {% if edited_at %}
+                    <span>최종 수정 일시: {{ edited_at }}</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="reaction-button-wrapper">
-                <button class="button-sky" id="show-comment">댓글</button>
-                <button class="button-sky">
-                    <a href="/qna/like/{{ question_id }}">추천 {{ like }} 회</a>
-                </button>
+                <button type="button" class="comment-show">댓글</button>
+                <button type="button" class="like-toggle">추천 {{ like }} 회</button>
             </div>
         </div>
         <div class="action-button-wrapper">
-            {% if author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '/qna/delete-question/{{ question_id }}'">삭제</button>
-            <button class="button-black" onclick="window.location.href = '/qna/edit-question/{{ question_id }}'">수정</button>
-            {% endif %}
             {% if request.user.is_authenticated and not answered %}
-            <button class="button-black" onclick="window.location.href = '/qna/write-answer/{{ question_id }}'">답변</button>
+            <a href="/qna/write-answer/{{ question_id }}">답변</a>
             {% endif %}
-            <button class="button-black" onclick="window.location.href = '/qna'">목록으로</button>
+            {% if author_id == request.user.id %}
+            <a href="/qna/delete-question/{{ question_id }}">삭제</a>
+            <a href="/qna/edit-question/{{ question_id }}">수정</a>
+            {% endif %}
+            <a href="/qna">목록으로</a>
         </div>
-        <div id="comment-wrapper">
-            {% include "comment/comment.html" %}
-        </div>
-        <div class="buffer-zone"></div>
+        {% include "comment/comment.html" %}
         {% for asr in answer %}
-        <div class="answer" data-answer-id="{{ asr.answer_id }}">
+        <div class="answer">
             <div class="content">{{ asr.content | safe }}</div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자 <a href="/@{{ asr.username }}"><b>{{ asr.username }}</b> 님</a>
+                    <span>작성자</span>
+                    <span><a href="/@{{ asr.author }}"><b>{{ asr.author }}</b> 님</a></span>
                     {% if request.user.is_authenticated and asr.author_id != request.user.id %}
-                    <button class="button-blue" onclick="window.location.href = '/chat'">채팅하기</button>
+                    <a href="/chat">채팅하기</a>
                     {% endif %}
-                    <p>작성 일시: {{ asr.created_at }}</p>
+                    <span>작성 일시: {{ asr.created_at }}</span>
+                    {% if edited_at %}
+                    <span>최종 수정 일시: {{ asr.edited_at }}</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="reaction-button-wrapper">
-                <button class="button-sky" id="show-comment">댓글</button>
-                <button class="button-sky">
-                    <a href="/qna/like/{{ question_id }}/{{ asr.id }}">추천 {{ asr.likes }} 회</a>
-                </button>
+                <button type="button" class="comment-show">댓글</button>
+                <button type="button" class="like-toggle">추천 {{ asr.like }} 회</button>
             </div>
         </div>
         <div class="action-button-wrapper">
             {% if asr.author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '/qna/delete-answer/{{ question_id }}/{{ asr.id }}'">삭제</button>
-            <button class="button-black" onclick="window.location.href = '/qna/edit-answer/{{ question_id }}/{{ asr.id }}'">수정</button>
+            <a href="/qna/delete-answer/{{ asr.id }}">삭제</a>
+            <a href="/qna/edit-answer/{{ asr.id }}">수정</a>
             {% endif %}
         </div>
-        <div id="comment-wrapper">
-            {% include "comment/comment.html" %}
-        </div>
+        {% include "comment/comment.html" %}
         {% endfor %}
     </main>
     <!-- {% include "chatbot/chatbot.html" %} -->
