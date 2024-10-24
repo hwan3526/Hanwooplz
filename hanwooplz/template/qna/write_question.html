@@ -11,23 +11,26 @@
 
 <body>
     {% include "nav.html" %}
-    <section class="main">
-        <form method="post" action="{% if question_id %}/qna/edit-question/{{ question_id }}{% else %}/qna/write-question{% endif %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="write-box">
-                <input type="text" id="title" name="title" placeholder="제목" value="{{ title }}">
-                <input type="text" id="keyword" name="keyword" placeholder="#주제" value="{{ keyword }}">
-                <textarea id="content" name="content">{{ content }}</textarea>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="write-box">
+            <div class="write-item">
+                <span>제목</span>
+                <input type="text" name="title" placeholder="최대 50자까지" value="{{ title }}">
             </div>
-            <div class="submit-button-wrapper">
-                {% if question_id %}
-                <input type="submit" class="submit-button" value="수정">
-                {% else %}
-                <input type="submit" class="submit-button" value="글 작성">
-                {% endif %}
+            <div class="write-item">
+                <span>주제(키워드)</span>
+                <input type="text" name="keyword" placeholder="공백으로 구분하여 입력" value="{{ keyword }}">
             </div>
-        </form>
-    </section>
+            <div class="write-item">
+                <span>내용</span>
+                <textarea name="content">{{ content }}</textarea>
+            </div>
+        </div>
+        <div class="submit-button-wrapper">
+            <input type="submit" class="submit-button" value="작성 완료">
+        </div>
+    </form>
 </body>
 <script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static 'js/tinymce.js' %}"></script>

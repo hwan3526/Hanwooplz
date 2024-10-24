@@ -11,8 +11,8 @@ urlpatterns = [
     path('qna/edit-question/<int:question_id>', views.edit_question, name='edit_question'),
     path('qna/delete-question/<int:question_id>', views.delete_question, name='delete_question'),
     path('qna/write-answer/<int:question_id>', views.write_answer, name='write_answer'),
-    path('qna/edit-answer/<int:question_id>/<int:answer_id>', views.edit_answer, name='edit_answer'),
-    path('qna/delete-answer/<int:question_id>/<int:answer_id>', views.delete_answer, name='delete_answer'),
+    path('qna/edit-answer/<int:answer_id>', views.edit_answer, name='edit_answer'),
+    path('qna/delete-answer/<int:answer_id>', views.delete_answer, name='delete_answer'),
     path('qna/like/<int:question_id>', views.like, name='like_question'),
     path('qna/like/<int:question_id>/<int:answer_id>', views.like, name='like_answer'),
 ]

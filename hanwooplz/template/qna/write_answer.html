@@ -12,10 +12,10 @@
 
 <body>
     {% include "nav.html" %}
-    <section class="main">
+    <main class="qna-writer">
         <div class="question">
             <h3 class="title">{{ title }}</h3>
-            <div class="keyword-conatiner">
+            <div class="keyword-container">
                 {% for kw in keyword %}
                 <div class="keyword">#{{ kw }}</div>
                 {% endfor %}
@@ -23,24 +23,25 @@
             <div class="content">{{ content | safe }}</div>
             <div class="subsidiary">
                 <div class="card">
-                    작성자 <a href="/@{{ author }}"><b>{{ author }}</b> 님</a>
-                    <p>작성 일시: {{ created_at }}</p>
+                    <span>작성자</span>
+                    <span><a href="/@{{ author }}"><b>{{ author }}</b> 님</a></span>
+                    <span>작성 일시: {{ created_at }}</span>
+                    {% if edited_at %}
+                    <span>최종 수정 일시: {{ edited_at }}</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <form method="post"
-            action="{% if answer_id %}/qna/edit-answer/{{ question_id }}/{{ answer_id }}{% else %}/qna/write-answer/{{ question_id }}{% endif %}"
-            enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
-                <textarea id="content" name="content">{{ answer }}</textarea>
+                <div class="write-item">
+                    <span>답변</span>
+                    <textarea name="content">{{ answer }}</textarea>
+                </div>
             </div>
             <div class="submit-button-wrapper">
-                {% if answer_id %}
-                <input type="submit" class="submit-button" value="수정">
-                {% else %}
-                <input type="submit" class="submit-button" value="글 작성">
-                {% endif %}
+                <input type="submit" class="submit-button" value="작성 완료">
             </div>
         </form>
     </section>
