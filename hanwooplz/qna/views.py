@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
+from django.http import HttpResponse
 
 from post.forms import PostForm
 from qna.forms import QuestionForm
@@ -295,19 +296,29 @@ def delete_answer(request, answer_id):
     return redirect('/qna/'+str(question_id))
 
 @login_required(login_url='/login')
-def like(request, question_id, answer_id=None):
-    if request.user.is_authenticated:
-        if not answer_id:
-            post = get_object_or_404(Question, id=question_id)
-        else:
-            post = get_object_or_404(Answer, id=answer_id)
-        user = get_object_or_404(UserProfile, id=request.user.id)
+def like_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    user = get_object_or_404(UserProfile, id=request.user.id)
 
-        if user in post.like.all():
-            post.like.remove(user)
-        else:
-            post.like.add(user)
+    if user in question.like.all():
+        question.like.remove(user)
+    else:
+        question.like.add(user)
 
-        post.save()
-        return redirect('/qna/'+str(question_id))
-    return redirect('/qna/'+str(question_id))
+    question.save()
+    like = question.like.count()
+    return HttpResponse(status=200, content=f'{like}')
+
+@login_required(login_url='/login')
+def like_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    user = get_object_or_404(UserProfile, id=request.user.id)
+
+    if user in answer.like.all():
+        answer.like.remove(user)
+    else:
+        answer.like.add(user)
+
+    answer.save()
+    like = answer.like.count()
+    return HttpResponse(status=200, content=f'{like}')

@@ -33,7 +33,6 @@
                     </select>
                 </form>
                 {% elif request.user.is_authenticated and author_id != request.user.id and status == 1 %}
-                {% csrf_token %}
                 <button class="button-blue" id="join-button" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
                 {% endif %}
             </div>

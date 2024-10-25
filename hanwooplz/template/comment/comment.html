@@ -1,9 +1,6 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/comment/comment.css' %}">
-<div class="comment-container">
-    {% csrf_token %}
-    <div class="comment-list">
-    </div>
+<div class="comment">
     {% if request.user.is_authenticated %}
     <form method="post" action="">
         <textarea name="comment" id="comment-input" cols="30" rows="3"></textarea>

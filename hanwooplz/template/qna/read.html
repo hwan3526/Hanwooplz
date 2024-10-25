@@ -34,8 +34,8 @@
                 </div>
             </div>
             <div class="reaction-button-wrapper">
-                <button type="button" class="comment-show">댓글</button>
-                <button type="button" class="like-toggle">추천 {{ like }} 회</button>
+                <button type="button" class="comment-show" question-id="{{ question_id }}">댓글</button>
+                <button type="button" class="like-toggle" question-id="{{ question_id }}">추천 {{ like }} 회</button>
             </div>
         </div>
         <div class="action-button-wrapper">
@@ -66,8 +66,8 @@
                 </div>
             </div>
             <div class="reaction-button-wrapper">
-                <button type="button" class="comment-show">댓글</button>
-                <button type="button" class="like-toggle">추천 {{ asr.like }} 회</button>
+                <button type="button" class="comment-show" answer-id="{{ asr.id }}">댓글</button>
+                <button type="button" class="like-toggle" answer-id="{{ asr.id }}">추천 {{ asr.like }} 회</button>
             </div>
         </div>
         <div class="action-button-wrapper">

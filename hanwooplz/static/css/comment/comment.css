@@ -1,8 +1,12 @@
-.comment-container {
+.comment {
     margin-top: 20px;
 }
 
-.comment-box {
+.inactive {
+    display: none;
+}
+
+.comment-entry {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
