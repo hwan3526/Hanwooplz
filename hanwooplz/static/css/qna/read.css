@@ -157,3 +157,7 @@ a {
 .action-button-wrapper a:nth-last-child(3):hover {
     background-color: #cc3333;
 }
+
+.answer + .action-button-wrapper a:nth-last-child(2):hover {
+    background-color: #cc3333;
+}
